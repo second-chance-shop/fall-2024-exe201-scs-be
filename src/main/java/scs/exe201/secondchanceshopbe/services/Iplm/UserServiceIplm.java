@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.respones.UserResponse;
 import scs.exe201.secondchanceshopbe.models.entities.RoleEntity;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.repositories.RoleRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.UserService;
+import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -22,6 +25,8 @@ public class UserServiceIplm implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+
+
     @Override
     public ResponseEntity<?> registerNewUser(UserRegisterDTO userRegisterDTO) {
         try {
@@ -75,8 +80,11 @@ public class UserServiceIplm implements UserService {
         }
     }
     @Override
-    public List<UserEntity> getListUser() {
-        List<UserEntity> users = userRepository.findAll();
-        return users;
+    public List<UserResponse> getListUser() {
+        List<UserEntity> userEntities = userRepository.findAll();
+//        var userResponses = userEntities.stream().map
+//                (a->EntityToDTO.UserEntityToDTO(a)).toList();
+        var userResponses = userEntities.stream().map(EntityToDTO::UserEntityToDTO).toList();
+        return userResponses;
     }
 }
