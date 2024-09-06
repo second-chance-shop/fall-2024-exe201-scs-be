@@ -21,7 +21,7 @@ public class JwtService {
     private static final long EXPIRATION_TIME_MS = 86400000; // Thời gian hết hạn của token (1 ngày)
 
     public JwtService() {
-        String secretString = "ff8def3ee989c70df7ebb73389a756ea6605bc2797d8b42b4f8392d5fc8ea2eb";
+        String secretString = "cf4XDJFQiu1Bdtxh5CJBeLBxH5HYlcuOGlo127VQ7E40vR7dhiqkl3w7lfvVGtk6BumPmHpu5Xy1jp7wAzROX6LBIFYWtKhXQCQKKjv3s28eQEpkST91sRY3XwgxqJRh";
         byte[] keyBytes = Base64.getDecoder().decode(secretString);
         this.key = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
     }
