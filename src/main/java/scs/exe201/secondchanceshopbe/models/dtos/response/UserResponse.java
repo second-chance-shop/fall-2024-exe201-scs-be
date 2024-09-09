@@ -1,6 +1,5 @@
-package scs.exe201.secondchanceshopbe.models.dtos.respones;
+package scs.exe201.secondchanceshopbe.models.dtos.response;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
