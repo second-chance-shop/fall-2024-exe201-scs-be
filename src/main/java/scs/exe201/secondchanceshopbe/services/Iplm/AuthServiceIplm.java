@@ -13,7 +13,6 @@ import scs.exe201.secondchanceshopbe.models.exception.AuthFailedException;
 import scs.exe201.secondchanceshopbe.security.JwtService;
 import scs.exe201.secondchanceshopbe.services.AuthService;
 
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +27,6 @@ public class AuthServiceIplm implements AuthService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
             );
-
             String token = jwtService.generateToken(authentication);
            return new JwtResponse(token);
 
