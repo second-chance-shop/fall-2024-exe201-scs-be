@@ -32,34 +32,33 @@ public class UserServiceIplm implements UserService {
 
     @Override
     public UserResponse registerNewUser(UserRegisterDTO userRegisterDTO) {
-        Optional<UserEntity> checkUsername = userRepository.findByUsername(userRegisterDTO.getUsername());
-        if (checkUsername.isPresent()) {
-            throw new ConflictException("Username already exists!");
-        }
-        Optional<UserEntity> checkEmail = userRepository.findByEmail(userRegisterDTO.getEmail());
-        if (!checkEmail.isEmpty()) {
-            throw new ConflictException("Email already exists!");
-        }
-        Optional<UserEntity> checkPhone = userRepository.findByPhoneNumber(userRegisterDTO.getPhoneNumber());
-        if (!checkPhone.isEmpty()) {
-            throw new ConflictException("phone already exists!");
-        }
-        String password = passwordEncoder.encode(userRegisterDTO.getPassword());
-        RoleEntity role = roleRepository.getRoleCustomer();
-        if (role == null) {
-            throw new NotFoundException("Can not get role for create");
-        }
-        try {
-//            if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
-//                throw new ConflictException("Username already exists!");
-//            }
-//            if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
-//                throw new ConflictException("Email already exists!");
-//            }
-//            if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
-//                throw new ConflictException("Phone already exists!");
-//            }
 
+//        userRepository.findByUsername(userRegisterDTO.getUsername())
+//                .ifPresent(user -> { throw new ConflictException("Username already exists!"); });
+//
+//        userRepository.findByEmail(userRegisterDTO.getEmail())
+//                .ifPresent(user -> { throw new ConflictException("Email already exists!"); });
+//
+//        userRepository.findByPhoneNumber(userRegisterDTO.getPhoneNumber())
+//                .ifPresent(user -> { throw new ConflictException("Phone number already exists!"); });
+
+            if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
+                throw new ConflictException("Username already exists!");
+            }
+            if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
+                throw new ConflictException("Email already exists!");
+            }
+            if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
+                throw new ConflictException("Phone already exists!");
+            }
+//        RoleEntity role = roleRepository.findRoleName("USER")
+//                .orElseThrow(() -> new NotFoundException("Can not get role for create"));
+        RoleEntity role = roleRepository.getRoleCustomer();
+            if(role == null) {
+                throw new NotFoundException("Role not found!");
+            }
+        String password = passwordEncoder.encode(userRegisterDTO.getPassword());
+        try {
             UserEntity userCreate = DTOToEntity.UserResponseToEntity(userRegisterDTO);
             userCreate.setStatus("ACTIVE");
             userCreate.setRoleEntity(role);
@@ -115,12 +114,10 @@ public class UserServiceIplm implements UserService {
         } catch (Exception e) {
             throw new ActionFailedException(String.format("Failed delete user with ID: %s", id));
         }
-
     }
 
     @Override
     public UserResponse getUsers(String search, Pageable pageable) {
         return null;
     }
-
 }
