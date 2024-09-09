@@ -14,6 +14,7 @@ import scs.exe201.secondchanceshopbe.models.exception.AuthFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.models.exception.SecondChanceShopException;
 
+import java.nio.file.AccessDeniedException;
 
 
 @RestControllerAdvice
@@ -21,7 +22,8 @@ public class ExceptionController {
 
     @ExceptionHandler({
             AuthFailedException.class,
-            NotFoundException.class})
+            NotFoundException.class,
+            AccessDeniedException.class})
     public ResponseEntity<ResponseObject> handleSecondChanceShopException(SecondChanceShopException exception) {
         return ResponseEntity.status(exception.getErrorResponse().status())
                 .body(exception.getErrorResponse());

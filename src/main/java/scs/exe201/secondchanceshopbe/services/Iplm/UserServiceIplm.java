@@ -1,26 +1,30 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.respones.UserResponse;
 import scs.exe201.secondchanceshopbe.models.entities.RoleEntity;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
+import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
+import scs.exe201.secondchanceshopbe.models.exception.ConflictException;
+import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.RoleRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.UserService;
+import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserServiceIplm implements UserService {
-
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -28,56 +32,33 @@ public class UserServiceIplm implements UserService {
 
 
     @Override
-    public ResponseEntity<?> registerNewUser(UserRegisterDTO userRegisterDTO) {
+    public UserResponse registerNewUser(UserRegisterDTO userRegisterDTO) {
+
+
         try {
-            // Kiểm tra trùng lặp cho username
-            Optional<UserEntity> checkUsername = userRepository.findByUsername(userRegisterDTO.getUsername());
-            if (checkUsername.isPresent()) {
-               // throw new PracticeException(HttpStatus.CONFLICT, "Username already exists!");
+            if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
+                throw new ConflictException("Username already exists!");
             }
-
-            // Kiểm tra trùng lặp cho email
-//            List<UserEntity> checkEmail = userRepository.findByEmail(userRegisterDTO.getEmail());
-//            if (!checkEmail.isEmpty()) {
-//             //   throw new PracticeException(HttpStatus.CONFLICT, "Email already exists!");
-//            }
-//
-//            // Kiểm tra trùng lặp cho phoneNumber
-//            List<UserEntity> checkPhone = userRepository.findByPhoneNumber(userRegisterDTO.getPhoneNumber());
-//            if (!checkPhone.isEmpty()) {
-//              //  throw new PracticeException(HttpStatus.CONFLICT, "Phone number already exists!");
-//            }
-
-            // Mã hóa mật khẩu
+            if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
+                throw new ConflictException("Email already exists!");
+            }
+            if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
+                throw new ConflictException("Phone already exists!");
+            }
             String password = passwordEncoder.encode(userRegisterDTO.getPassword());
-
-            // Lấy role cho user
-
             RoleEntity role = roleRepository.getRoleCustomer();
-            if(role == null || role.getRoleName().isEmpty()){
-              //  throw new PracticeException(HttpStatus.NOT_FOUND,"cCan not get role for create");
+            if (role == null) {
+                throw new NotFoundException("Can not get role for create");
             }
-            UserEntity user = new UserEntity();
-            user.setUsername(userRegisterDTO.getUsername());
-            user.setPassword(password);
-            user.setEmail(userRegisterDTO.getEmail());
-            user.setName(userRegisterDTO.getName());
-            user.setRoleEntity(role);
-            user.setStatus("ACTIVE");
-            user.setGender(userRegisterDTO.getGender());
-            user.setAddress(userRegisterDTO.getAddress());
-            user.setPhoneNumber(userRegisterDTO.getPhoneNumber());
-            user.setDob(userRegisterDTO.getDob());
-
-            // Lưu user vào cơ sở dữ liệu
-            userRepository.save(user);
-
-            // Map user entity thành user response và trả về
-            //return mapEntityToDTO.mapUserEntityToUserDTO(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(user);
+            UserEntity userCreate = DTOToEntity.UserResponseToEntity(userRegisterDTO);
+            userCreate.setStatus("ACTIVE");
+            userCreate.setPassword(password);
+            userRepository.save(userCreate);
+            return new UserResponse();
         } catch (Exception e) {
-            throw e;
+            throw new ActionFailedException(String.format("Failed register user with reason: %s", e.getMessage()));
         }
+
     }
     @Override
     public List<UserResponse> getListUser() {
@@ -87,4 +68,48 @@ public class UserServiceIplm implements UserService {
         var userResponses = userEntities.stream().map(EntityToDTO::UserEntityToDTO).toList();
         return userResponses;
     }
+
+    @Override
+    public UserResponse userUpdate(UpdateUserDTO updateUserDTO) {
+        UserEntity userEntity = userRepository.findById(updateUserDTO.getId())
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Cannot find user with ID: %s", updateUserDTO.getId())
+                ));
+        userEntity.setAvatar(updateUserDTO.getAvatar());
+        userEntity.setDob(updateUserDTO.getDob());
+        userEntity.setAddress(updateUserDTO.getAddress());
+        userEntity.setGender(updateUserDTO.getGender());
+        userEntity.setName(updateUserDTO.getName());
+
+        try {
+            var item = userRepository.save(userEntity);
+            UserResponse userResponse = EntityToDTO.UserEntityToDTO(item);
+            return userResponse;
+        } catch (Exception e) {
+            throw new ActionFailedException(String.format("Failed update user with ID: %s", updateUserDTO.getId()));
+        }
+    }
+
+    @Override
+    public UserResponse userDelete(Integer id) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Cannot find user with ID: %s", id)
+                ));
+        userEntity.setStatus("DELETED");
+        try {
+            var item = userRepository.save(userEntity);
+            UserResponse userResponse = EntityToDTO.UserEntityToDTO(item);
+            return userResponse;
+        } catch (Exception e) {
+            throw new ActionFailedException(String.format("Failed delete user with ID: %s", id));
+        }
+
+    }
+
+    @Override
+    public UserResponse getUsers(String search, Pageable pageable) {
+        return null;
+    }
+
 }
