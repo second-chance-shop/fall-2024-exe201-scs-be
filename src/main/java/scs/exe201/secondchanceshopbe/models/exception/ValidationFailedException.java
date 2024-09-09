@@ -1,4 +1,17 @@
 package scs.exe201.secondchanceshopbe.models.exception;
 
-public class ValidationFailedException {
+import org.springframework.http.HttpStatus;
+import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
+
+public class ValidationFailedException  extends SecondChanceShopException{
+    public ValidationFailedException(String message) {
+        super(message);
+        this.errorResponse = ResponseObject.builder()
+                .code("Validation_Failed")
+                .message(message)
+                .data(null)
+                .isSuccess(false)
+                .status(HttpStatus.OK)
+                .build();
+    }
 }
