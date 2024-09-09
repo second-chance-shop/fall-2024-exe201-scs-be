@@ -1,6 +1,6 @@
 package scs.exe201.secondchanceshopbe.models.exception;
 
-import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 
 public class SecondChanceShopException extends RuntimeException {
     protected ResponseObject errorResponse;

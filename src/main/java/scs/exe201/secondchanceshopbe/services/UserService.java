@@ -4,7 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.UserResponse;
+import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 
 import java.util.List;
 

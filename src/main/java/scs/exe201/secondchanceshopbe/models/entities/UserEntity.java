@@ -34,13 +34,13 @@ public class UserEntity implements UserDetails {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     private String gender;
 
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
-    @Column(name = "day_of_birth", nullable = false)
+    @Column(name = "day_of_birth")
     private LocalDate dob;
 
     @Column(name = "email", nullable = false, unique = true)
