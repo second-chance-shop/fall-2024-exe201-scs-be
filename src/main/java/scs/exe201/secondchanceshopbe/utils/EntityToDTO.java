@@ -1,7 +1,6 @@
 package scs.exe201.secondchanceshopbe.utils;
 
-import org.springframework.stereotype.Component;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.UserResponse;
+import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 
 
