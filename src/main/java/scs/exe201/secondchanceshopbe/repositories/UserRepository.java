@@ -1,6 +1,8 @@
 package scs.exe201.secondchanceshopbe.repositories;
 
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +23,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
             "LOWER(u.username) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(u.email) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<UserEntity> findByKeyword(String keyword, Pageable pageable);
+
+    Optional<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByPhoneNumber(String phoneNumber);
 }

@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.LoginDTO;
 
-import scs.exe201.secondchanceshopbe.models.dtos.respones.JwtResponse;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.dtos.response.JwtResponse;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.AuthService;
 
 @RestController

@@ -9,10 +9,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
-import scs.exe201.secondchanceshopbe.models.exception.AuthFailedException;
-import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
-import scs.exe201.secondchanceshopbe.models.exception.SecondChanceShopException;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.exception.*;
 
 import java.nio.file.AccessDeniedException;
 
@@ -23,7 +21,8 @@ public class ExceptionController {
     @ExceptionHandler({
             AuthFailedException.class,
             NotFoundException.class,
-            AccessDeniedException.class})
+            ConflictException.class,
+            ActionFailedException.class})
     public ResponseEntity<ResponseObject> handleSecondChanceShopException(SecondChanceShopException exception) {
         return ResponseEntity.status(exception.getErrorResponse().status())
                 .body(exception.getErrorResponse());
@@ -40,7 +39,6 @@ public class ExceptionController {
                 .body(createAuthenticationErrorResponse(exception));
     }
 
-
     private ResponseObject createAuthenticationErrorResponse(RuntimeException exception) {
         return ResponseObject.builder()
                 .isSuccess(false)
@@ -49,6 +47,17 @@ public class ExceptionController {
                 .data(null)
                 .status(HttpStatus.UNAUTHORIZED)
                 .build();
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseObject> somethingWrongException(Exception ex) {
+        var responseError = ResponseObject.builder()
+                .isSuccess(false)
+                .message(ex.getMessage())
+                .code("SOMETHING_WRONG")
+                .data(null)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .build();
+        return ResponseEntity.status(responseError.status()).body(responseError);
     }
 }
 

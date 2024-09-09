@@ -11,9 +11,8 @@ import org.springframework.http.ResponseEntity;
 
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.UserResponse;
-import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 import scs.exe201.secondchanceshopbe.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
