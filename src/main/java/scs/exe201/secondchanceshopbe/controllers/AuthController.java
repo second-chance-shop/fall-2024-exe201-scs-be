@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.LoginDTO;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.JwtResponse;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.dtos.response.JwtResponse;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.AuthService;
 
 @RestController

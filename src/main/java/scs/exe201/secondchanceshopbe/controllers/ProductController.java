@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
 import scs.exe201.secondchanceshopbe.services.ProductService;
 
