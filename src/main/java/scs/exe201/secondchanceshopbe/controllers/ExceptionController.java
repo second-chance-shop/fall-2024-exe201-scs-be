@@ -1,7 +1,6 @@
 package scs.exe201.secondchanceshopbe.controllers;
 
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,7 +12,6 @@ import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.models.exception.*;
 
 import java.nio.file.AccessDeniedException;
-
 
 @RestControllerAdvice
 public class ExceptionController {
