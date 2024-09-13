@@ -101,7 +101,7 @@ public class UserServiceIplm implements UserService {
     }
 
     @Override
-    public UserResponse userDelete(Integer id) {
+    public UserResponse userDelete(long id) {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Cannot find user with ID: %s", id)
