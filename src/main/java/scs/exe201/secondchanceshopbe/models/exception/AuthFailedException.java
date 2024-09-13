@@ -1,7 +1,7 @@
 package scs.exe201.secondchanceshopbe.models.exception;
 
 import org.springframework.http.HttpStatus;
-import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
 
 public class AuthFailedException extends SecondChanceShopException {
     public AuthFailedException(final String message) {
