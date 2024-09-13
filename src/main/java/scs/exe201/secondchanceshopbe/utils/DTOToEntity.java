@@ -1,23 +1,22 @@
 package scs.exe201.secondchanceshopbe.utils;
 
-import scs.exe201.secondchanceshopbe.models.dtos.respones.UserResponse;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
+
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 
 public class DTOToEntity {
-    public static UserEntity UserResponseToEntity(UserResponse userResponse) {
+    public static UserEntity UserResponseToEntity(UserRegisterDTO userRegister) {
         // Create a new UserEntity object
         UserEntity userEntity = new UserEntity();
 
-        userEntity.setUserId(userResponse.getUserId());
-        userEntity.setUsername(userResponse.getUsername());
-        userEntity.setAddress(userResponse.getAddress());
-        userEntity.setGender(userResponse.getGender());
-        userEntity.setPhoneNumber(userResponse.getPhoneNumber());
-        userEntity.setDob(userResponse.getDob());
-        userEntity.setEmail(userResponse.getEmail());
-        userEntity.setName(userResponse.getName());
-        userEntity.setAvatar(userResponse.getAvatar());
-        userEntity.setStatus(userResponse.getStatus());
+        userEntity.setUsername(userRegister.getUsername());
+        userEntity.setAddress(userRegister.getAddress());
+        userEntity.setGender(userRegister.getGender());
+        userEntity.setPhoneNumber(userRegister.getPhoneNumber());
+        userEntity.setDob(userRegister.getDob());
+        userEntity.setEmail(userRegister.getEmail());
+        userEntity.setName(userRegister.getName());
+        userEntity.setAvatar(userRegister.getAvatar());
 
         // Return the mapped UserEntity object
         return userEntity;

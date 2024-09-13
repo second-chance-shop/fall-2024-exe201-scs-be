@@ -3,11 +3,11 @@ package scs.exe201.secondchanceshopbe.models.exception;
 import org.springframework.http.HttpStatus;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 
-public class ValidationFailedException  extends SecondChanceShopException{
-    public ValidationFailedException(String message) {
+public class ConflictException extends SecondChanceShopException{
+    public ConflictException(String message) {
         super(message);
         this.errorResponse = ResponseObject.builder()
-                .code("Validation_Failed")
+                .code("CONFLICT")
                 .message(message)
                 .data(null)
                 .isSuccess(false)
