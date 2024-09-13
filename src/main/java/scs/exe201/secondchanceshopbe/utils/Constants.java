@@ -13,5 +13,7 @@ public class Constants {
     public static final boolean STATUS_TRUE = true;
     public static final boolean STATUS_FALSE = false;
     public static final String NOT_FOUND_ROLE_USER = "role user";
+    public static final String STATUS = "STATUS";
+    public static final String MESSAGE = "MESSAGE";
 
 }
