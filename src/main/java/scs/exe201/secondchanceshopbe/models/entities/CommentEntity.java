@@ -20,6 +20,8 @@ public class CommentEntity {
 
     @Column(name = "content")
     private String content;
+    @Column(name = "status")
+    private String status;
 
     @Column(name = "date_create")
     private LocalDate dateCreate;

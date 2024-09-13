@@ -16,7 +16,7 @@ public interface UserService {
 
     UserResponse userUpdate(UpdateUserDTO updateUserDTO);
 
-    UserResponse userDelete(Integer id);
+    UserResponse userDelete(long id);
 
     UserResponse getUsers(String search, Pageable pageable);
 }

@@ -6,7 +6,7 @@ import scs.exe201.secondchanceshopbe.models.entities.RoleEntity;
 
 import java.util.Optional;
 
-public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
+public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
 
     @Query(value = "SELECT r from RoleEntity r where r.roleName='USER'")
     RoleEntity getRoleCustomer();
