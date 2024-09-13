@@ -1,4 +1,6 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
 
-public class CommentServiceIplm {
+import scs.exe201.secondchanceshopbe.services.CommentService;
+
+public class CommentServiceIplm implements CommentService {
 }

@@ -1,15 +1,12 @@
-package scs.exe201.secondchanceshopbe.models.dtos.respones;
+package scs.exe201.secondchanceshopbe.models.dtos.response;
 
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
