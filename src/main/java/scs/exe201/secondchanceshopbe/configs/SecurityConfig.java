@@ -49,7 +49,7 @@ public class SecurityConfig  {
                         .requestMatchers("/api/v1/user/list-user").hasAnyAuthority("ADMIN")
                         .requestMatchers("/api/v1/auth/user/info").authenticated() // Endpoint này yêu cầu xác thực
 
-//                        .anyRequest().authenticated() // Các yêu cầu khác đều cần xác thực
+                        .anyRequest().authenticated() // Các yêu cầu khác đều cần xác thực
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không lưu trạng thái phiên

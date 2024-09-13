@@ -8,7 +8,6 @@ public class DTOToEntity {
     public static UserEntity UserResponseToEntity(UserRegisterDTO userRegister) {
         // Create a new UserEntity object
         UserEntity userEntity = new UserEntity();
-
         userEntity.setUsername(userRegister.getUsername());
         userEntity.setAddress(userRegister.getAddress());
         userEntity.setGender(userRegister.getGender());
@@ -17,7 +16,6 @@ public class DTOToEntity {
         userEntity.setEmail(userRegister.getEmail());
         userEntity.setName(userRegister.getName());
         userEntity.setAvatar(userRegister.getAvatar());
-
         // Return the mapped UserEntity object
         return userEntity;
     }
