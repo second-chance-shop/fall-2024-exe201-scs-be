@@ -4,13 +4,11 @@ package scs.exe201.secondchanceshopbe.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.*;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.respones.ResponseObject;
 import scs.exe201.secondchanceshopbe.models.dtos.respones.UserResponse;
-import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.services.UserService;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +18,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
     @PostMapping("/registerNewUser")
     public ResponseEntity<?> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
         return userService.registerNewUser(userRegisterDTO);

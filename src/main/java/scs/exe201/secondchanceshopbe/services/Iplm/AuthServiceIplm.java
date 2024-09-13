@@ -31,7 +31,6 @@ public class AuthServiceIplm implements AuthService {
 
             String token = jwtService.generateToken(authentication);
            return new JwtResponse(token);
-
         } catch (Exception e) {
             throw new AuthFailedException(e.getMessage());
         }
