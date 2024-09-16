@@ -7,58 +7,55 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
-import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
-import scs.exe201.secondchanceshopbe.services.ProductService;
+import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
+import scs.exe201.secondchanceshopbe.services.CategoryService;
 
-@RequestMapping("/api/v1/product")
+@RequestMapping("/api/v1/category")
 @RestController
 @AllArgsConstructor
-
-public class ProductController {
-    private final ProductService productService;
-
-
-    @GetMapping("/getAllProduct")
+public class CategoryController {
+    private final CategoryService categoryService;
+    @GetMapping("/getAllCategory")
     public ResponseEntity<ResponseObject> getProducts(@RequestParam(defaultValue = "1") int page,
                                                       @RequestParam(defaultValue = "10") int size) {
 
-        Page<ProductEntity> products = productService.getAllProducts(page, size);
+        Page<CategoryEntity> categorys = categoryService.getAllCategories(page, size);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")
                         .message("Products retrieved successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
-                        .data(products)
+                        .data(categorys)
                         .build()
         );
     }
 
-    @GetMapping("/{idProduct}")
-    public ResponseEntity<ResponseObject> getProduct(@PathVariable long idProduct) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getProduct(@PathVariable long id) {
 
-        ProductEntity product = productService.getProductById(idProduct)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        CategoryEntity category = categoryService.getCategoryById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")
-                        .message("Product retrieved successfully")
+                        .message("Category retrieved successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
-                        .data(product)
+                        .data(category)
                         .build()
         );
 
     }
 
-    @PostMapping("/addProduct")
-    public ResponseEntity<ResponseObject> addProduct(@RequestBody ProductEntity product) {
+    @PostMapping("/addCategory")
+    public ResponseEntity<ResponseObject> addProduct(@RequestBody CategoryEntity category) {
 
-        ResponseEntity<Object> response = productService.addProduct(product);
+        ResponseEntity<Object> response = categoryService.addCategory(category);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("ADD_SUCCESS")
-                        .message("Product added successfully")
+                        .message("Category added successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response.getBody())
@@ -67,14 +64,14 @@ public class ProductController {
 
     }
 
-    @DeleteMapping("/deleteProduct/{idProduct}")
-    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable long idProduct) {
+    @DeleteMapping("/deleteCategory/{id}")
+    public ResponseEntity<ResponseObject> deleteProduct(@PathVariable long id) {
 
-        ResponseEntity<Object> response = productService.deleteProduct(idProduct);
+        ResponseEntity<Object> response = categoryService.deleteCategory(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("DELETE_SUCCESS")
-                        .message("Product deleted successfully")
+                        .message("Category deleted successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response.getBody())
@@ -83,14 +80,14 @@ public class ProductController {
 
     }
 
-    @PutMapping("/updateProduct")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestBody ProductEntity product) {
+    @PutMapping("/updateCategory")
+    public ResponseEntity<ResponseObject> updateProduct(@RequestBody CategoryEntity category) {
 
-        ResponseEntity<Object> response = productService.updateProduct(product);
+        ResponseEntity<Object> response = categoryService.updateCategory(category);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("UPDATE_SUCCESS")
-                        .message("Product updated successfully")
+                        .message("Category updated successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response.getBody())
