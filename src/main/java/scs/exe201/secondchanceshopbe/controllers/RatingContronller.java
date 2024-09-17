@@ -34,6 +34,19 @@ public class RatingContronller {
                         .build()
         );
     }
+    @GetMapping("/product{id}")
+    public ResponseEntity<ResponseObject> getRatingByProductId(@RequestParam long id) {
+        List<RatingResponse> responses = ratingService.getAllByProductId(id);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("CREATE_SUCCESS")
+                        .message("get all success")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(responses)
+                        .build()
+        );
+    }
     @PostMapping("/create")
     public ResponseEntity<ResponseObject> createRating(@RequestBody RatingCreateDTO createDTO){
         RatingResponse ratingResponse = ratingService.craterating(createDTO);
