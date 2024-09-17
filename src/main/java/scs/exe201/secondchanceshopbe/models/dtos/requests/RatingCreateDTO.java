@@ -1,16 +1,18 @@
 package scs.exe201.secondchanceshopbe.models.dtos.requests;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Setter
-public class CommentUpdateDTO {
-    private long id;
-    private String content;
-
+public class RatingCreateDTO {
+    private int start;
+    private long userId;
+    private long productId;
 }
