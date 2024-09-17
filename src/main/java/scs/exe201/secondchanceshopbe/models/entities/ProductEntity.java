@@ -56,4 +56,8 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RatingEntity> ratings;
+
+    @OneToOne(mappedBy = "productOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private OrderEntity orderEntity;
+
 }
