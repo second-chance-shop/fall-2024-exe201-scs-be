@@ -1,5 +1,6 @@
 package scs.exe201.secondchanceshopbe.services;
 
+
 import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.RatingCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateRatingDTO;
@@ -12,6 +13,7 @@ public interface RatingService {
     List<RatingResponse> getAll();
 
     RatingResponse craterating(RatingCreateDTO createDTO);
-
     RatingResponse updateRating(UpdateRatingDTO updateDTO);
+
+    List<RatingResponse> getAllByProductId(long id);
 }
