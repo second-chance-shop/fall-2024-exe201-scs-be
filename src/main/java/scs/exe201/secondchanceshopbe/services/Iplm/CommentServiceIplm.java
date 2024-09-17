@@ -28,7 +28,7 @@ public class CommentServiceIplm implements CommentService {
     @Override
     public List<CommentResponse> getAll() {
         List<CommentEntity> comments = commentRepository.findAll();
-        var userResponses = comments.stream().map(EntityToDTO::commentDTOToEntity).toList();
+        var userResponses = comments.stream().map(EntityToDTO::commentToEntityDTO).toList();
         return userResponses;
     }
     @Override
@@ -51,7 +51,7 @@ public class CommentServiceIplm implements CommentService {
     @Override
     public List<CommentResponse> getByProductId(long id) {
         List<CommentEntity> entities = commentRepository.findByProductId(id);
-        var userResponses = entities.stream().map(EntityToDTO::commentDTOToEntity).toList();
+        var userResponses = entities.stream().map(EntityToDTO::commentToEntityDTO).toList();
         return userResponses;
     }
 
@@ -62,7 +62,7 @@ public class CommentServiceIplm implements CommentService {
         );
         comment.setStatus("DELETE");
         commentRepository.save(comment);
-        CommentResponse commentResponse = EntityToDTO.commentDTOToEntity(comment);
+        CommentResponse commentResponse = EntityToDTO.commentToEntityDTO(comment);
         return commentResponse;
     }
 
@@ -73,7 +73,7 @@ public class CommentServiceIplm implements CommentService {
         );
         currentComment.setContent(comment.getContent());
         commentRepository.save(currentComment);
-        CommentResponse commentResponse = EntityToDTO.commentDTOToEntity(currentComment);
+        CommentResponse commentResponse = EntityToDTO.commentToEntityDTO(currentComment);
         return commentResponse;
     }
 
