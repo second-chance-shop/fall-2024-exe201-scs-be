@@ -75,6 +75,9 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "shopOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ShopEntity> shopEntities;
 
+    @OneToMany(mappedBy = "userOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderEntity> orderEntities;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();

@@ -24,6 +24,9 @@ public class RatingEntity {
     @Column(name = "date_create", nullable = false)
     private LocalDate dateCreate;
 
+    @Column(name = "status", nullable = false)
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore

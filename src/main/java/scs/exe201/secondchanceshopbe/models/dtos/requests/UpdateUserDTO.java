@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserDTO {
-    private int id;
+    private long id;
 
     @NotEmpty(message = "name not null!!!")
     private String name;
