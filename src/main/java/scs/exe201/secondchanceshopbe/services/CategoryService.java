@@ -1,15 +1,19 @@
 package scs.exe201.secondchanceshopbe.services;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.CategoryCreateDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.response.CategoryResponse;
 
 import java.util.Optional;
 
 public interface CategoryService {
-    Page<CategoryEntity> getAllCategories(int page, int size);
-    ResponseEntity<Object> addCategory(CategoryEntity category);
-    ResponseEntity<Object> deleteCategory(long id);
-    ResponseEntity<Object> updateCategory(CategoryEntity category);
-    Optional<CategoryEntity> getCategoryById(long id);
+    CategoryResponse createCategory(CategoryCreateDTO categoryRequest);
+
+    Optional<CategoryResponse> getCategoryById(Long categoryId);
+
+    Page<CategoryResponse> getAllCategories(int page, int size);
+
+    CategoryResponse updateCategory(Long categoryId, CategoryCreateDTO categoryRequest);
+
+    void deleteCategory(Long categoryId);
 }

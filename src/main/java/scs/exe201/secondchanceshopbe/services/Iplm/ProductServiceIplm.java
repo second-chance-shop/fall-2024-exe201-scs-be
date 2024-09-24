@@ -102,7 +102,7 @@ public class ProductServiceIplm implements ProductService {
     public ProductResponse deleteProduct(long idProduct) {
         ProductEntity productEntity = productRepository.findById(idProduct)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
-productEntity.setStatus("DELETE");
+        productEntity.setStatus("DELETE");
         productRepository.save(productEntity);
         return mapProductEntityToProductResponse(productEntity);
     }
