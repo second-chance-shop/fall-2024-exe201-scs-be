@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -17,8 +19,11 @@ public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="paymeny_id", unique = true, nullable = false)
-    private long id;
+    private long paymentId;
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "paymentOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderEntity> orderEntities;
 }
