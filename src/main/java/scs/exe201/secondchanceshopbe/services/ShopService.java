@@ -1,19 +1,23 @@
 package scs.exe201.secondchanceshopbe.services;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import scs.exe201.secondchanceshopbe.models.entities.ShopEntity;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.ShopRequestDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ShopResponse;
 
+
+import java.util.List;
 import java.util.Optional;
 
-public interface ShopService
-{
-    Page<ShopEntity> getShops(int page, int size);
-    ResponseEntity<Optional<ShopEntity>> getShopById(int id);
-    ResponseEntity<ShopEntity> addShop(ShopEntity shop);
-    ResponseEntity<ShopEntity> updateShop(ShopEntity shop);
-    ResponseEntity<Void> deleteShopById(int id);
-    ResponseEntity<Void> deleteAllShops();
+public interface ShopService {
 
+    ShopResponse createShop(ShopRequestDTO shopRequest);
+
+    Optional<ShopResponse> getShopById(Long shopId);
+
+    Page<ShopResponse> getAllShops(int page, int size);
+
+    ShopResponse updateShop(Long shopId, ShopRequestDTO shopRequest);
+
+    ShopResponse deleteShop(Long shopId);
 }
+

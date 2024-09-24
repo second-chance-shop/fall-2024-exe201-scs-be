@@ -1,6 +1,4 @@
-package scs.exe201.secondchanceshopbe.models.dtos.requests;
-
-import jakarta.validation.constraints.NotBlank;
+package scs.exe201.secondchanceshopbe.models.dtos.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryCreateDTO {
-    @NotBlank(message = "Category name cannot be empty")
+public class CategoryResponse {
+    private Long categoryId;
     private String categoryName;
 }
