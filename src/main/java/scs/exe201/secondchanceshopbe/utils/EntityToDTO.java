@@ -54,7 +54,7 @@ public class EntityToDTO {
         orderResponse.setOrderId(orderEntity.getOrderId());
         orderResponse.setOrderDate(orderEntity.getOrderDate());
         orderResponse.setStatus(orderEntity.getStatus());
-        orderResponse.setPaymentId(orderEntity.getPaymentOrder().getOrderId());
+        orderResponse.setPaymentId(orderEntity.getPaymentOrder().getPaymentId());
         orderResponse.setQuantity(orderEntity.getQuantity());
         orderResponse.setProductId(orderEntity.getProductOrder().getProductId());
         orderResponse.setUserId(orderEntity.getUserOrder().getUserId());
