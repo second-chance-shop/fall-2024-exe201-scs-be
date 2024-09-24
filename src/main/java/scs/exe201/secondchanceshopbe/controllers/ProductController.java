@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
 import scs.exe201.secondchanceshopbe.services.ProductService;
@@ -52,7 +53,7 @@ public class ProductController {
     }
 
     @PostMapping("/addProduct")
-    public ResponseEntity<ResponseObject> addProduct(@RequestBody ProductEntity product) {
+    public ResponseEntity<ResponseObject> addProduct(@RequestBody ProductDTO product) {
 
         ResponseEntity<Object> response = productService.addProduct(product);
         return ResponseEntity.ok().body(
@@ -84,9 +85,9 @@ public class ProductController {
     }
 
     @PutMapping("/updateProduct")
-    public ResponseEntity<ResponseObject> updateProduct(@RequestBody ProductEntity product) {
+    public ResponseEntity<ResponseObject> updateProduct(@PathVariable long id ,@RequestBody ProductDTO product) {
 
-        ResponseEntity<Object> response = productService.updateProduct(product);
+        ResponseEntity<Object> response = productService.updateProduct(id,product);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("UPDATE_SUCCESS")
