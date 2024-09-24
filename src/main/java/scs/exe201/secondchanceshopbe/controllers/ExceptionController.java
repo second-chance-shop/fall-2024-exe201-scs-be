@@ -26,7 +26,6 @@ public class ExceptionController {
                 .body(exception.getErrorResponse());
     }
 
-
     @ExceptionHandler({
             BadCredentialsException.class,
             DisabledException.class,

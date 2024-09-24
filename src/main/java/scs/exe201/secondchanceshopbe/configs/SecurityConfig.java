@@ -23,7 +23,7 @@ import scs.exe201.secondchanceshopbe.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig  {
+public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
@@ -45,9 +45,16 @@ public class SecurityConfig  {
                         .requestMatchers("/api/v1/auth/**").permitAll() // Cho phép tất cả các yêu cầu đến endpoint xác thực
                         .requestMatchers("/swagger-ui/**").permitAll() // Cho phép truy cập Swagger UI
                         .requestMatchers("/v3/api-docs/**").permitAll() // Cho phép truy cập tài liệu API
-                        .requestMatchers("/api/v1/user/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/v1/product/getAllProduct").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/v1/category/addCategory").permitAll()
+
+                        //user
+                        .requestMatchers(HttpMethod.POST,"/api/v1/user/register").permitAll()
+                        .requestMatchers(HttpMethod.PUT,"/api/v1/user/update-user").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/user/list-user").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/user/delete-user").hasAnyAuthority("ADMIN")
+
+                        //product
+                        .requestMatchers(HttpMethod.GET, "/api/v1/product/getAllProduct").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/category/addCategory").permitAll()
                         .requestMatchers("/api/v1/user/list-user").hasAnyAuthority("ADMIN")
                         .requestMatchers("/api/v1/auth/user/info").authenticated() // Endpoint này yêu cầu xác thực
 
@@ -55,9 +62,9 @@ public class SecurityConfig  {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không lưu trạng thái phiên
-//                .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint(jwtAuthenticationEntryPoint) // Xử lý lỗi xác thực
-//                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint) // Xử lý lỗi xác thực
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Thêm bộ lọc JWT
 
         return httpSecurity.build();
@@ -67,8 +74,9 @@ public class SecurityConfig  {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(customUserDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
