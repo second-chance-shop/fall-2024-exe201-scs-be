@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
@@ -20,7 +21,8 @@ public class ExceptionController {
             AuthFailedException.class,
             NotFoundException.class,
             ConflictException.class,
-            ActionFailedException.class})
+            ActionFailedException.class,
+            UsernameNotFoundException.class})
     public ResponseEntity<ResponseObject> handleSecondChanceShopException(SecondChanceShopException exception) {
         return ResponseEntity.status(exception.getErrorResponse().status())
                 .body(exception.getErrorResponse());
@@ -45,6 +47,7 @@ public class ExceptionController {
                 .status(HttpStatus.UNAUTHORIZED)
                 .build();
     }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseObject> somethingWrongException(Exception ex) {
         var responseError = ResponseObject.builder()
