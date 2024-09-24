@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
-import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
-import scs.exe201.secondchanceshopbe.repositories.CategoryReposity;
+import scs.exe201.secondchanceshopbe.repositories.CategoryRepository;
 import scs.exe201.secondchanceshopbe.services.CategoryService;
 
 import java.util.Optional;
@@ -18,7 +17,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class CategoryServiceImpm implements CategoryService {
-    private CategoryReposity categoryReposity;
+    private CategoryRepository categoryReposity;
 
     @Override
     public Page<CategoryEntity> getAllCategories(int page, int size) {

@@ -2,8 +2,7 @@ package scs.exe201.secondchanceshopbe.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
-
+import scs.exe201.secondchanceshopbe.models.entities.ShopEntity;
 @Repository
-public interface CategoryReposity extends JpaRepository<CategoryEntity, Long> {
+public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
 }
