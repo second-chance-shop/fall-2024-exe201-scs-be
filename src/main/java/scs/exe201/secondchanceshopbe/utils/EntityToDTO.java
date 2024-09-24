@@ -1,9 +1,11 @@
 package scs.exe201.secondchanceshopbe.utils;
 
 import scs.exe201.secondchanceshopbe.models.dtos.response.CommentResponse;
+import scs.exe201.secondchanceshopbe.models.dtos.response.NotificationResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CommentEntity;
+import scs.exe201.secondchanceshopbe.models.entities.NotificationEntity;
 import scs.exe201.secondchanceshopbe.models.entities.RatingEntity;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 
@@ -43,5 +45,14 @@ public class EntityToDTO {
         ratingResponse.setCreatedAt(ratingEntity.getDateCreate());
         ratingResponse.setProductId(ratingEntity.getProduct().getProductId());
         return  ratingResponse;
+    }
+    public static NotificationResponse notificationEntityDTO(NotificationEntity notificationEntity)  {
+        NotificationResponse notificationResponse = new NotificationResponse();
+        notificationResponse.setNotificationId(notificationEntity.getNotificationId());
+        notificationResponse.setContent(notificationEntity.getContent());
+        notificationResponse.setTitle(notificationEntity.getTitle());
+        notificationResponse.setUserId(notificationEntity.getCreateNotification().getUserId());
+        notificationResponse.setDateCreate(notificationEntity.getDateCreate());
+        return notificationResponse;
     }
 }
