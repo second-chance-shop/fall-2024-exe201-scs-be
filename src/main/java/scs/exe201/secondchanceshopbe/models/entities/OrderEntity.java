@@ -21,11 +21,6 @@ public class OrderEntity {
     @Column(name="order_id")
     private long orderId;
 
-    @Column(name = "order_date")
-    private LocalDate orderDate;
-
-    @Column(name = "status")
-    private String status;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -36,5 +31,19 @@ public class OrderEntity {
     @JoinColumn(name= "product_id",nullable = false)
     @JsonIgnore
     private ProductEntity productOrder;
+
+    @Column(name ="quantity")
+    private int quantity;
+
+    @Column(name = "order_date")
+    private LocalDate orderDate;
+
+    @Column(name = "status")
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(name ="payment_id",nullable = false)
+    @JsonIgnore
+    private PaymentEntity paymentOrder;
 
 }

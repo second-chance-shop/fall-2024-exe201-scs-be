@@ -1,13 +1,7 @@
 package scs.exe201.secondchanceshopbe.utils;
 
-import scs.exe201.secondchanceshopbe.models.dtos.response.CommentResponse;
-import scs.exe201.secondchanceshopbe.models.dtos.response.NotificationResponse;
-import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
-import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
-import scs.exe201.secondchanceshopbe.models.entities.CommentEntity;
-import scs.exe201.secondchanceshopbe.models.entities.NotificationEntity;
-import scs.exe201.secondchanceshopbe.models.entities.RatingEntity;
-import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
+import scs.exe201.secondchanceshopbe.models.dtos.response.*;
+import scs.exe201.secondchanceshopbe.models.entities.*;
 
 
 public class EntityToDTO {
@@ -54,5 +48,16 @@ public class EntityToDTO {
         notificationResponse.setUserId(notificationEntity.getCreateNotification().getUserId());
         notificationResponse.setDateCreate(notificationEntity.getDateCreate());
         return notificationResponse;
+    }
+    public  static OrderResponse orderEntityDTO(OrderEntity orderEntity)  {
+        OrderResponse orderResponse = new OrderResponse();
+        orderResponse.setOrderId(orderEntity.getOrderId());
+        orderResponse.setOrderDate(orderEntity.getOrderDate());
+        orderResponse.setStatus(orderEntity.getStatus());
+        orderResponse.setPaymentId(orderEntity.getPaymentOrder().getOrderId());
+        orderResponse.setQuantity(orderEntity.getQuantity());
+        orderResponse.setProductId(orderEntity.getProductOrder().getProductId());
+        orderResponse.setUserId(orderEntity.getUserOrder().getUserId());
+        return orderResponse;
     }
 }
