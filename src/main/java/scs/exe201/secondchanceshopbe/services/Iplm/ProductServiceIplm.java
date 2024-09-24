@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductDTO;
 import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
 import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
 import scs.exe201.secondchanceshopbe.services.ProductService;
+import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
 
 import java.util.Optional;
 
@@ -18,9 +20,11 @@ import java.util.Optional;
 @Transactional
 public class ProductServiceIplm implements ProductService {
     private final ProductRepository productRepository;
+    private final DTOToEntity dtoToEntity;
 
-    public ProductServiceIplm(ProductRepository productRepository) {
+    public ProductServiceIplm(ProductRepository productRepository, DTOToEntity dtoToEntity) {
         this.productRepository = productRepository;
+        this.dtoToEntity = dtoToEntity;
     }
 
     @Override
@@ -34,14 +38,20 @@ public class ProductServiceIplm implements ProductService {
     }
 
     @Override
-    public ResponseEntity<Object> addProduct(ProductEntity product) {
+    public ResponseEntity<Object> addProduct(ProductDTO product) {
         try {
-            ProductEntity savedProduct = productRepository.save(product);
-            return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+            ProductEntity productEntity = dtoToEntity.mapProductDTOToProductEntity(product);
+            productEntity.setStatus("True");
+            productRepository.save(productEntity);
+            return new ResponseEntity<>(productEntity, HttpStatus.CREATED);
         } catch (Exception e) {
+           e.printStackTrace();
             return new ResponseEntity<>("Failed to add product", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
 
     @Override
     public ResponseEntity<Object> deleteProduct(long idProduct) {
@@ -56,14 +66,21 @@ public class ProductServiceIplm implements ProductService {
     }
 
     @Override
-    public ResponseEntity<Object> updateProduct(ProductEntity product) {
-        if (productRepository.existsById(product.getProductId())) {
-            ProductEntity updatedProduct = productRepository.save(product);
-            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    public ResponseEntity<Object> updateProduct(long idProduct, ProductDTO product) {
+        if (productRepository.findById(idProduct).isPresent()) {
+            ProductEntity productEntity = productRepository.findById(idProduct).get();
+            productEntity.setProductName(product.getProductName());
+            productEntity.setDescription(product.getDescription());
+            productEntity.setPrices(product.getPrices());
+            productEntity.setQuantity(product.getQuantity());
+            productEntity.setImage(product.getImage());
+            productRepository.save(productEntity);
+            return new ResponseEntity<>("Product updated successfully", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
         }
     }
+
 
     @Override
     public Optional<ProductEntity> getProductById(long idProduct) {
