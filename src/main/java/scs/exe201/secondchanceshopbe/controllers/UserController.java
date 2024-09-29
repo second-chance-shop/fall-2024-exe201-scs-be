@@ -8,13 +8,17 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
+import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.UserService;
 import org.springframework.web.bind.annotation.*;
+
+import io.lettuce.core.RedisConnectionException;
 
 import java.util.List;
 
@@ -24,9 +28,14 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final OTPService otpService;
+    @Transactional(rollbackFor = {RedisConnectionException.class} )
     @PostMapping("/register")
     public ResponseEntity<ResponseObject> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
         UserResponse userResponse = userService.registerNewUser(userRegisterDTO);
+        otpService.generateOTPCode(userResponse.getEmail(),userRegisterDTO.getUsername());
+
+
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("GET_lIST_SUCCESS")
