@@ -53,7 +53,7 @@ public class UserEntity implements UserDetails {
     private String avatar;
 
     @Column(name = "status")
-    private String status;
+    private StatusEnum status;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
