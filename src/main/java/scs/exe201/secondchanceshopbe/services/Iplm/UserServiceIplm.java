@@ -8,12 +8,14 @@ import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 import scs.exe201.secondchanceshopbe.models.entities.RoleEntity;
+import scs.exe201.secondchanceshopbe.models.entities.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.ConflictException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.RoleRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
+import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.UserService;
 import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
@@ -27,50 +29,44 @@ public class UserServiceIplm implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final OTPService otpService;
     private PasswordEncoder passwordEncoder;
 
 
     @Override
     public UserResponse registerNewUser(UserRegisterDTO userRegisterDTO) {
 
-//        userRepository.findByUsername(userRegisterDTO.getUsername())
-//                .ifPresent(user -> { throw new ConflictException("Username already exists!"); });
-//
-//        userRepository.findByEmail(userRegisterDTO.getEmail())
-//                .ifPresent(user -> { throw new ConflictException("Email already exists!"); });
-//
-//        userRepository.findByPhoneNumber(userRegisterDTO.getPhoneNumber())
-//                .ifPresent(user -> { throw new ConflictException("Phone number already exists!"); });
+       Optional<UserEntity> userEntity = userRepository.findByEmail(userRegisterDTO.getEmail());
+       if (userEntity.isPresent()&& userEntity.get().getStatus().equals("VERIFY")) {
 
-            if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
-                throw new ConflictException("Username already exists!");
-            }
-            if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
-                throw new ConflictException("Email already exists!");
-            }
+           otpService.generateOTPCodeAgain(userRegisterDTO.getEmail());
+           throw new ActionFailedException("Email này đã được đăng kí nhưng với username"+ userEntity.get().getUsername()+ " chưa xác thực đã gửi otp để xác thưc vui lòng check email");
+       } else if (userEntity.isPresent()&& userEntity.get().getStatus().equals("ACTIVE")) {
+           throw new ConflictException("Email already exists!");
+       }
+
+        if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
+            throw new ConflictException("Username already exists!");
+        }
             if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
                 throw new ConflictException("Phone already exists!");
             }
-//        RoleEntity role = roleRepository.findRoleName("USER")
-//                .orElseThrow(() -> new NotFoundException("Can not get role for create"));
         RoleEntity role = roleRepository.getRoleCustomer();
             if(role == null) {
                 throw new NotFoundException("Role not found!");
             }
         String password = passwordEncoder.encode(userRegisterDTO.getPassword());
-        try {
             UserEntity userCreate = DTOToEntity.UserResponseToEntity(userRegisterDTO);
-            userCreate.setStatus("ACTIVE");
+            userCreate.setStatus(StatusEnum.VERIFY);
             userCreate.setRoleEntity(role);
             userCreate.setPassword(password);
             userRepository.save(userCreate);
             UserResponse userResponse = EntityToDTO.UserEntityToDTO(userCreate);
             return userResponse;
-        } catch (Exception e) {
-            throw new ActionFailedException(String.format("Failed register user with reason: %s", e.getMessage()));
-        }
 
     }
+
+
     @Override
     public List<UserResponse> getListUser() {
         List<UserEntity> userEntities = userRepository.findAll();
@@ -119,5 +115,14 @@ public class UserServiceIplm implements UserService {
     @Override
     public UserResponse getUsers(String search, Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public void ActiveUser(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
+                () -> new NotFoundException("User not found!")
+        );
+        userEntity.setStatus("ACTIVE");
+        userRepository.save(userEntity);
     }
 }

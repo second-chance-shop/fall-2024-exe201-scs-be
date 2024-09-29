@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "second-chance-shop-2367b",
+  "private_key_id": "ef768a1346ec08693ab16520f2fd59fb94af3794",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCoeWAcKi3iqFFC\nCeZx3Y9gY0+eqlRC+wfC4zlKbaDanQb6f6kf3oJlbCDij8dkGbnsXybzVmXIGpRO\nZCL+sIz5yrs2qIECkErCros+bZ77WpbdUUghBXiocV7tB2dr/mUQZXZTEKk5/k5d\nrrcVh9eiMCEnk6GTuErUeN1TT8rDVKaQAfheJeE97b8vYxYl6erUcMhfD656qAoS\n52EBB8w7C9no1xb5eQl9vWLSoAaOkx0KUSJr1Y8AAEJwX4jyTB020hHgbCCo0B1l\niAMPtXWiuuBKlCSy+GDbfZYEGTIcLp7iQ8ruu18COQ3cgGJLkSplnGGn4XA7SuUR\nfLrR218XAgMBAAECggEADaUm/6D67myriCm9HGPRhQEGJdet0275hfNZZInUiWBG\nfGtyiz4+WXCUiUUT5SugP2DFitfojnh4opDBtNcf0+tzlk23hTmilHoGlRvT0I/Z\nwDshGGuVBi+IfLIo0jpcfSN6neevjR7nwfawpXHHKT+0r7vpTkmS5fqUEndX+NH0\nnB8oNRrn+JUTKntq3r8QrcWWJlZw1u7FT5mVgEfD0xOcunrhQz/btVWsoU13gd96\nRnfU5tXc13XmoRoXkvTonZ7gA8DyZEFRh8W8587brJka8TJFpYrjmCUHvyLA2Obv\nNud4zPexFGc1+Dn7lTbo7e460jDMS9Q5HtJdMKm5gQKBgQDg7IA0mNSEm0TBAUfA\nG8JWQg/wUT59QyX983pZD+LSRdw6O4/D9Vxk+50blrGd1bASVASztKmMqvux6u3H\nY57tqVM9loOiBD0fOBIvpQcPDmg3fxJmEbk6/UIw48O365QQi9ZZmU7qiUWdZWA4\nJ3L6ufLJ+CrXsnc7l8MOc7qD8QKBgQC/wEM+c/MqsdmetTdvyT3LIHLJ+YhPPtuM\nfZ9UPzbpnaERZYhZePcS/ellL3vHFxQ6diYSkNdVm6+Unt/g873MFCz0L6AML3zq\nD8lTcEmHyYe7yFyRTbAkXxHsWkf5Vp5ooVeoSyzjAksaEOHcoJ8k06L/Qx6mlk5P\nn15sXct7hwKBgHGk7S4mHhKWRQnjtLYLEIj2vgjlc9ZkjBig4auITEmEBL7jg0M2\ngKWBQCNFY57k7h6Elw+Zc6VgauW9VsDMw+s/B5DxsLa2v487jGzITCW+WMfZi5lI\n0TdN6Ri8rBIMlHY7wWTqAiacjzD0nMYioISwWUzU+Aid4oKYrnRp4s5xAoGBAKbv\n25sjlzA0ZiGl4v2PVhzhww3UELftIXbOZ0gRQN1iPjfHDU3X4kLGi8tr63cIwLOk\n6MCBGPeO8u2Q45gUm8hwSDLOw6fYMAgWdlAOEfYFngX+CZj26cLAgfojH0YUAxVU\nYdxClnGMLZYj3H8X13VYSy+wX57ofIUVWj896UlBAoGBAN10vhNw9d7EjcBQQysH\nTWiClUnKwA7ntiBIzwx/Rp41XsYq5D7n3TOFMtKAAeaS7JC62n3LWTi9d1wPPv/3\nPflyn0eWjgel1Rahrd8Y9/C4XyY3A21kLiMmA/Po0jp/pWEh42O0jZP8IZDQ4TWg\nOcR43waTn+zilvfvYwny0qPw\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-1jkp7@second-chance-shop-2367b.iam.gserviceaccount.com",
+  "client_id": "100282227596411912813",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jkp7%40second-chance-shop-2367b.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

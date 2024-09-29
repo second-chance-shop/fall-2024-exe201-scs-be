@@ -19,4 +19,6 @@ public interface UserService {
     UserResponse userDelete(long id);
 
     UserResponse getUsers(String search, Pageable pageable);
+
+    void ActiveUser(String email);
 }
