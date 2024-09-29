@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopResponse {
-    private int shopId;
+    private long shopId;
     private String shopName;
     private String description;
     private String shopEmail;
