@@ -22,7 +22,8 @@ public class ExceptionController {
             NotFoundException.class,
             ConflictException.class,
             ActionFailedException.class,
-            UsernameNotFoundException.class})
+            UsernameNotFoundException.class,
+            ValidationFailedException.class})
     public ResponseEntity<ResponseObject> handleSecondChanceShopException(SecondChanceShopException exception) {
         return ResponseEntity.status(exception.getErrorResponse().status())
                 .body(exception.getErrorResponse());

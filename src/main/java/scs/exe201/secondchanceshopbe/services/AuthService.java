@@ -11,7 +11,4 @@ import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 public interface AuthService {
     JwtResponse authenticateUser(LoginDTO loginDto);
 
-    UserResponse regiterWithOTO(UserRegisterDTO registerDTO);
-
-    String verifyOTO(OTPRequest otpRequest);
 }
