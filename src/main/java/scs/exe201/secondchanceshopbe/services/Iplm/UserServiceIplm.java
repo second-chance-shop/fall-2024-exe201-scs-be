@@ -102,7 +102,7 @@ public class UserServiceIplm implements UserService {
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Cannot find user with ID: %s", id)
                 ));
-        userEntity.setStatus("DELETED");
+        userEntity.setStatus(StatusEnum.DELETED);
         try {
             var item = userRepository.save(userEntity);
             UserResponse userResponse = EntityToDTO.UserEntityToDTO(item);
@@ -122,7 +122,7 @@ public class UserServiceIplm implements UserService {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException("User not found!")
         );
-        userEntity.setStatus("ACTIVE");
+        userEntity.setStatus(StatusEnum.ACTIVE);
         userRepository.save(userEntity);
     }
 }

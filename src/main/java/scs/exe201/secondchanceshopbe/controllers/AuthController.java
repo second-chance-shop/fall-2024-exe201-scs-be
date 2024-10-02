@@ -21,8 +21,6 @@ import scs.exe201.secondchanceshopbe.services.AuthService;
 public class AuthController {
     private final AuthService authService;
 
-
-   
     @PostMapping("/login")
     public ResponseEntity<ResponseObject> login(@RequestBody LoginDTO loginDto) {
         JwtResponse jwtResponse = authService.authenticateUser(loginDto);

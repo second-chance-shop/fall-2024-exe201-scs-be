@@ -54,47 +54,8 @@ public class AuthServiceIplm implements AuthService {
         }
 
     }
-    @Override
-    public UserResponse regiterWithOTO(UserRegisterDTO userRegisterDTO) {
-        if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
-            throw new ConflictException("Username already exists!");
-        }
-        if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
-            throw new ConflictException("Email already exists!");
-        }
-        if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
-            throw new ConflictException("Phone already exists!");
-        }
 
 
-
-        RoleEntity role = roleRepository.getRoleCustomer();
-        if(role == null) {
-            throw new NotFoundException("Role not found!");
-        }
-        String password = passwordEncoder.encode(userRegisterDTO.getPassword());
-        try {
-            UserEntity userCreate = DTOToEntity.UserResponseToEntity(userRegisterDTO);
-            userCreate.setStatus("ACTIVE");
-            userCreate.setRoleEntity(role);
-            userCreate.setPassword(password);
-
-
-
-
-            userRepository.save(userCreate);
-            UserResponse userResponse = EntityToDTO.UserEntityToDTO(userCreate);
-
-            return userResponse;
-        } catch (Exception e) {
-            throw new ActionFailedException(String.format("Failed register user with reason: %s", e.getMessage()));
-        }
-    }
-
-    @Override
-    public String verifyOTO(OTPRequest otpRequest) {
-        return "";
-    }
-
+  
 
 }

@@ -35,7 +35,6 @@ public class UserController {
         UserResponse userResponse = userService.registerNewUser(userRegisterDTO);
         otpService.generateOTPCode(userResponse.getEmail(),userRegisterDTO.getUsername());
 
-
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("GET_lIST_SUCCESS")
