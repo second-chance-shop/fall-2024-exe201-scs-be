@@ -52,6 +52,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "avatar")
     private String avatar;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusEnum status;
 

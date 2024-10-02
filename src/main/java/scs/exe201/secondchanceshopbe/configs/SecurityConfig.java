@@ -61,6 +61,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/list-user").hasAnyAuthority("ADMIN")
                         .requestMatchers("/api/v1/auth/user/info").authenticated() // Endpoint này yêu cầu xác thực
 
+                        //product
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/product/**").permitAll()
+                        
+
                         .anyRequest().authenticated() // Các yêu cầu khác đều cần xác thực
                 )
                 .sessionManagement(session -> session
