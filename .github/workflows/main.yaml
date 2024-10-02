@@ -7,6 +7,8 @@ jobs:
   build-application:
     name: Build Image
     runs-on: ubuntu-latest
+    env:
+      DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
