@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
+@Entity
 @RequiredArgsConstructor
 @Table(name="shipping")
 public class ShippingEntity {
