@@ -4,6 +4,7 @@ services:
     image: ${DOCKER_USER}/secondchanceshop_app:latest
     ports:
       - '8080:8080'
+    restart: always
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://${DB_HOST}:5432/SCSDB
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
