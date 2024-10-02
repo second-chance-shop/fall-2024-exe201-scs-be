@@ -1,31 +1,6 @@
-version: "3.8"
 services:
-  pg-database:
-    image: postgres:latest
-    container_name: pg_database
-    restart: always
-    environment:
-      POSTGRES_DB: SCSDB
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456
-    networks:
-      - secondchanceshop-network
-
-  pgadmin4:
-    image: elestio/pgadmin:latest
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: tohka@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: 12345
-      PGADMIN_LISTEN_PORT: 5051
-    ports:
-      - 5051:5050
-    networks:
-      - secondchanceshop-network
-
   secondchanceshop:
-    container_name: secondchanceshop_app
-    image: hieunmse160501/secondchanceshop_app
+    image: ${DOCKER_USER}/secondchanceshop_app
     build:
       context: .
       dockerfile: Dockerfile
@@ -38,15 +13,5 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     networks:
       - secondchanceshop-network
-
-  redis:
-    image: redis:latest
-    restart: always
-    container_name: redis_container
-    ports:
-      - 6379:6379
-    networks:
-      - secondchanceshop-network
-
 networks:
   secondchanceshop-network:
