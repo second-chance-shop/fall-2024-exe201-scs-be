@@ -19,7 +19,7 @@ public class EntityToDTO {
         userResponse.setEmail(userEntity.getEmail());
         userResponse.setName(userEntity.getName());
         userResponse.setAvatar(userEntity.getAvatar());
-        userResponse.setStatus(userEntity.getStatus());
+        userResponse.setStatus(userEntity.getStatus().toString());
         return userResponse;
     }
     public static CommentResponse commentToEntityDTO(CommentEntity commentEntity)  {
