@@ -9,6 +9,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://${DB_HOST}:5432/SCSDB
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_HOST=scs-redis
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     labels:
       - io.portainer.accesscontrol.restricted
