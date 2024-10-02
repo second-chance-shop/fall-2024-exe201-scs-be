@@ -10,6 +10,7 @@ services:
       POSTGRES_PASSWORD: 123456
     networks:
       - secondchanceshop-network
+
   pgadmin4:
     image: elestio/pgadmin:latest
     restart: always
@@ -21,6 +22,7 @@ services:
       - 5051:5050
     networks:
       - secondchanceshop-network
+
   secondchanceshop:
     container_name: secondchanceshop_app
     image: hieunmse160501/secondchanceshop_app
@@ -36,5 +38,15 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     networks:
       - secondchanceshop-network
+
+  redis:
+    image: redis:latest
+    restart: always
+    container_name: redis_container
+    ports:
+      - 6379:6379
+    networks:
+      - secondchanceshop-network
+
 networks:
   secondchanceshop-network:
