@@ -62,7 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/user/info").authenticated() // Endpoint này yêu cầu xác thực
 
                         //product
-                        .requestMatchers(HttpMethod.DELETE,"/api/v1/product/**").permitAll()
+
                         
 
                         .anyRequest().authenticated() // Các yêu cầu khác đều cần xác thực
@@ -72,8 +72,8 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint) // Xử lý lỗi xác thực
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(cors ->cors.disable()); // Thêm bộ lọc JWT
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+               // .cors(cors ->cors.disable()); // Thêm bộ lọc JWT
 
         return httpSecurity.build();
     }
