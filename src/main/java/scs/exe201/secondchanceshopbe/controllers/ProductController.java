@@ -9,7 +9,6 @@ import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ProductResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
-import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
 import scs.exe201.secondchanceshopbe.services.ProductService;
 
 @RequestMapping("/api/v1/product")
@@ -21,7 +20,6 @@ public class ProductController {
     @GetMapping("/getAllProduct")
     public ResponseEntity<ResponseObject> getProducts(@RequestParam(defaultValue = "1") int page,
                                                       @RequestParam(defaultValue = "10") int size) {
-
         Page<ProductResponse> products = productService.getAllProducts(page, size);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
@@ -36,7 +34,6 @@ public class ProductController {
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<ResponseObject> getProduct(@PathVariable long idProduct) {
-
         ProductResponse product = productService.getProductById(idProduct);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
@@ -81,7 +78,6 @@ public class ProductController {
 
     @PutMapping("/updateProduct/{id}")
     public ResponseEntity<ResponseObject> updateProduct(@PathVariable long id, @RequestBody ProductUpdateDTO product) {
-
         ProductResponse response = productService.updateProduct(id, product);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
