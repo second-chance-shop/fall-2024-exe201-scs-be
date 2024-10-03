@@ -73,8 +73,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint) // Xử lý lỗi xác thực
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-               // .cors(cors ->cors.disable()); // Thêm bộ lọc JWT
-
+    //            .cors(cors ->cors.disable()); // Thêm bộ lọc JWT
         return httpSecurity.build();
     }
 

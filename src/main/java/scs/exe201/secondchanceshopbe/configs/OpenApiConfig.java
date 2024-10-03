@@ -58,7 +58,8 @@ public class OpenApiConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         //  Cấu  hình cho phép cross-origin
-        config.setAllowCredentials(true);  //  Cho phép cookie
+        config.setAllowCredentials(true);  
+        config.addAllowedOrigin("http://localhost:3000");//  Cho phép cookie
         config.setAllowedOriginPatterns(List.of("*"));  // Hoặc chỉ định  danh sách  domain cụ thể
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
