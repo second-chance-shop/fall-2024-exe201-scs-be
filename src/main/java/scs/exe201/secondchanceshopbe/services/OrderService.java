@@ -1,12 +1,12 @@
 package scs.exe201.secondchanceshopbe.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
-import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
-
-import java.util.List;
 
 @Service
 public interface OrderService {

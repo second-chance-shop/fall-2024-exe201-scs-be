@@ -1,14 +1,14 @@
 package scs.exe201.secondchanceshopbe.repositories;
 
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import org.springframework.data.jpa.repository.Query;
-import java.util.Optional;
+
+import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUsername(String username);

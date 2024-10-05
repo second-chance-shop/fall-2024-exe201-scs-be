@@ -1,15 +1,23 @@
 package scs.exe201.secondchanceshopbe.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import scs.exe201.secondchanceshopbe.models.dtos.requests.RatingCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateRatingDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.RatingService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/rating")

@@ -1,16 +1,14 @@
 package scs.exe201.secondchanceshopbe.controllers;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.google.firebase.remoteconfig.internal.TemplateResponse.UserResponse;
 
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.SendMailService;
