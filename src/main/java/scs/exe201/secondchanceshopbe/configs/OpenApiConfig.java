@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -42,27 +42,17 @@ public class OpenApiConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")));
     }
-//        @Bean
-//        CorsConfigurationSource corsConfigurationSource() {
-//            CorsConfiguration configuration = new CorsConfiguration();
-//            configuration.setAllowedOrigins(Arrays.asList("*"));
-//            configuration.setAllowedMethods(Arrays.asList("*"));
-//            configuration.setAllowedHeaders(Arrays.asList("*"));
-//            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//            source.registerCorsConfiguration("/**", configuration);
-//            return source;
-//        }
-@Bean
-public CorsFilter corsFilter()  {
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); 
-    CorsConfiguration config = new CorsConfiguration(); 
+// @Bean
+// public CorsFilter corsFilter()  {
+//     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); 
+//     CorsConfiguration config = new CorsConfiguration(); 
 
-    // Cấu hình cho phép tất cả origin (KHÔNG KHUYẾN NGHỊ cho production)
-    config.addAllowedOrigin("*");  // Cho phép tất cả origins 
-    config.addAllowedHeader("*");  // Cho phép tất cả headers
-    config.addAllowedMethod("*"); // Cho phép tất cả phương thức 
+//     // Cấu hình cho phép tất cả origin (KHÔNG KHUYẾN NGHỊ cho production)
+//     config.addAllowedOrigin("*");  // Cho phép tất cả origins 
+//     config.addAllowedHeader("*");  // Cho phép tất cả headers
+//     config.addAllowedMethod("*"); // Cho phép tất cả phương thức 
 
-    source.registerCorsConfiguration("/**", config); 
-    return  new CorsFilter(source); 
-}
+//     source.registerCorsConfiguration("/**", config); 
+//     return  new CorsFilter(source); 
+// }
 }
