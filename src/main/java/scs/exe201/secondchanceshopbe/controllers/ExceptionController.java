@@ -9,10 +9,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
-import scs.exe201.secondchanceshopbe.models.exception.*;
 
-import java.nio.file.AccessDeniedException;
+import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
+import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
+import scs.exe201.secondchanceshopbe.models.exception.AuthFailedException;
+import scs.exe201.secondchanceshopbe.models.exception.ConflictException;
+import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
+import scs.exe201.secondchanceshopbe.models.exception.SecondChanceShopException;
+import scs.exe201.secondchanceshopbe.models.exception.ValidationFailedException;
 
 @RestControllerAdvice
 public class ExceptionController {

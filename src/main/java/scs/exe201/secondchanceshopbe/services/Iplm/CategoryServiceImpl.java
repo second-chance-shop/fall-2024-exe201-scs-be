@@ -1,34 +1,30 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
 
 
-import jdk.jfr.Category;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.CategoryCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.CategoryResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
 import scs.exe201.secondchanceshopbe.repositories.CategoryRepository;
 import scs.exe201.secondchanceshopbe.services.CategoryService;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     public CategoryResponse createCategory(CategoryCreateDTO categoryRequest) {

@@ -1,11 +1,17 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ShopRequestDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ShopResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
@@ -16,13 +22,9 @@ import scs.exe201.secondchanceshopbe.repositories.ShopRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.ShopService;
 
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ShopServiceImpl implements ShopService {
 
 
@@ -33,12 +35,6 @@ public class ShopServiceImpl implements ShopService {
 
 
     private final CategoryRepository categoryRepository;
-
-    public ShopServiceImpl(ShopRepository shopRepository, UserRepository userRepository, CategoryRepository categoryRepository) {
-        this.shopRepository = shopRepository;
-        this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     public ShopResponse createShop(ShopRequestDTO shopRequest) {
