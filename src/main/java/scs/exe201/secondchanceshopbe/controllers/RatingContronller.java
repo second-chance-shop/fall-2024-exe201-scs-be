@@ -73,4 +73,17 @@ public class RatingContronller {
                         .build()
         );
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseObject> deleteRating(@RequestParam long id){
+        RatingResponse ratingResponse = ratingService.deleterating(id);
+        return ResponseEntity.ok().body(
+            ResponseObject.builder()
+            .code("DELETE_SUCCESS")
+            .message("delete rating success")
+            .status(HttpStatus.OK)
+            .isSuccess(true)
+            .data(ratingResponse)
+            .build()
+        );
+    }
 }

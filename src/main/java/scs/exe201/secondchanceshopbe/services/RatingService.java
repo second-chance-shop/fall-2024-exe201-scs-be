@@ -16,4 +16,6 @@ public interface RatingService {
     RatingResponse updateRating(UpdateRatingDTO updateDTO);
 
     List<RatingResponse> getAllByProductId(long id);
+
+    RatingResponse deleterating(long id);
 }
