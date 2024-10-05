@@ -1,12 +1,8 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import ch.qos.logback.core.joran.spi.ActionException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import scs.exe201.secondchanceshopbe.services.SendMailService;
 
 @Service

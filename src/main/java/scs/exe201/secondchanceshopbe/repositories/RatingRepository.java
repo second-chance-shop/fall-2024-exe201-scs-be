@@ -1,14 +1,12 @@
 package scs.exe201.secondchanceshopbe.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateRatingDTO;
-import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
-import scs.exe201.secondchanceshopbe.models.entities.CommentEntity;
-import scs.exe201.secondchanceshopbe.models.entities.RatingEntity;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import scs.exe201.secondchanceshopbe.models.entities.RatingEntity;
 
 public interface RatingRepository extends JpaRepository<RatingEntity,Long> {
 
