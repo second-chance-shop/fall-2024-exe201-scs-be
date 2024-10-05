@@ -78,4 +78,10 @@ public class RatingServiceIplm implements RatingService {
         var ratingResponses = entities.stream().map(EntityToDTO::ratingoEntityDTOT).toList();
         return ratingResponses;
     }
+
+    @Override
+    public RatingResponse deleterating(long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleterating'");
+    }
 }
