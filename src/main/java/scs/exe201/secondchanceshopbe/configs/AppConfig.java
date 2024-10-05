@@ -4,6 +4,10 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
+import lombok.RequiredArgsConstructor;
+import scs.exe201.secondchanceshopbe.security.CustomUserDetailsService;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,21 +17,47 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 @Configuration
+@RequiredArgsConstructor
 public class AppConfig {
+    private final CustomUserDetailsService customUserDetailsService;
+
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+    RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
+
     @Bean
-    public JavaMailSender getJavaMailSender() {
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(customUserDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
+    }
+    @Bean
+    JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
@@ -45,7 +75,7 @@ public class AppConfig {
         return mailSender;
     }
     @Bean
-    public FirebaseApp firebaseApp() throws IOException {
+    FirebaseApp firebaseApp() throws IOException {
         Resource resource = new ClassPathResource("second-chance-firebase.json");
 
         //  Mở  InputStream  để  đọc  file
@@ -58,7 +88,7 @@ public class AppConfig {
         }
     }
     @Bean
-    public FirebaseAuth firebaseAuth() throws IOException {
+    FirebaseAuth firebaseAuth() throws IOException {
         return FirebaseAuth.getInstance(firebaseApp());
     }
     @Bean

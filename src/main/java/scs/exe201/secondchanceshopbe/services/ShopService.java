@@ -1,12 +1,11 @@
 package scs.exe201.secondchanceshopbe.services;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
+
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ShopRequestDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ShopResponse;
-
-
-import java.util.List;
-import java.util.Optional;
 
 public interface ShopService {
 

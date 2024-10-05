@@ -1,26 +1,25 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.NotificationCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.NotificationUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.NotificationResponse;
 import scs.exe201.secondchanceshopbe.models.entities.NotificationEntity;
-import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.NotificationRepository;
 import scs.exe201.secondchanceshopbe.services.NotificationService;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class NotificationServiceIplm implements NotificationService {
 
     private final NotificationRepository notificationRepository;
-    public NotificationServiceIplm(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
-    }
     @Override
     public List<NotificationResponse> getAllNotification() {
         List<NotificationEntity> notificationEntities = notificationRepository.findAll();

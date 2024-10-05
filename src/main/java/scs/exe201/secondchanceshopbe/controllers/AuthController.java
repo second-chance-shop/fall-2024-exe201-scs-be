@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.LoginDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.JwtResponse;

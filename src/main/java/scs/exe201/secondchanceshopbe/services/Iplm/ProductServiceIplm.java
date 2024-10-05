@@ -1,4 +1,9 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -6,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ProductResponse;
@@ -17,12 +23,6 @@ import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.ProductService;
 import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.HashSet;
 
 @Service
 @Transactional
