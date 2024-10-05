@@ -52,18 +52,17 @@ public class OpenApiConfig {
 //            source.registerCorsConfiguration("/**", configuration);
 //            return source;
 //        }
-    @Bean
-    public CorsFilter corsFilter()  {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
+@Bean
+public CorsFilter corsFilter()  {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); 
+    CorsConfiguration config = new CorsConfiguration(); 
 
-        //  Cấu  hình cho phép cross-origin
-    
-        config.setAllowCredentials(true); 
-        config.setAllowedOriginPatterns(List.of("https://scs-api.arisavinh.dev"));  // Hoặc chỉ định  danh sách  domain cụ thể
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**",  config);
-        return  new  CorsFilter(source);
-    }
+    // Cấu hình cho phép tất cả origin (KHÔNG KHUYẾN NGHỊ cho production)
+    config.addAllowedOrigin("*");  // Cho phép tất cả origins 
+    config.addAllowedHeader("*");  // Cho phép tất cả headers
+    config.addAllowedMethod("*"); // Cho phép tất cả phương thức 
+
+    source.registerCorsConfiguration("/**", config); 
+    return  new CorsFilter(source); 
+}
 }
