@@ -1,5 +1,7 @@
 package scs.exe201.secondchanceshopbe.controllers;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,7 @@ import scs.exe201.secondchanceshopbe.services.CategoryService;
 
 @RequestMapping("/api/v1/category")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
 

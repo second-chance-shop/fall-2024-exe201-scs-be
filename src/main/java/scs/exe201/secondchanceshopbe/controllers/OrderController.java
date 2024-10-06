@@ -31,7 +31,7 @@ public class OrderController {
         List <OrderResponse> orderResponse = orderService.getAll();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
+                        .code("GET_SUCCESS")
                         .message("get all success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
@@ -44,8 +44,8 @@ public class OrderController {
         List <OrderResponse> orderResponse = orderService.getAllByUserId(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .code("GET_SUCCESS")
+                        .message("get  success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
@@ -58,7 +58,7 @@ public class OrderController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .message("create success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
@@ -70,8 +70,8 @@ public class OrderController {
         OrderResponse orderResponse = orderService.updateOrder(id,updateDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .code("UPDATE_SUCCESS")
+                        .message("update success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
@@ -83,8 +83,8 @@ public class OrderController {
         OrderResponse orderResponse = orderService.deleteOrder(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .code("DELETE_SUCCESS")
+                        .message("delete success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
