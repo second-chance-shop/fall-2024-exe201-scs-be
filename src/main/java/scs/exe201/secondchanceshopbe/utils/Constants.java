@@ -16,4 +16,9 @@ public class Constants {
     public static final String STATUS = "STATUS";
     public static final String MESSAGE = "MESSAGE";
 
+    public static final String DELETE_SUCCESS = "DELETE_SUCCESS";
+    public static final String CREATE_SUCCESS = "CREATE_SUCCESS";
+    public static final String UPDATE_SUCCESS = "UPDATE_SUCCESS";
+    public static final String GET_SUCCESS = "GET_SUCCESS";
+
 }
