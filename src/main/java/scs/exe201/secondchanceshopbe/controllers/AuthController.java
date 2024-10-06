@@ -15,7 +15,6 @@ import scs.exe201.secondchanceshopbe.services.AuthService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;

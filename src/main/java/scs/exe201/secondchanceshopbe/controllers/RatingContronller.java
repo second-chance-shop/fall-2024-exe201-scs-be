@@ -64,7 +64,7 @@ public class RatingContronller {
                         .message("get all success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
-                        .data(null)
+                        .data(ratingResponse)
                         .build()
         );
     }
@@ -77,7 +77,7 @@ public class RatingContronller {
                         .message("get all success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
-                        .data(null)
+                        .data(ratingResponse)
                         .build()
         );
     }
