@@ -21,4 +21,6 @@ public interface UserService {
     UserResponse getUsers(String search, Pageable pageable);
 
     void ActiveUser(String email);
+
+    UserResponse getUserById(long id);
 }

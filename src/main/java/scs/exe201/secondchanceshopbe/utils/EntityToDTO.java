@@ -1,5 +1,8 @@
 package scs.exe201.secondchanceshopbe.utils;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import scs.exe201.secondchanceshopbe.models.dtos.response.*;
 import scs.exe201.secondchanceshopbe.models.entities.*;
 
@@ -59,5 +62,25 @@ public class EntityToDTO {
         orderResponse.setProductId(orderEntity.getProductOrder().getProductId());
         orderResponse.setUserId(orderEntity.getUserOrder().getUserId());
         return orderResponse;
+    }
+    public static ProductResponse productEntityToDTO(ProductEntity productEntity){
+        return ProductResponse.builder()
+        .createByUsername(productEntity.getCreateBy().getUsername())
+        .categoryNames(productEntity.getCategories().stream()
+                        .map(category -> category.getCategoryName()) // Assuming CategoryEntity has getCategoryName()
+                        .collect(Collectors.toSet()))
+        .dateCreate(productEntity.getDateCreate())
+        .prices(productEntity.getPrices())
+        .quantity(productEntity.getQuantity())
+        .status(productEntity.getStatus())
+        .description(productEntity.getDescription())
+        .image(productEntity.getImage())
+        .productId(productEntity.getProductId())
+        .productName(productEntity.getProductName())
+        .build();
+    }
+    public static CategoryResponse categoryEntityToDTO(CategoryEntity categoryEntity){
+        return CategoryResponse.builder()   
+        .build();
     }
 }

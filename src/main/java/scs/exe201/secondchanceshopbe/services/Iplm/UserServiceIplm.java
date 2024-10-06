@@ -125,4 +125,14 @@ public class UserServiceIplm implements UserService {
         userEntity.setStatus(StatusEnum.ACTIVE);
         userRepository.save(userEntity);
     }
+
+
+    @Override
+    public UserResponse getUserById(long id) {
+        UserEntity uEntity = userRepository.findById(id).orElseThrow(
+            ()-> new NotFoundException("user not found")
+        );
+        UserResponse userResponse = EntityToDTO.UserEntityToDTO(uEntity);
+        return userResponse;
+    }
 }
