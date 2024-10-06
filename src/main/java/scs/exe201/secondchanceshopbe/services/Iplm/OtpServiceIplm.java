@@ -41,7 +41,7 @@ public class OtpServiceIplm implements OTPService {
         UserEntity check = userRepository.findByEmail(email).orElseThrow(
             ()->  new NotFoundException(email +" này chưa được đăng kí")
         );
-        if(!check.getStatus().equals("VETIFY")){
+        if(!check.getStatus().equals("ACTIVE")){
             throw new ActionFailedException(email + "đã đăng kí rồi");
         }
         var value = generateRandomOTP();

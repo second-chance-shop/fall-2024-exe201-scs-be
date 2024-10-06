@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 public interface RatingService {
     List<RatingResponse> getAll();
-
     RatingResponse craterating(RatingCreateDTO createDTO);
     RatingResponse updateRating(UpdateRatingDTO updateDTO);
 

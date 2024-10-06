@@ -66,6 +66,20 @@ public class UserController {
                         .build()
         );
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getUserId(@RequestParam long id) {
+        UserResponse userResponse = userService.getUserById(id);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("GET_SUCCESS")
+                        .message("Get user successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(userResponse)
+                        .build()
+        );
+    }
+
     @PatchMapping ("/update-user")
     public ResponseEntity<ResponseObject> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
         UserResponse userResponse = userService.userUpdate(updateUserDTO );
