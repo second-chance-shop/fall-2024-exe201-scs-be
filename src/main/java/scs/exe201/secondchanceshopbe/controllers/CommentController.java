@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.CommentCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.CommentUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.CommentResponse;
@@ -23,17 +24,17 @@ import scs.exe201.secondchanceshopbe.services.CommentService;
 
 @RequestMapping("/api/v1/comment")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
 
 
-    @GetMapping("/get-all")
+    @GetMapping
     public ResponseEntity<ResponseObject> getAllComment() {
         List<CommentResponse> commentResponses = commentService.getAll();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_ALL_SUCCESS")
+                        .code("GET_SUCCESS")
                         .message("get all success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
@@ -62,7 +63,7 @@ public class CommentController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .message("create success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponses)
@@ -76,7 +77,7 @@ public class CommentController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("DELETE_SUCCESS")
-                        .message("get all success")
+                        .message("delete success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponse)
@@ -90,7 +91,7 @@ public class CommentController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("UPDATE_SUCCESS")
-                        .message("get all success")
+                        .message("update success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponse)
