@@ -2,6 +2,7 @@ package scs.exe201.secondchanceshopbe.services.Iplm;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
@@ -11,6 +12,7 @@ import scs.exe201.secondchanceshopbe.models.entities.RoleEntity;
 import scs.exe201.secondchanceshopbe.models.entities.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
+import scs.exe201.secondchanceshopbe.models.exception.AuthFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.ConflictException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.RoleRepository;
@@ -134,5 +136,19 @@ public class UserServiceIplm implements UserService {
         );
         UserResponse userResponse = EntityToDTO.UserEntityToDTO(uEntity);
         return userResponse;
+    }
+
+
+    @Override
+    public UserResponse getUserProfile() {
+        try{
+            var auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth == null) throw new AuthFailedException("This user is't authentication, please login again");
+            String username = auth.getName();
+           UserEntity userEntity= userRepository.findByUsername(username).orElseThrow();
+           return EntityToDTO.UserEntityToDTO(userEntity);
+        }catch(Exception e){
+            throw new AuthFailedException("This user is't authentication, please login again");
+        }
     }
 }

@@ -127,4 +127,18 @@ public class UserController {
                         .build()
         );
     }
+    @GetMapping("/profile")
+    public ResponseEntity<ResponseObject> getUserProfile() {
+        UserResponse userResponse = userService.getUserProfile();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("GET_SUCCESS")
+                        .message("Get user successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(userResponse)
+                        .build()
+        );
+    }
+    
 }

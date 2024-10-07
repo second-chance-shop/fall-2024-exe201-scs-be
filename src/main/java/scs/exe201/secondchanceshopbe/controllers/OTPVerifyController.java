@@ -1,5 +1,6 @@
 package scs.exe201.secondchanceshopbe.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ public class OTPVerifyController {
         return ResponseEntity.ok(ResponseObject.builder()
                 .code("VERIFY_SUCCESS")
                 //.content(request)
+                .status(HttpStatus.OK)
                 .message("Verify OTP Success")
                 .isSuccess(true)
                 .build());
@@ -38,6 +40,7 @@ public class OTPVerifyController {
         return ResponseEntity.ok(ResponseObject.builder()
                 .code("VERIFY_SUCCESS")
                 //.content(request)
+                .status(HttpStatus.OK)
                 .message("Verify OTP Success")
                 .isSuccess(true)
                 .build());
