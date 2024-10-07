@@ -23,4 +23,6 @@ public interface UserService {
     void ActiveUser(String email);
 
     UserResponse getUserById(long id);
+
+    UserResponse getUserProfile();
 }

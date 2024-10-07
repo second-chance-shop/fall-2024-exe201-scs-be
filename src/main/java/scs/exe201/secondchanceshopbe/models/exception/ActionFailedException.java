@@ -15,7 +15,7 @@ public class ActionFailedException extends SecondChanceShopException{
                 .build();
     }
 
-    public ActionFailedException(String message, String code) {
+    public ActionFailedException(String code,String message) {
         super(message);
         this.errorResponse = ResponseObject.builder()
                 .code(code)
