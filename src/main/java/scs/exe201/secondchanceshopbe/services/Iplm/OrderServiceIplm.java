@@ -64,7 +64,7 @@ public class OrderServiceIplm implements OrderService {
     public OrderResponse createOrder(OrderCreateDTO createDTO) {
         OrderEntity orderEntity = new OrderEntity();
         UserEntity userEntity = userRepository.findById(createDTO.getUserId()).orElseThrow(
-                () -> new RuntimeException("User not found")
+                () -> new NotFoundException("User not found")
         );
         ProductEntity productEntity = productRepository.findById(createDTO.getProductId()).orElseThrow(
                 () -> new NotFoundException("Product not found")

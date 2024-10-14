@@ -19,6 +19,9 @@ public class CategoryEntity {
     @Column(name = "category_name", nullable = false, unique = true)
     private String categoryName;
 
+    @Column(name = "status")
+    private String status ;
+
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<ProductEntity> products;

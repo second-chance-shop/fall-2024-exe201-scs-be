@@ -23,7 +23,7 @@ public class OtpServiceIplm implements OTPService {
     private final SendMailService mailSenderService;
     private final UserRepository userRepository;
     // private final TemplateEngine templateEngine;
-    private Long timeOut = (long) 1.0;
+    private Long timeOut = (long) 5.0;
     String vetify = "VETIFY";
     private final RedisTemplate<String, Object> redisTemplate;
 
