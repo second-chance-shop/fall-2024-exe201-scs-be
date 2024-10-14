@@ -3,66 +3,73 @@ package scs.exe201.secondchanceshopbe.utils;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import scs.exe201.secondchanceshopbe.models.dtos.response.*;
 import scs.exe201.secondchanceshopbe.models.entities.*;
+import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
+import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 
-
+@RequiredArgsConstructor
 public class EntityToDTO {
 
     public static UserResponse UserEntityToDTO(UserEntity userEntity) {
-        UserResponse userResponse = new UserResponse();
+        return UserResponse.builder()
+                .userId(userEntity.getUserId())
+                .username(userEntity.getUsername())
+                .address(userEntity.getAddress())
+                .gender(userEntity.getGender())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .dob(userEntity.getDob())
+                .email(userEntity.getEmail())
+                .name(userEntity.getName())
+                .avatar(userEntity.getAvatar())
+                .status(userEntity.getStatus().toString())
+                .build();
+    }
 
-        // Map fields from UserEntity to UserResponse
-        userResponse.setUserId(userEntity.getUserId());
-        userResponse.setUsername(userEntity.getUsername());
-        userResponse.setAddress(userEntity.getAddress());
-        userResponse.setGender(userEntity.getGender());
-        userResponse.setPhoneNumber(userEntity.getPhoneNumber());
-        userResponse.setDob(userEntity.getDob());
-        userResponse.setEmail(userEntity.getEmail());
-        userResponse.setName(userEntity.getName());
-        userResponse.setAvatar(userEntity.getAvatar());
-        userResponse.setStatus(userEntity.getStatus().toString());
-        return userResponse;
+    public static CommentResponse commentToEntityDTO(CommentEntity commentEntity) {
+        return CommentResponse.builder()
+                .commentId(commentEntity.getCommentId())
+                .content(commentEntity.getContent())
+                .userId(commentEntity.getUserComment().getUserId())
+                .createdAt(commentEntity.getDateCreate())
+                .productId(commentEntity.getProduct().getProductId())
+                .build();
     }
-    public static CommentResponse commentToEntityDTO(CommentEntity commentEntity)  {
-        CommentResponse commentResponse = new CommentResponse();
-        commentResponse.setCommentId(commentEntity.getCommentId());
-        commentResponse.setContent(commentEntity.getContent());
-        commentResponse.setUserId(commentEntity.getUserComment().getUserId());
-        commentResponse.setCreatedAt(commentEntity.getDateCreate());
-        commentResponse.setProductId(commentEntity.getProduct().getProductId());
-        return commentResponse;
+
+    public static RatingResponse ratingoEntityDTOT(RatingEntity ratingEntity) {
+        return RatingResponse.builder()
+                .commentId(ratingEntity.getRatingId())
+                .start(ratingEntity.getStar())
+                .userId(ratingEntity.getUserRating().getUserId())
+                .createdAt(ratingEntity.getDateCreate())
+                .productId(ratingEntity.getProduct().getProductId())
+                .build();
     }
-    public static RatingResponse ratingoEntityDTOT(RatingEntity ratingEntity)  {
-        RatingResponse ratingResponse = new RatingResponse();
-        ratingResponse.setCommentId(ratingEntity.getRatingId());
-        ratingResponse.setStart(ratingEntity.getStar());
-        ratingResponse.setUserId(ratingEntity.getUserRating().getUserId());
-        ratingResponse.setCreatedAt(ratingEntity.getDateCreate());
-        ratingResponse.setProductId(ratingEntity.getProduct().getProductId());
-        return  ratingResponse;
+
+    public static NotificationResponse notificationEntityDTO(NotificationEntity notificationEntity) {
+        return NotificationResponse.builder()
+                .notificationId(notificationEntity.getNotificationId())
+                .content(notificationEntity.getContent())
+                .title(notificationEntity.getTitle())
+                .userId(notificationEntity.getCreateNotification().getUserId())
+                .dateCreate(notificationEntity.getDateCreate())
+                .build();
     }
-    public static NotificationResponse notificationEntityDTO(NotificationEntity notificationEntity)  {
-        NotificationResponse notificationResponse = new NotificationResponse();
-        notificationResponse.setNotificationId(notificationEntity.getNotificationId());
-        notificationResponse.setContent(notificationEntity.getContent());
-        notificationResponse.setTitle(notificationEntity.getTitle());
-        notificationResponse.setUserId(notificationEntity.getCreateNotification().getUserId());
-        notificationResponse.setDateCreate(notificationEntity.getDateCreate());
-        return notificationResponse;
+
+    public static OrderResponse orderEntityDTO(OrderEntity orderEntity) {
+        return OrderResponse.builder()
+                .orderId(orderEntity.getOrderId())
+                .orderDate(orderEntity.getOrderDate())
+                .status(orderEntity.getStatus())
+                .paymentId(orderEntity.getPaymentOrder().getPaymentId())
+                .quantity(orderEntity.getQuantity())
+                .productId(orderEntity.getProductOrder().getProductId())
+                .userId(orderEntity.getUserOrder().getUserId())
+                .build();
     }
-    public  static OrderResponse orderEntityDTO(OrderEntity orderEntity)  {
-        OrderResponse orderResponse = new OrderResponse();
-        orderResponse.setOrderId(orderEntity.getOrderId());
-        orderResponse.setOrderDate(orderEntity.getOrderDate());
-        orderResponse.setStatus(orderEntity.getStatus());
-        orderResponse.setPaymentId(orderEntity.getPaymentOrder().getPaymentId());
-        orderResponse.setQuantity(orderEntity.getQuantity());
-        orderResponse.setProductId(orderEntity.getProductOrder().getProductId());
-        orderResponse.setUserId(orderEntity.getUserOrder().getUserId());
-        return orderResponse;
-    }
+
     public static ProductResponse productEntityToDTO(ProductEntity productEntity){
         return ProductResponse.builder()
         .createByUsername(productEntity.getCreateBy().getUsername())
@@ -80,7 +87,31 @@ public class EntityToDTO {
         .build();
     }
     public static CategoryResponse categoryEntityToDTO(CategoryEntity categoryEntity){
-        return CategoryResponse.builder()   
+        return CategoryResponse.builder() 
         .build();
+    }
+
+    public static ShopResponse shopEntityTODTO(ShopEntity shopEntity){
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null){
+            throw new SecurityException("You are not logged in");
+        }
+        return ShopResponse.builder()
+                .shopId(shopEntity.getShopId())
+                .shopName(shopEntity.getShopName())
+                .description(shopEntity.getDescription())
+                .shopEmail(shopEntity.getShopEmail())
+                .shopPhonumber(shopEntity.getShopPhonumber())
+                .shopImage(shopEntity.getShopImage())
+                .backSideOfCCCD(shopEntity.getBackSideOfCCCD())
+                .frontSideOfCCCD(shopEntity.getFrontSideOfCCCD())
+                .cccdNumber(shopEntity.getCccdNumber())
+                .industry(shopEntity.getIndustry())
+                .dateCreate(shopEntity.getDateCreate())
+                .shippingAddress(shopEntity.getShippingAddress())
+                .shopAddress(shopEntity.getShopAddress())
+                .ownerName(auth.getName())
+                .categoryName(shopEntity.getTypeShop().getCategoryName())
+                .build();
     }
 }

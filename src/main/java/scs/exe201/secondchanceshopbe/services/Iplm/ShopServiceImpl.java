@@ -17,6 +17,7 @@ import scs.exe201.secondchanceshopbe.models.dtos.response.ShopResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
 import scs.exe201.secondchanceshopbe.models.entities.ShopEntity;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
+import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.CategoryRepository;
 import scs.exe201.secondchanceshopbe.repositories.ShopRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
@@ -39,10 +40,10 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ShopResponse createShop(ShopRequestDTO shopRequest) {
         UserEntity shopOwner = userRepository.findById(Long.valueOf(shopRequest.getUserId()))
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         CategoryEntity typeShop = categoryRepository.findById(Long.valueOf(shopRequest.getCategoryId()))
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new NotFoundException("Category not found"));
 
         ShopEntity shopEntity = new ShopEntity();
         shopEntity.setShopName(shopRequest.getShopName());
@@ -87,13 +88,13 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ShopResponse updateShop(Long shopId, ShopRequestDTO shopRequest) {
         ShopEntity shopEntity = shopRepository.findById(shopId)
-                .orElseThrow(() -> new RuntimeException("Shop not found"));
+                .orElseThrow(() -> new NotFoundException("Shop not found"));
 
         UserEntity shopOwner = userRepository.findById(shopRequest.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         CategoryEntity typeShop = categoryRepository.findById(shopRequest.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new NotFoundException("Category not found"));
 
         shopEntity.setShopName(shopRequest.getShopName());
         shopEntity.setDescription(shopRequest.getDescription());

@@ -145,10 +145,12 @@ public class UserServiceIplm implements UserService {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             if(auth == null) throw new AuthFailedException("This user is't authentication, please login again");
             String username = auth.getName();
-           UserEntity userEntity= userRepository.findByUsername(username).orElseThrow();
+           UserEntity userEntity= userRepository.findByUsername(username).orElseThrow(
+                   ()-> new NotFoundException("user not found")
+           );
            return EntityToDTO.UserEntityToDTO(userEntity);
         }catch(Exception e){
-            throw new AuthFailedException("This user is't authentication, please login again");
+            throw new AuthFailedException("This user isn't authentication, please login again");
         }
     }
 }

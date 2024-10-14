@@ -40,6 +40,24 @@ public class ProductController {
                         .build()
         );
     }
+    @GetMapping("/getv1")
+    public ResponseEntity <ResponseObject> getAllV1( @RequestParam(value = "search", required = false) String search,
+    @RequestParam(value = "sortField", defaultValue = "name") String sortField,
+    @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection,
+    @RequestParam(value = "page", defaultValue = "1") int page,
+    @RequestParam(value = "size", defaultValue = "10") int size) {
+        Page<ProductResponse> products = productService.getAllProductsv1(search, sortField, sortDirection, page, size);
+        return ResponseEntity.ok().body(
+            ResponseObject.builder()
+            .code("GET_SUCCESS")
+            .message("get success")
+            .status(HttpStatus.OK)
+            .isSuccess(true)
+            .data(products)
+            .build()
+        );
+    }
+    
 
     @GetMapping("/{idProduct}")
     public ResponseEntity<ResponseObject> getProduct(@PathVariable long idProduct) {
