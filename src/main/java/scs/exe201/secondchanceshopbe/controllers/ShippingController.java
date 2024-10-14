@@ -9,7 +9,5 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/shipping")
 @RequiredArgsConstructor
 public class ShippingController {
-   
-    
-    
+
 }

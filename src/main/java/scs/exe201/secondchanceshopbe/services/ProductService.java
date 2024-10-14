@@ -17,4 +17,5 @@ public interface ProductService {
 
     ProductResponse deleteProduct(long idProduct);
     ProductResponse getProductById(long idProduct);
+    Page<ProductResponse> getAllProductsv1(String search, String sortField, String sortDirection, int page, int size);
 }
