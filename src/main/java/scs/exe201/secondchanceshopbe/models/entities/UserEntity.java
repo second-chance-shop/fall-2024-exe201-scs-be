@@ -85,19 +85,12 @@ public class UserEntity implements UserDetails {
         authorities.add(new SimpleGrantedAuthority(roleEntity.getRoleName()));
         return authorities;
     }
-    //@Override
-//public Collection<? extends GrantedAuthority> getAuthorities() {
-//    return List.of();
-//}
+
 
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
 
     @Override
     public boolean isAccountNonLocked() {

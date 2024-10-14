@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.CategoryCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.CategoryResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
+import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.CategoryRepository;
 import scs.exe201.secondchanceshopbe.services.CategoryService;
 
@@ -30,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse createCategory(CategoryCreateDTO categoryRequest) {
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setCategoryName(categoryRequest.getCategoryName());
-
+        categoryEntity.setStatus("ACTIVE");
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
         return mapToResponse(savedCategory);
     }
@@ -57,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse updateCategory(Long categoryId, CategoryCreateDTO categoryRequest) {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new NotFoundException("Category not found"));
 
         categoryEntity.setCategoryName(categoryRequest.getCategoryName());
         CategoryEntity updatedCategory = categoryRepository.save(categoryEntity);
@@ -68,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
-            throw new RuntimeException("Category not found");
+            throw new NotFoundException("Category not found");
         }
         categoryRepository.deleteById(categoryId);
     }
