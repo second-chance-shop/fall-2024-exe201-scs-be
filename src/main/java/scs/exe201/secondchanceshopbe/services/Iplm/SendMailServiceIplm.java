@@ -1,6 +1,8 @@
 package scs.exe201.secondchanceshopbe.services.Iplm;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -63,6 +65,24 @@ public class SendMailServiceIplm implements SendMailService {
 
     @Override
     public void sendOtpEmail(String toEmail, String otp) {
+//        try {
+//            MimeMessage mimeMessage = mailSender.createMimeMessage();
+//            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+//
+//            helper.setFrom(fromEmail);
+//            String subject = "Verification Email";
+//            helper.setTo(toEmail);
+//            helper.setSubject(subject);
+//            String text = "Chào mừng " + toEmail + ",\n\n"
+//                    + "Vui lòng nhập otp sau để xác thực tài khoản của bạn:\n"
+//                    + "đây là otp của bạn:" + otp + "\n"
+//                    + "thank you:\n";
+//            helper.setText(text);
+//
+//            mailSender.send(mimeMessage);
+//        } catch (MessagingException e) {
+//            throw new RuntimeException("Error while sending email: " + e.getMessage());
+//        }
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -71,14 +91,19 @@ public class SendMailServiceIplm implements SendMailService {
             String subject = "Verification Email";
             helper.setTo(toEmail);
             helper.setSubject(subject);
-            String text = "Chào mừng " + toEmail + ",\n\n"
-                    + "Vui lòng nhập otp sau để xác thực tài khoản của bạn:\n"
-                    + "đây là otp của bạn:" + otp + "\n"
-                    + "thank you:\n";
-            helper.setText(text);
 
+            // Đường dẫn đến file SendOTPTemplate.html
+            String filePath = "src/main/resources/templates/SendOTPTeamplate.html";
+
+            // Sử dụng EmailTemplate để đọc và thay thế nội dung trong template
+            String htmlContent = getOtpEmailContent(toEmail, otp, filePath);
+
+            // Gửi email với nội dung HTML
+            helper.setText(htmlContent, true);
+
+            // Gửi email
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (MessagingException | IOException e) {
             throw new RuntimeException("Error while sending email: " + e.getMessage());
         }
     }
@@ -107,5 +132,20 @@ public class SendMailServiceIplm implements SendMailService {
         message.setSubject(subject);
         message.setText(text);
         mailSender.send(message);
+    }
+    public static String loadEmailTemplate(String filePath) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(filePath)));
+    }
+
+    // Tạo nội dung email bằng cách thay thế các placeholder trong template
+    public static String getOtpEmailContent(String toEmail, String otp, String filePath) throws IOException {
+        // Đọc nội dung file HTML template
+        String content = loadEmailTemplate(filePath);
+
+        // Thay thế placeholder {{OTP}} và {{Email}} bằng dữ liệu thực tế
+        content = content.replace("{{OTP}}", otp);
+        content = content.replace("{{Email}}", toEmail);
+
+        return content;
     }
 }
