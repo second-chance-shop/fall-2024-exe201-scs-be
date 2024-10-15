@@ -70,30 +70,33 @@ public class EntityToDTO {
                 .build();
     }
 
-    public static ProductResponse productEntityToDTO(ProductEntity productEntity){
+    public static ProductResponse productEntityToDTO(ProductEntity productEntity) {
         return ProductResponse.builder()
-        .createByUsername(productEntity.getCreateBy().getUsername())
-        .categoryNames(productEntity.getCategories().stream()
+                .createByUsername(productEntity.getCreateBy().getUsername())
+                .categoryNames(productEntity.getCategories().stream()
                         .map(category -> category.getCategoryName()) // Assuming CategoryEntity has getCategoryName()
                         .collect(Collectors.toSet()))
-        .dateCreate(productEntity.getDateCreate())
-        .prices(productEntity.getPrices())
-        .quantity(productEntity.getQuantity())
-        .status(productEntity.getStatus())
-        .description(productEntity.getDescription())
-        .image(productEntity.getImage())
-        .productId(productEntity.getProductId())
-        .productName(productEntity.getProductName())
-        .build();
-    }
-    public static CategoryResponse categoryEntityToDTO(CategoryEntity categoryEntity){
-        return CategoryResponse.builder() 
-        .build();
+                .dateCreate(productEntity.getDateCreate())
+                .prices(productEntity.getPrices())
+                .quantity(productEntity.getQuantity())
+                .status(productEntity.getStatus())
+                .description(productEntity.getDescription())
+                .image(productEntity.getImage())
+                .productId(productEntity.getProductId())
+                .productName(productEntity.getProductName())
+                .build();
     }
 
-    public static ShopResponse shopEntityTODTO(ShopEntity shopEntity){
+    public static CategoryResponse categoryEntityToDTO(CategoryEntity categoryEntity) {
+        return CategoryResponse.builder()
+                .categoryId(categoryEntity.getCategoryId())
+                .categoryName(categoryEntity.getCategoryName())
+                .build();
+    }
+
+    public static ShopResponse shopEntityTODTO(ShopEntity shopEntity) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth == null){
+        if (auth == null) {
             throw new SecurityException("You are not logged in");
         }
         return ShopResponse.builder()

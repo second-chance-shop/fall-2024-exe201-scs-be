@@ -3,10 +3,9 @@ package scs.exe201.secondchanceshopbe.services.Iplm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.joran.spi.ActionException;
+
 import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.LoginDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.JwtResponse;
