@@ -1,5 +1,6 @@
 package scs.exe201.secondchanceshopbe.configs;
 
+import com.cloudinary.Cloudinary;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -27,6 +28,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -97,4 +100,20 @@ public class AppConfig {
         template.setConnectionFactory(redisConnectionFactory);
         return template;
     }
+    @Bean
+    public Cloudinary getCloudinary(){
+        try {
+            Map config = new HashMap();
+            config.put("cloud_name", "secondUpload");
+            config.put("api_key", "277416239544223");
+            config.put("api_secret", "n8iexsVn383Zj7zVjNZdoIZMdUw");
+            config.put("secure", true);
+            return new Cloudinary(config);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }
