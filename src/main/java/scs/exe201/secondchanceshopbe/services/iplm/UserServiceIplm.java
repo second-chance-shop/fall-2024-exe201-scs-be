@@ -37,6 +37,7 @@ public class UserServiceIplm implements UserService {
     public UserResponse registerNewUser(UserRegisterDTO userRegisterDTO) {
 
        Optional<UserEntity> userEntity = userRepository.findByEmail(userRegisterDTO.getEmail());
+
        if (userEntity.isPresent()&& userEntity.get().getStatus().equals("VERIFY")) {
 
            otpService.generateOTPCodeAgain(userRegisterDTO.getEmail());
