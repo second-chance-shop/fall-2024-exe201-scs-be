@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.lettuce.core.RedisConnectionException;
 import lombok.AllArgsConstructor;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.UserUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
@@ -81,7 +81,7 @@ public class UserController {
     }
 
     @PatchMapping ("/update-user")
-    public ResponseEntity<ResponseObject> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
+    public ResponseEntity<ResponseObject> updateUser(@RequestBody UserUpdateDTO updateUserDTO) {
         UserResponse userResponse = userService.userUpdate(updateUserDTO );
         return ResponseEntity.ok().body(
                 ResponseObject.builder()

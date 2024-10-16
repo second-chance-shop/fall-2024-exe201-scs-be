@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import scs.exe201.secondchanceshopbe.models.dtos.requests.RatingCreateDTO;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateRatingDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.RatingUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.RatingService;
@@ -69,7 +69,7 @@ public class RatingContronller {
         );
     }
     @PutMapping("/update")
-    public ResponseEntity<ResponseObject> updateRating(@RequestBody UpdateRatingDTO updateDTO){
+    public ResponseEntity<ResponseObject> updateRating(@RequestBody RatingUpdateDTO updateDTO){
         RatingResponse ratingResponse = ratingService.updateRating(updateDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()

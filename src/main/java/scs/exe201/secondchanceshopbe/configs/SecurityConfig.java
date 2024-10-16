@@ -49,7 +49,6 @@ public class SecurityConfig {
 
                         //product
 
-                        
 
                         .anyRequest().authenticated() // Các yêu cầu khác đều cần xác thực
                 ).cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))

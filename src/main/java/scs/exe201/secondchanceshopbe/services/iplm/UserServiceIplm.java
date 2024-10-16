@@ -1,21 +1,20 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.RoleEnum;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.UserUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
-import scs.exe201.secondchanceshopbe.models.entities.RoleEntity;
-import scs.exe201.secondchanceshopbe.models.entities.StatusEnum;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.AuthFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.ConflictException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
-import scs.exe201.secondchanceshopbe.repositories.RoleRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.UserService;
@@ -30,7 +29,6 @@ import java.util.Optional;
 public class UserServiceIplm implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final OTPService otpService;
     private PasswordEncoder passwordEncoder;
 
@@ -53,14 +51,11 @@ public class UserServiceIplm implements UserService {
             if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
                 throw new ConflictException("Phone already exists!");
             }
-        RoleEntity role = roleRepository.getRoleCustomer();
-            if(role == null) {
-                throw new NotFoundException("Role not found!");
-            }
+
         String password = passwordEncoder.encode(userRegisterDTO.getPassword());
             UserEntity userCreate = DTOToEntity.UserResponseToEntity(userRegisterDTO);
             userCreate.setStatus(StatusEnum.VERIFY);
-            userCreate.setRoleEntity(role);
+            userCreate.setRole(RoleEnum.USER);
             userCreate.setPassword(password);
             userRepository.save(userCreate);
             UserResponse userResponse = EntityToDTO.UserEntityToDTO(userCreate);
@@ -79,7 +74,7 @@ public class UserServiceIplm implements UserService {
     }
 
     @Override
-    public UserResponse userUpdate(UpdateUserDTO updateUserDTO) {
+    public UserResponse userUpdate(UserUpdateDTO updateUserDTO) {
         UserEntity userEntity = userRepository.findById(updateUserDTO.getId())
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Cannot find user with ID: %s", updateUserDTO.getId())

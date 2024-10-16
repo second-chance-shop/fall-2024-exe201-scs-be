@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
 
@@ -57,6 +58,10 @@ public class ShopEntity {
 
     @Column(name = "shop_address",nullable = false)
     private String shopAddress;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusEnum status ;
 
     @JsonIgnore
     @ManyToOne

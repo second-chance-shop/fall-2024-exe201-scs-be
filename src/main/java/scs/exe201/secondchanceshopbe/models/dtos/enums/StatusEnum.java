@@ -1,4 +1,4 @@
-package scs.exe201.secondchanceshopbe.models.entities;
+package scs.exe201.secondchanceshopbe.models.dtos.enums;
 
 public enum StatusEnum {
     ACTIVE,

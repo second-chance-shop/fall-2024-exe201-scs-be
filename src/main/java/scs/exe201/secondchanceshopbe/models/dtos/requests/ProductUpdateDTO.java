@@ -28,7 +28,6 @@ public class ProductUpdateDTO {
     @NotNull(message = "Price is mandatory")
     private Long prices;
 
-    private String status;
 
     private String image;
 
