@@ -58,7 +58,7 @@ public class DTOToEntity {
                 .categories(categories)  // Mapping resolved categories
                 .prices(productCreateDTO.getPrices())
                 .status(StatusEnum.ACTIVE)
-                .image(productCreateDTO.getImage())
+              //  .image(productCreateDTO.getImage())
                 .dateCreate( LocalDate.now())
                 .createBy(createBy)  // Mapping resolved user entity
                 .build();
