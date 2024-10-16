@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class OrderUpdateDTO {
 
     private int quantity;
-    private long paymentId;
+    private String nameMethod;
 }

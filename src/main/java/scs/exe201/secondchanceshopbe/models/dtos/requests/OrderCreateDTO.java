@@ -11,6 +11,6 @@ public class OrderCreateDTO {
     private long productId;
     private int quantity;
     private long userId;
-    private  long paymentId;
+    private String nameMethod;
 }
 

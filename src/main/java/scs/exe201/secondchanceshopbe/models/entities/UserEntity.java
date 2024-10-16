@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.RoleEnum;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -56,10 +58,10 @@ public class UserEntity implements UserDetails {
     @Column(name = "status")
     private StatusEnum status;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    @JsonIgnore
-    private RoleEntity roleEntity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private RoleEnum role;
 
     @OneToMany(mappedBy = "createBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductEntity> productEntities;
@@ -82,10 +84,19 @@ public class UserEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(roleEntity.getRoleName()));
+        authorities.add(new SimpleGrantedAuthority(role.toString()));
         return authorities;
     }
 
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -106,7 +117,5 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 
 }

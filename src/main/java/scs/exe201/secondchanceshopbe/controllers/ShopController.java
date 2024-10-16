@@ -44,8 +44,7 @@ public class ShopController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getShop(@PathVariable Long id) {
-        ShopResponse shop = shopService.getShopById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not found"));
+        ShopResponse shop = shopService.getShopById(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")

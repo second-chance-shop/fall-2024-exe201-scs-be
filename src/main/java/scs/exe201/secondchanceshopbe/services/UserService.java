@@ -2,7 +2,7 @@ package scs.exe201.secondchanceshopbe.services;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateUserDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.UserUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 
@@ -14,7 +14,7 @@ public interface UserService {
 
     List<UserResponse> getListUser();
 
-    UserResponse userUpdate(UpdateUserDTO updateUserDTO);
+    UserResponse userUpdate(UserUpdateDTO updateUserDTO);
 
     UserResponse userDelete(long id);
 

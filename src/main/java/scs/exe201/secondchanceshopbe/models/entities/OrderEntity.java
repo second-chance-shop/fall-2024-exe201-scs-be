@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.MethodPayment;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
 
@@ -38,12 +40,12 @@ public class OrderEntity {
     @Column(name = "order_date")
     private LocalDate orderDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private StatusEnum status;
 
-    @ManyToOne
-    @JoinColumn(name ="payment_id",nullable = false)
-    @JsonIgnore
-    private PaymentEntity paymentOrder;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "method_payment")
+    private MethodPayment paymentMethod;
 
 }

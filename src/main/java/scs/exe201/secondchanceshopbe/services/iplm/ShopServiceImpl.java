@@ -1,8 +1,4 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ShopRequestDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ShopResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
@@ -22,6 +19,7 @@ import scs.exe201.secondchanceshopbe.repositories.CategoryRepository;
 import scs.exe201.secondchanceshopbe.repositories.ShopRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.ShopService;
+import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 @Service
 @Transactional
@@ -63,13 +61,14 @@ public class ShopServiceImpl implements ShopService {
 
         ShopEntity savedShop = shopRepository.save(shopEntity);
 
-        return mapToResponse(savedShop);
+        return EntityToDTO.shopEntityTODTO(savedShop);
     }
 
     @Override
-    public Optional<ShopResponse> getShopById(Long shopId) {
-        return shopRepository.findById(shopId)
-                .map(this::mapToResponse);
+    public ShopResponse getShopById(Long shopId) {
+        ShopEntity shopEntity = shopRepository.findById(shopId).orElseThrow(
+                () -> new NotFoundException("Shop not found"));
+        return EntityToDTO.shopEntityTODTO(shopEntity);
     }
 
     @Override
@@ -77,10 +76,7 @@ public class ShopServiceImpl implements ShopService {
         Pageable pageable = PageRequest.of(page, size);
         Page<ShopEntity> shopPage = shopRepository.findAll(pageable);
 
-        List<ShopResponse> shopResponses = shopPage.getContent()
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+        var shopResponses =  shopPage.stream().map(EntityToDTO::shopEntityTODTO).toList();
 
         return new PageImpl<>(shopResponses, pageable, shopPage.getTotalElements());
     }
@@ -113,36 +109,17 @@ public class ShopServiceImpl implements ShopService {
 
         ShopEntity updatedShop = shopRepository.save(shopEntity);
 
-        return mapToResponse(updatedShop);
+        return EntityToDTO.shopEntityTODTO(updatedShop);
     }
 
     @Override
     public ShopResponse deleteShop(Long shopId) {
-        if (!shopRepository.existsById(shopId)) {
-            throw new RuntimeException("Shop not found");
-        }
-        shopRepository.deleteById(shopId);
-        return mapToResponse(shopRepository.getOne(shopId));
+        ShopEntity shopEntity = shopRepository.findById(shopId).orElseThrow(
+                () -> new NotFoundException("Shop not found"));
+        shopEntity.setStatus(StatusEnum.DELETED);
+        shopRepository.save(shopEntity);
+        return EntityToDTO.shopEntityTODTO(shopEntity);
     }
 
-    private ShopResponse mapToResponse(ShopEntity shopEntity) {
-        ShopResponse shopResponse = new ShopResponse();
-        shopResponse.setShopId(shopEntity.getShopId());
-        shopResponse.setShopName(shopEntity.getShopName());
-        shopResponse.setDescription(shopEntity.getDescription());
-        shopResponse.setShopEmail(shopEntity.getShopEmail());
-        shopResponse.setShopPhonumber(shopEntity.getShopPhonumber());
-        shopResponse.setShopImage(shopEntity.getShopImage());
-        shopResponse.setBackSideOfCCCD(shopEntity.getBackSideOfCCCD());
-        shopResponse.setFrontSideOfCCCD(shopEntity.getFrontSideOfCCCD());
-        shopResponse.setCccdNumber(shopEntity.getCccdNumber());
-        shopResponse.setIndustry(shopEntity.getIndustry());
-        shopResponse.setDateCreate(shopEntity.getDateCreate());
-        shopResponse.setShippingAddress(shopEntity.getShippingAddress());
-        shopResponse.setShopAddress(shopEntity.getShopAddress());
-        shopResponse.setOwnerName(shopEntity.getShopOwner().getUsername()); // Example of getting owner name
-        shopResponse.setCategoryName(shopEntity.getTypeShop().getCategoryName()); // Example of getting category name
 
-        return shopResponse;
-    }
 }

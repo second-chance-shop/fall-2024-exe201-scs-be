@@ -3,6 +3,7 @@ package scs.exe201.secondchanceshopbe.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
 
@@ -24,8 +25,9 @@ public class RatingEntity {
     @Column(name = "date_create", nullable = false)
     private LocalDate dateCreate;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusEnum status ;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

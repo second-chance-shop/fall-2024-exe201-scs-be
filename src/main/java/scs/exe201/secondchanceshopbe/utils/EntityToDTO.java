@@ -1,10 +1,13 @@
 package scs.exe201.secondchanceshopbe.utils;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.MethodPayment;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.response.*;
 import scs.exe201.secondchanceshopbe.models.entities.*;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
@@ -62,8 +65,8 @@ public class EntityToDTO {
         return OrderResponse.builder()
                 .orderId(orderEntity.getOrderId())
                 .orderDate(orderEntity.getOrderDate())
-                .status(orderEntity.getStatus())
-                .paymentId(orderEntity.getPaymentOrder().getPaymentId())
+                .status(orderEntity.getStatus().toString())
+                .namePayment(orderEntity.getPaymentMethod().toString())
                 .quantity(orderEntity.getQuantity())
                 .productId(orderEntity.getProductOrder().getProductId())
                 .userId(orderEntity.getUserOrder().getUserId())
@@ -71,6 +74,12 @@ public class EntityToDTO {
     }
 
     public static ProductResponse productEntityToDTO(ProductEntity productEntity) {
+        StatusEnum statusEnum = Arrays.stream(StatusEnum.values())
+                .filter(m -> m.name().equals(productEntity.getStatus().toString()))
+                .findFirst()
+                .orElseThrow(
+                        ()-> new NotFoundException("Status not found")
+                );
         return ProductResponse.builder()
                 .createByUsername(productEntity.getCreateBy().getUsername())
                 .categoryNames(productEntity.getCategories().stream()
@@ -79,7 +88,7 @@ public class EntityToDTO {
                 .dateCreate(productEntity.getDateCreate())
                 .prices(productEntity.getPrices())
                 .quantity(productEntity.getQuantity())
-                .status(productEntity.getStatus())
+                .status(statusEnum.toString())
                 .description(productEntity.getDescription())
                 .image(productEntity.getImage())
                 .productId(productEntity.getProductId())

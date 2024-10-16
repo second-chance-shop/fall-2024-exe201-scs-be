@@ -1,9 +1,10 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.RatingCreateDTO;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.UpdateRatingDTO;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.RatingUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
 import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
 import scs.exe201.secondchanceshopbe.models.entities.RatingEntity;
@@ -36,7 +37,7 @@ public class RatingServiceIplm implements RatingService {
             throw  new ConflictException("User đã đánh giá sản phẩm này rồi"); // Hoặc custom exception phù hợp
         }
         ratingEntity.setDateCreate(LocalDate.now());
-        ratingEntity.setStatus("active");
+        ratingEntity.setStatus(StatusEnum.ACTIVE);
         ratingEntity.setStar(createDTO.getStart());
         UserEntity userEntity = userRepository.findById(createDTO.getUserId()).orElseThrow(
                 () -> new NotFoundException("User not found")
@@ -54,7 +55,7 @@ public class RatingServiceIplm implements RatingService {
     }
 
     @Override
-    public RatingResponse updateRating(UpdateRatingDTO updateDTO) {
+    public RatingResponse updateRating(RatingUpdateDTO updateDTO) {
         RatingEntity ratingEntity = ratingRepository.findById(updateDTO.getId()).orElseThrow(
                 () -> new NotFoundException("Rating not found")
         );

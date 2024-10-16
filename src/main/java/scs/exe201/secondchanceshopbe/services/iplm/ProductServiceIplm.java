@@ -1,4 +1,4 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,11 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ProductResponse;
@@ -54,7 +54,7 @@ public class ProductServiceIplm implements ProductService {
                 .description(productEntity.getDescription())
                 .categoryNames(categoryNames)
                 .prices(productEntity.getPrices())
-                .status(productEntity.getStatus())
+                .status(productEntity.getStatus().toString())
                 .image(productEntity.getImage())
                 .dateCreate(productEntity.getDateCreate())
                 .createByUsername(productEntity.getCreateBy().getUsername())
@@ -106,7 +106,9 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
     @Override
     public ProductResponse createProduct(ProductCreateDTO request) {
         Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(request.getCategoryIds()));
-        UserEntity createBy = userRepository.findById(request.getCreateByUserId())
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+
+        UserEntity createBy = userRepository.findByUsername(auth.getName())
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         ProductEntity productEntity = dtoToEntity.mapProductCreateDTOToProductEntity(request, categories, createBy);
@@ -121,8 +123,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
                 .orElseThrow(() -> new NotFoundException("Product not found"));
 
         Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(request.getCategoryIds()));
-        dtoToEntity.mapProductUpdateDTOToProductEntity(request, productEntity, categories);
-
+        productEntity = DTOToEntity.mapProductUpdateDTOToProductEntity(request,categories);
         ProductEntity updatedProduct = productRepository.save(productEntity);
         return mapProductEntityToProductResponse(updatedProduct);
     }
@@ -131,7 +132,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
     public ProductResponse deleteProduct(long idProduct) {
         ProductEntity productEntity = productRepository.findById(idProduct)
                 .orElseThrow(() -> new NotFoundException( "Product not found"));
-        productEntity.setStatus("DELETE");
+        productEntity.setStatus(StatusEnum.DELETED);
         productRepository.save(productEntity);
         return mapProductEntityToProductResponse(productEntity);
     }

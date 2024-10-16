@@ -1,4 +1,4 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 import com.cloudinary.Cloudinary;
 import lombok.RequiredArgsConstructor;

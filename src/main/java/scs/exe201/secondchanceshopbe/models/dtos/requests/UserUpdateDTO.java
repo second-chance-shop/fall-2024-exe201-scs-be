@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserDTO {
+public class UserUpdateDTO {
     private long id;
 
     @NotEmpty(message = "name not null!!!")

@@ -1,4 +1,4 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 import java.time.LocalDate;
 import java.util.List;

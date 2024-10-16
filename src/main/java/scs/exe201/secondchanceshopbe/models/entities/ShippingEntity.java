@@ -1,13 +1,9 @@
 package scs.exe201.secondchanceshopbe.models.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 @Data
 @Entity
@@ -23,7 +19,8 @@ public class ShippingEntity {
     private String name;
     @Column(name ="description")
     private String description;
-    @Column(name ="status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusEnum status ;
 
 }

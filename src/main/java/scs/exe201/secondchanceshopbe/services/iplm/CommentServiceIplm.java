@@ -1,7 +1,8 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.CommentCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.CommentUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.CommentResponse;
@@ -60,7 +61,7 @@ public class CommentServiceIplm implements CommentService {
         CommentEntity comment = commentRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Comment not found")
         );
-        comment.setStatus("DELETE");
+        comment.setStatus(StatusEnum.DELETED);
         commentRepository.save(comment);
         CommentResponse commentResponse = EntityToDTO.commentToEntityDTO(comment);
         return commentResponse;

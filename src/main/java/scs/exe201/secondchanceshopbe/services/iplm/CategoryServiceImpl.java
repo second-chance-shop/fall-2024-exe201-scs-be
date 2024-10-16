@@ -1,4 +1,4 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 
 import java.util.List;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.CategoryCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.CategoryResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
@@ -31,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse createCategory(CategoryCreateDTO categoryRequest) {
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setCategoryName(categoryRequest.getCategoryName());
-        categoryEntity.setStatus("ACTIVE");
+        categoryEntity.setStatus(StatusEnum.ACTIVE);
         CategoryEntity savedCategory = categoryRepository.save(categoryEntity);
         return mapToResponse(savedCategory);
     }
