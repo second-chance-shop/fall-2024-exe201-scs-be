@@ -28,8 +28,7 @@ import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
 public class DTOToEntity {
-    private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
+
     private final UserRepository userRepository;
     public static UserEntity UserResponseToEntity(UserRegisterDTO userRegister) {
         if(userRegister == null) {
