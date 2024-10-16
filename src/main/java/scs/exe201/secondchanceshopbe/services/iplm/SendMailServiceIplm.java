@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import lombok.RequiredArgsConstructor;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,9 +21,11 @@ import jakarta.mail.internet.MimeMessage;
 import scs.exe201.secondchanceshopbe.services.SendMailService;
 
 @Service
+@RequiredArgsConstructor
 public class SendMailServiceIplm implements SendMailService {
 
     private String fromEmail = "hieunmse160501@fpt.edu.vn";
+    private final TemplateEngine templateEngine;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -30,7 +35,6 @@ public class SendMailServiceIplm implements SendMailService {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true); // true để bật multipart
-
             helper.setFrom(fromEmail);
             helper.setTo(to);
             if (cc != null && cc.length > 0) {
@@ -65,46 +69,20 @@ public class SendMailServiceIplm implements SendMailService {
 
     @Override
     public void sendOtpEmail(String toEmail, String otp) {
-//        try {
-//            MimeMessage mimeMessage = mailSender.createMimeMessage();
-//            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-//
-//            helper.setFrom(fromEmail);
-//            String subject = "Verification Email";
-//            helper.setTo(toEmail);
-//            helper.setSubject(subject);
-//            String text = "Chào mừng " + toEmail + ",\n\n"
-//                    + "Vui lòng nhập otp sau để xác thực tài khoản của bạn:\n"
-//                    + "đây là otp của bạn:" + otp + "\n"
-//                    + "thank you:\n";
-//            helper.setText(text);
-//
-//            mailSender.send(mimeMessage);
-//        } catch (MessagingException e) {
-//            throw new RuntimeException("Error while sending email: " + e.getMessage());
-//        }
         try {
+            Context context = new Context();
+            context.setVariable("Email", toEmail);
+            context.setVariable("OTP", otp);
+            String content = templateEngine.process("SendOTPTemplate", context);
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-
             helper.setFrom(fromEmail);
-            String subject = "Verification Email";
             helper.setTo(toEmail);
-            helper.setSubject(subject);
-
-            // Đường dẫn đến file SendOTPTemplate.html
-            String filePath = "src/main/resources/templates/SendOTPTeamplate.html";
-
-            // Sử dụng EmailTemplate để đọc và thay thế nội dung trong template
-            String htmlContent = getOtpEmailContent(toEmail, otp, filePath);
-
-            // Gửi email với nội dung HTML
-            helper.setText(htmlContent, true);
-
-            // Gửi email
+            helper.setSubject("OTP SECOND CHANCE SHOP");
+            helper.setText(content, true); // Thiết lập nội dung email dưới dạng HTML
             mailSender.send(mimeMessage);
-        } catch (MessagingException | IOException e) {
-            throw new RuntimeException("Error while sending email: " + e.getMessage());
+        } catch (MessagingException exception) {
+            throw new RuntimeException("Error while sending email: " + exception.getMessage());
         }
     }
 
