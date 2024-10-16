@@ -133,7 +133,26 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public ShopResponse updatev1(ShopUpdateDTO shopUpdateDTO, MultipartFile files) {
-        return null;
+        ShopEntity shopEntity = shopRepository.findById(shopUpdateDTO.getId()).orElseThrow(
+                () -> new NotFoundException("Shop not found")
+        );
+        shopEntity.setShopName(shopUpdateDTO.getShopName());
+        shopEntity.setDescription(shopUpdateDTO.getDescription());
+        shopEntity.setShopEmail(shopUpdateDTO.getShopEmail());
+        shopEntity.setShopPhonumber(shopUpdateDTO.getShopPhonumber());
+        if(files!=null && !files.isEmpty()) {
+            var image =fileDatabaseService.uploadFile(files);
+            shopEntity.setShopImage(image.getUrl());
+        }
+
+
+        shopEntity.setShopAddress(shopUpdateDTO.getShopAddress());
+        shopEntity.setShippingAddress(shopUpdateDTO.getShippingAddress()); // Bổ sung địa chỉ giao hàng
+        shopEntity.setIndustry(shopUpdateDTO.getIndustry()); // Bổ sung ngành nghề
+        CategoryEntity categoryEntity = categoryRepository.findById(shopUpdateDTO.getCategoryId())
+                .orElseThrow(() -> new NotFoundException("Category not found"));
+        shopEntity.setTypeShop(categoryEntity);
+        return EntityToDTO.shopEntityTODTO(shopEntity);
     }
 
     @Override

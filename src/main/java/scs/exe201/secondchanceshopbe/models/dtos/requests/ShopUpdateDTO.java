@@ -25,9 +25,6 @@ public class ShopUpdateDTO {
     @Pattern(regexp = "^\\+?[0-9]{10}$", message = "Phone number should be valid")
     private String shopPhonumber;
 
-    @NotBlank(message = "Shop image is mandatory")
-    private String shopImage;
-
 //    @NotBlank(message = "Back side of CCCD is mandatory")
 //    private String backSideOfCCCD;
 //
