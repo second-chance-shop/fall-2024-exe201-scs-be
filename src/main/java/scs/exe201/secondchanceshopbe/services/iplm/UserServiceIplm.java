@@ -36,31 +36,30 @@ public class UserServiceIplm implements UserService {
     @Override
     public UserResponse registerNewUser(UserRegisterDTO userRegisterDTO) {
 
-       Optional<UserEntity> userEntity = userRepository.findByEmail(userRegisterDTO.getEmail());
+        Optional<UserEntity> userEntity = userRepository.findByEmail(userRegisterDTO.getEmail());
 
-       if (userEntity.isPresent()&& userEntity.get().getStatus().equals("VERIFY")) {
-
-           otpService.generateOTPCodeAgain(userRegisterDTO.getEmail());
-           throw new ActionFailedException("Email này đã được đăng kí nhưng với username"+ userEntity.get().getUsername()+ " chưa xác thực đã gửi otp để xác thưc vui lòng check email");
-       } else if (userEntity.isPresent()&& userEntity.get().getStatus().equals("ACTIVE")) {
-           throw new ConflictException("Email already exists!");
-       }
+        if (userEntity.isPresent() && userEntity.get().getStatus().equals("VERIFY")) {
+            otpService.generateOTPCodeAgain(userRegisterDTO.getEmail());
+            throw new ActionFailedException("Email này đã được đăng kí nhưng với username" + userEntity.get().getUsername() + " chưa xác thực đã gửi otp để xác thưc vui lòng check email");
+        } else if (userEntity.isPresent() && userEntity.get().getStatus().equals("ACTIVE")) {
+            throw new ConflictException("Email already exists!");
+        }
 
         if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
             throw new ConflictException("Username already exists!");
         }
-            if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
-                throw new ConflictException("Phone already exists!");
-            }
+        if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
+            throw new ConflictException("Phone already exists!");
+        }
 
         String password = passwordEncoder.encode(userRegisterDTO.getPassword());
-            UserEntity userCreate = DTOToEntity.UserResponseToEntity(userRegisterDTO);
-            userCreate.setStatus(StatusEnum.VERIFY);
-            userCreate.setRole(RoleEnum.USER);
-            userCreate.setPassword(password);
-            userRepository.save(userCreate);
-            UserResponse userResponse = EntityToDTO.UserEntityToDTO(userCreate);
-            return userResponse;
+        UserEntity userCreate = DTOToEntity.UserResponseToEntity(userRegisterDTO);
+        userCreate.setStatus(StatusEnum.VERIFY);
+        userCreate.setRole(RoleEnum.USER);
+        userCreate.setPassword(password);
+        userRepository.save(userCreate);
+        UserResponse userResponse = EntityToDTO.UserEntityToDTO(userCreate);
+        return userResponse;
 
     }
 
@@ -128,7 +127,7 @@ public class UserServiceIplm implements UserService {
     @Override
     public UserResponse getUserById(long id) {
         UserEntity uEntity = userRepository.findById(id).orElseThrow(
-            ()-> new NotFoundException("user not found")
+                () -> new NotFoundException("user not found")
         );
         UserResponse userResponse = EntityToDTO.UserEntityToDTO(uEntity);
         return userResponse;
@@ -137,15 +136,15 @@ public class UserServiceIplm implements UserService {
 
     @Override
     public UserResponse getUserProfile() {
-        try{
+        try {
             var auth = SecurityContextHolder.getContext().getAuthentication();
-            if(auth == null) throw new AuthFailedException("This user is't authentication, please login again");
+            if (auth == null) throw new AuthFailedException("This user is't authentication, please login again");
             String username = auth.getName();
-           UserEntity userEntity= userRepository.findByUsername(username).orElseThrow(
-                   ()-> new NotFoundException("user not found")
-           );
-           return EntityToDTO.UserEntityToDTO(userEntity);
-        }catch(Exception e){
+            UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
+                    () -> new NotFoundException("user not found")
+            );
+            return EntityToDTO.UserEntityToDTO(userEntity);
+        } catch (Exception e) {
             throw new AuthFailedException("This user isn't authentication, please login again");
         }
     }
