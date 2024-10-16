@@ -22,7 +22,6 @@ public class OtpServiceIplm implements OTPService {
 
     private final SendMailService mailSenderService;
     private final UserRepository userRepository;
-    // private final TemplateEngine templateEngine;
     private Long timeOut = (long) 5.0;
     String vetify = "VETIFY";
     private final RedisTemplate<String, Object> redisTemplate;
@@ -30,9 +29,7 @@ public class OtpServiceIplm implements OTPService {
     @Override
     public void generateOTPCode(String email, String username) {
         var value = generateRandomOTP();
-
         redisTemplate.opsForValue().set(email, value, timeOut, TimeUnit.MINUTES);
-
         mailSenderService.sendOtpEmail(email, value);
     }
 
