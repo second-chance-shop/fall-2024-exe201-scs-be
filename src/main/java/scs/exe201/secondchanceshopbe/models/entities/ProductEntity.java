@@ -3,6 +3,7 @@ package scs.exe201.secondchanceshopbe.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -40,8 +41,9 @@ public class ProductEntity {
     @Column(name = "prices")
     private Long prices;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private StatusEnum status ;
 
     @Column(name = "image")
     private String image;

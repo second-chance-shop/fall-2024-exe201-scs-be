@@ -1,4 +1,4 @@
-package scs.exe201.secondchanceshopbe.services.Iplm;
+package scs.exe201.secondchanceshopbe.services.iplm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

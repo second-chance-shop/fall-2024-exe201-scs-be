@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRatingDTO {
+public class RatingUpdateDTO {
     private long id;
     private int start;
 }

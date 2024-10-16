@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryCreateDTO {
+public class CategoryUpdateDTO {
     @NotBlank(message = "Category name cannot be empty")
     private String categoryName;
     @NotBlank(message = "Description name cannot be empty")

@@ -30,8 +30,6 @@ public class ProductCreateDTO {
 
     private String image;
 
-    private LocalDate dateCreate;
 
-    @NotNull(message = "User ID is mandatory")
-    private Long createByUserId;
+
 }

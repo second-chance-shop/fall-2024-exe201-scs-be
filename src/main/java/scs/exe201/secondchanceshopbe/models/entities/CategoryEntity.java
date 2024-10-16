@@ -3,12 +3,15 @@ package scs.exe201.secondchanceshopbe.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.util.Set;
 
 @Data
 @Entity
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "categories")
 public class CategoryEntity {
     @Id
@@ -19,8 +22,12 @@ public class CategoryEntity {
     @Column(name = "category_name", nullable = false, unique = true)
     private String categoryName;
 
+    @Column(name ="description")
+    private String description;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status ;
+    private StatusEnum status ;
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore

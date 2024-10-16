@@ -3,6 +3,7 @@ package scs.exe201.secondchanceshopbe.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
 
@@ -26,6 +27,10 @@ public class NotificationEntity {
 
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusEnum status ;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

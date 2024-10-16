@@ -20,5 +20,5 @@ public class OrderResponse {
     private int quantity;
     private LocalDate orderDate;
     private String status;
-    private long paymentId;
+    private String namePayment;
 }
