@@ -25,5 +25,6 @@ public class ShopResponse {
     private String shopAddress;
     private String ownerName; // Optionally added if needed to represent the Shop Owner
     private String categoryName; // Optionally added if needed to represent the Category type
+    private long userId;
 }
 

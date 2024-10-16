@@ -1,11 +1,16 @@
 package scs.exe201.secondchanceshopbe.models.entities;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import lombok.*;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -45,8 +50,26 @@ public class ProductEntity {
     @Column(name = "status")
     private StatusEnum status ;
 
-    @Column(name = "image")
+
+    @Column(name = "image", columnDefinition = "TEXT") // Sử dụng "TEXT" nếu cần lưu trữ JSON array dài
     private String image;
+
+    public void setImages(List<String> imageUrls) throws JsonProcessingException {
+            ObjectMapper objectMapper = new ObjectMapper();
+            this.image = objectMapper.writeValueAsString(imageUrls);
+    }
+
+    public List<String> getImage() throws JsonProcessingException {
+        if (this.image == null || this.image.isEmpty()) {
+            return new ArrayList<>(); // Trả về danh sách rỗng
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(this.image, List.class);
+    }
+
+
+
 
     @Column(name = "date_create")
     private LocalDate dateCreate;

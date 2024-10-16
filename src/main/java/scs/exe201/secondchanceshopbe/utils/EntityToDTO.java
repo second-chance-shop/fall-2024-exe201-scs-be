@@ -1,15 +1,20 @@
 package scs.exe201.secondchanceshopbe.utils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.MethodPayment;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.response.*;
 import scs.exe201.secondchanceshopbe.models.entities.*;
+import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 
@@ -80,6 +85,13 @@ public class EntityToDTO {
                 .orElseThrow(
                         ()-> new NotFoundException("Status not found")
                 );
+        List<String> listImage = new ArrayList<>();
+        try {
+            listImage = productEntity.getImage();
+        }catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new ActionFailedException("Error processing image URLs: " + e.getMessage());
+        }
         return ProductResponse.builder()
                 .createByUsername(productEntity.getCreateBy().getUsername())
                 .categoryNames(productEntity.getCategories().stream()
@@ -90,7 +102,8 @@ public class EntityToDTO {
                 .quantity(productEntity.getQuantity())
                 .status(statusEnum.toString())
                 .description(productEntity.getDescription())
-                .image(productEntity.getImage())
+                .image(listImage)
+
                 .productId(productEntity.getProductId())
                 .productName(productEntity.getProductName())
                 .build();
@@ -104,10 +117,7 @@ public class EntityToDTO {
     }
 
     public static ShopResponse shopEntityTODTO(ShopEntity shopEntity) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            throw new SecurityException("You are not logged in");
-        }
+
         return ShopResponse.builder()
                 .shopId(shopEntity.getShopId())
                 .shopName(shopEntity.getShopName())
@@ -122,7 +132,8 @@ public class EntityToDTO {
                 .dateCreate(shopEntity.getDateCreate())
                 .shippingAddress(shopEntity.getShippingAddress())
                 .shopAddress(shopEntity.getShopAddress())
-                .ownerName(auth.getName())
+                .ownerName(shopEntity.getShopOwner().getUsername())
+                .userId(shopEntity.getShopOwner().getUserId())
                 .categoryName(shopEntity.getTypeShop().getCategoryName())
                 .build();
     }

@@ -14,6 +14,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class ProductUpdateDTO {
 
+    @NotNull(message = "id is mandatory")
+    private Long id;
+
     @NotBlank(message = "Product name is mandatory")
     private String productName;
 

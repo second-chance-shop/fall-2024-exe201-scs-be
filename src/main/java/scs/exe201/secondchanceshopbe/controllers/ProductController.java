@@ -2,23 +2,19 @@ package scs.exe201.secondchanceshopbe.controllers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ProductResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.ProductService;
+
+import java.util.List;
 
 @RequestMapping("/api/v1/product")
 @RestController
@@ -40,6 +36,20 @@ public class ProductController {
                         .build()
         );
     }
+    @GetMapping("/getAll")
+    public ResponseEntity<ResponseObject> getAll() {
+        List<ProductResponse> products = productService.getAll();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("FETCH_SUCCESS")
+                        .message("Products retrieved successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(products)
+                        .build()
+        );
+    }
+
     @GetMapping("/getv1")
     public ResponseEntity <ResponseObject> getAllV1( @RequestParam(value = "search", required = false) String search,
     @RequestParam(value = "sortField", defaultValue = "name") String sortField,
@@ -87,6 +97,29 @@ public class ProductController {
                         .build()
         );
     }
+// here
+@PostMapping(value = "add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<ResponseObject> addProductV1(
+        @RequestPart("product") ProductCreateDTO product,
+        @RequestPart(value = "file", required = false) List<MultipartFile> files) { // Cho phép file là null
+
+    // Gọi phương thức service để thêm sản phẩm
+    ProductResponse response = productService.addProduct(product, files);
+
+    // Trả về ResponseEntity
+    return ResponseEntity.ok().body(
+            ResponseObject.builder()
+                    .code("ADD_SUCCESS")
+                    .message("Product added successfully")
+                    .status(HttpStatus.OK)
+                    .isSuccess(true)
+                    .data(response)
+                    .build()
+    );
+}
+
+
+
 
     @DeleteMapping("/deleteProduct/{idProduct}")
     public ResponseEntity<ResponseObject> deleteProduct(@PathVariable long idProduct) {
@@ -106,6 +139,22 @@ public class ProductController {
     @PutMapping("/updateProduct/{id}")
     public ResponseEntity<ResponseObject> updateProduct(@PathVariable long id, @RequestBody ProductUpdateDTO product) {
         ProductResponse response = productService.updateProduct(id, product);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("UPDATE_SUCCESS")
+                        .message("Product updated successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(response)
+                        .build()
+        );
+    }
+// here
+    @PutMapping(value = "update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseObject> updateProductV1(
+            @RequestPart("product") ProductUpdateDTO product,
+            @RequestPart(value = "file", required = false) List<MultipartFile> files) {
+        ProductResponse response = productService.updateProductv1(product,files);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("UPDATE_SUCCESS")
