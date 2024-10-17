@@ -13,19 +13,16 @@ import java.util.List;
 
 public interface ShopService {
 
-    ShopResponse createShop(ShopRequestDTO shopRequest);
-
     ShopResponse getShopById(Long shopId);
 
     Page<ShopResponse> getAllShops(int page, int size);
-
-    ShopResponse updateShop(Long shopId, ShopRequestDTO shopRequest);
 
     ShopResponse deleteShop(Long shopId);
 
     ShopResponse updatev1(ShopUpdateDTO shopUpdateDTO, MultipartFile files);
 
-
     ShopResponse addV1(ShopCreateDTO shopCreateDTO, MultipartFile imageShop, MultipartFile cccdFont, MultipartFile cccdBack);
+
+    ShopResponse getByUserId(Long id);
 }
 

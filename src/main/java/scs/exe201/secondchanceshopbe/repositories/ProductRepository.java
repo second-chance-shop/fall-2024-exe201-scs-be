@@ -15,10 +15,4 @@ import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
 public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
     @Query("SELECT c FROM ProductEntity c WHERE c.status = 'true' ")
     Page<ProductEntity> getAll(PageRequest pageable);
-    @Query("SELECT p FROM ProductEntity p WHERE " +
-           "LOWER(p.productName) LIKE LOWER(CONCAT('%', :search, '%')) " +
-           "OR LOWER(p.description) LIKE LOWER(CONCAT('%', :search, '%'))")
-    Page<ProductEntity> searchByNameOrDescription(@Param("search") String search, Pageable pageable);
-    
-    
 }

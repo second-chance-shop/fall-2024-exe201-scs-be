@@ -33,10 +33,36 @@ public class OTPVerifyController {
                 .isSuccess(true)
                 .build());
     }
+
+    @PostMapping(path = "verify-set-password")
+    public ResponseEntity<ResponseObject> verifyOTPSetPassword (@RequestBody OTPVerifyRequest request) {
+        String newPassword = otpService.verifyOtpSetPassword(request);
+        userService.setPassword(request.getEmail(), newPassword);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .code("VERIFY_SUCCESS")
+                //.content(request)
+                .status(HttpStatus.OK)
+                .message("Verify OTP Success")
+                .isSuccess(true)
+                .build());
+    }
     @PostMapping(path="reload-otp")
     public ResponseEntity<ResponseObject> reloadOtp(@RequestParam String email) {
         
         otpService.generateOTPCodeAgain(email);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .code("VERIFY_SUCCESS")
+                //.content(request)
+                .status(HttpStatus.OK)
+                .message("Verify OTP Success")
+                .isSuccess(true)
+                .build());
+    }
+
+    @PostMapping(path="reload-otp-set-password")
+    public ResponseEntity<ResponseObject> reloadOtpPassword(@RequestParam String email) {
+
+        otpService.resendOTPSetPassword(email);
         return ResponseEntity.ok(ResponseObject.builder()
                 .code("VERIFY_SUCCESS")
                 //.content(request)

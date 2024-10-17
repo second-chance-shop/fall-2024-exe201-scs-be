@@ -37,6 +37,7 @@ public class SecurityConfig {
 
                         //user
                         .requestMatchers(HttpMethod.POST,"/api/v1/user/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/user/create").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/api/v1/user/update-user").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/user/list-user").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/user/delete-user").hasAnyAuthority("ADMIN")
