@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.TemplateEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OTPVerifyRequest;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
@@ -21,6 +22,7 @@ import scs.exe201.secondchanceshopbe.services.SendMailService;
 @Service
 @RequiredArgsConstructor
 public class OtpServiceIplm implements OTPService {
+
  private final PasswordEncoder passwordEncoder;
 
     private final SendMailService mailSenderService;
@@ -30,24 +32,29 @@ public class OtpServiceIplm implements OTPService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void generateOTPCode(String email) {
+    public void generateOTPCode(String email,String template) {
         var value = generateRandomOTP();
         redisTemplate.opsForValue().set(email, value, timeOut, TimeUnit.MINUTES);
-        mailSenderService.sendOtpEmail(email, value);
+        mailSenderService.sendOtpEmail(email, value,template);
     }
 
     @Override
     public void changePasswordOtp(String email,  String newPassword) {
+        String template = TemplateEnum.PASSWORD.toString();
         var otp = generateRandomOTP();
         redisTemplate.opsForHash().put(email, "otp", otp);        // Lưu OTP vào field "otp"
         String password = passwordEncoder.encode(newPassword);
         redisTemplate.opsForHash().put(email, "password", password); // Lưu password vào field "password"
         redisTemplate.expire(email, timeOut, TimeUnit.MINUTES);
-        mailSenderService.sendOtpEmail(email, otp);
+        mailSenderService.sendOtpEmail(email, otp,template);
     }
 
+
     @Override
-    public void generateOTPCodeAgain(String email) {
+    public void generateOTPCodeAgain(String email,String template) {
+        if(template == null){
+            throw new ActionFailedException("template is null");
+        }
         UserEntity check = userRepository.findByEmail(email).orElseThrow(
             ()->  new NotFoundException(email +" này chưa được đăng kí")
         );
@@ -57,14 +64,15 @@ public class OtpServiceIplm implements OTPService {
         if(check.getStatus().equals(StatusEnum.BAN)){
             throw new ActionFailedException("account has been ban");
         }
-        if(check.getStatus().equals(StatusEnum.ACTIVE)){
-            throw new ActionFailedException(email + "đã đăng kí rồi");
+        if(!TemplateEnum.PASSWORD.toString().equals(template)){
+            if( check.getStatus().equals(StatusEnum.ACTIVE)){
+                throw new ActionFailedException(email + "đã đăng kí rồi");
+            }
         }
         var value = generateRandomOTP();
         redisTemplate.opsForValue().set(value, email, timeOut, TimeUnit.MINUTES);
-        mailSenderService.sendOtpEmail(email, value);
+        mailSenderService.sendOtpEmail(email, value,template);
     }
-
 
     @Override
     public void verifyOTP(OTPVerifyRequest request) {
@@ -105,11 +113,11 @@ public class OtpServiceIplm implements OTPService {
             throw new ActionFailedException("account has been not verify");
         }
         var otpValue = generateRandomOTP();
-
+        String tempalte =TemplateEnum.PASSWORD.toString();
         redisTemplate.opsForHash().put(email, "otp", otpValue);
         redisTemplate.expire(email, timeOut, TimeUnit.MINUTES);
 
-        mailSenderService.sendOtpEmail(email, otpValue);
+        mailSenderService.sendOtpEmail(email, otpValue,tempalte);
     }
 
 
