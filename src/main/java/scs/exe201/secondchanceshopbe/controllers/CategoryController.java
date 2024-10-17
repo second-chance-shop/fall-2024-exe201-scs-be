@@ -1,5 +1,4 @@
 package scs.exe201.secondchanceshopbe.controllers;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -11,12 +10,14 @@ import scs.exe201.secondchanceshopbe.models.dtos.requests.CategoryCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.CategoryResponse; // Import CategoryResponse
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.CategoryService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 
 @RequestMapping("/api/v1/category")
 @RestController
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+    public Constants mess;
 
     @GetMapping("/getAllCategory")
     public ResponseEntity<ResponseObject> getCategories(@RequestParam(defaultValue = "1") int page,
@@ -25,7 +26,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")
-                        .message("Categories retrieved successfully")
+                        .message(mess.GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(categories)
@@ -40,7 +41,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")
-                        .message("Category retrieved successfully")
+                        .message(mess.GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(category)
@@ -54,7 +55,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("ADD_SUCCESS")
-                        .message("Category added successfully")
+                        .message(mess.toString())
                         .status(HttpStatus.CREATED)
                         .isSuccess(true)
                         .data(response)

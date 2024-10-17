@@ -20,5 +20,7 @@ public class Constants {
     public static final String CREATE_SUCCESS = "CREATE_SUCCESS";
     public static final String UPDATE_SUCCESS = "UPDATE_SUCCESS";
     public static final String GET_SUCCESS = "GET_SUCCESS";
+    public static final String GET_BY_ID_SUCCESS = "GET_BY_ID_SUCCESS";
+
 
 }
