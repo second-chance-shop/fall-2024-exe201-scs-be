@@ -88,7 +88,7 @@ public class UserController {
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code(UPDATE_SUCCESS)
-                        .message(UPDATE_SUCCESS
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)
@@ -100,8 +100,8 @@ public class UserController {
         UserResponse userResponse = userService.userDelete(id );
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code(DELETE_SUCCESS)
-                        .message(DELETE_SUCCESS)
+                        .code("UPDATE_SUCCESS")
+                        .message("Update user successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)
