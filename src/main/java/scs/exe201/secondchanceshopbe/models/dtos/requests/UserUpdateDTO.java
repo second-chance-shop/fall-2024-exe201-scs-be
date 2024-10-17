@@ -30,6 +30,5 @@ public class UserUpdateDTO {
     @Past(message = "Dob must be in the past!!!")
     private LocalDate Dob;
 
-    private String avatar;
 
 }
