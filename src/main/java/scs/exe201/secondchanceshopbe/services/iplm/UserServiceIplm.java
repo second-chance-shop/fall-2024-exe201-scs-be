@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.RoleEnum;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.TemplateEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
@@ -28,6 +29,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserServiceIplm implements UserService {
+
 
     private final UserRepository userRepository;
     private final OTPService otpService;
@@ -103,7 +105,7 @@ public class UserServiceIplm implements UserService {
     public UserResponse registerUser(UserRegisterDTO userRegisterDTO, MultipartFile image) {
         Optional<UserEntity> userEntity = userRepository.findByEmail(userRegisterDTO.getEmail());
         if (userEntity.isPresent() && userEntity.get().getStatus().equals("VERIFY")) {
-            otpService.generateOTPCodeAgain(userRegisterDTO.getEmail());
+            otpService.generateOTPCodeAgain(userRegisterDTO.getEmail(), TemplateEnum.ACCOUNT.toString());
             throw new ActionFailedException("Email này đã được đăng kí nhưng với username" +
                     userEntity.get().getUsername() + " chưa xác thực đã gửi otp để xác thưc vui lòng check email");
         } else if (userEntity.isPresent() && userEntity.get().getStatus().equals("ACTIVE")) {
@@ -126,7 +128,6 @@ public class UserServiceIplm implements UserService {
             var imageUrl = fileDatabaseService.uploadFile(image);
             userCreate.setAvatar(imageUrl.getUrl());
         }
-
         userRepository.save(userCreate);
         UserResponse userResponse = EntityToDTO.UserEntityToDTO(userCreate);
         return userResponse;
@@ -173,6 +174,37 @@ public class UserServiceIplm implements UserService {
                 .orElseThrow(() -> new NotFoundException("User not found"));
         userEntity.setPassword(password);
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public UserResponse checkUser(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
+                ()-> new NotFoundException("User not found")
+        );
+        if(userEntity.getStatus().equals(StatusEnum.DELETED)){
+            throw  new ActionFailedException("account has been deleted");
+        }
+        if(userEntity.getStatus().equals(StatusEnum.BAN)){
+            throw new ActionFailedException("account has been ban");
+        }
+        if(userEntity.getStatus().equals(StatusEnum.VERIFY)){
+            throw new ActionFailedException("account has been not verify");
+        }
+        return EntityToDTO.UserEntityToDTO(userEntity);
+    }
+    @Override
+    public UserResponse setPasswordForget(String email, String newPassword, String newPasswordConfirm) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
+                ()-> new NotFoundException("User not found")
+        );
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (passwordEncoder.matches(newPassword, userEntity.getPassword())) {
+            throw new ValidationFailedException("This Is Old password");
+        }
+        String password = passwordEncoder.encode(newPassword);
+        userEntity.setPassword(password);
+        userRepository.save(userEntity);
+        return EntityToDTO.UserEntityToDTO(userEntity);
     }
 
 }

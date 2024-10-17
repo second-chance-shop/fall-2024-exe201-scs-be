@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ch.qos.logback.core.joran.spi.ActionException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.TemplateEnum;
 import scs.exe201.secondchanceshopbe.services.SendMailService;
 
 @Service
@@ -68,62 +69,38 @@ public class SendMailServiceIplm implements SendMailService {
     }
 
     @Override
-    public void sendOtpEmail(String toEmail, String otp) {
+    public void sendOtpEmail(String toEmail, String otp, String template) {
         try {
+
             Context context = new Context();
             context.setVariable("Email", toEmail);
             context.setVariable("OTP", otp);
-            String content = templateEngine.process("SendOTPTemplate", context);
+            String content = "";
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(fromEmail);
             helper.setTo(toEmail);
-            helper.setSubject("OTP SECOND CHANCE SHOP");
-            helper.setText(content, true); // Thiết lập nội dung email dưới dạng HTML
+
+            if (TemplateEnum.ACCOUNT.name().equals(template)) {
+                content = templateEngine.process("SendOTPTemplate", context);
+                helper.setSubject("OTP VERIFY ACCOUNT - SECOND CHANCE SHOP");
+            } else if (TemplateEnum.PASSWORD.name().equals(template)) {
+                content = templateEngine.process("SendOTPPasswordTemplate", context);
+                helper.setSubject("OTP SET PASSWORD - SECOND CHANCE SHOP");
+            } else {
+                throw new IllegalArgumentException("Invalid template type provided");
+            }
+
+            helper.setText(content, true);
+
+            // Gửi email
             mailSender.send(mimeMessage);
         } catch (MessagingException exception) {
             throw new RuntimeException("Error while sending email: " + exception.getMessage());
         }
     }
 
-    public void sendSimpleMessage(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
-    }
 
-    // Hàm gửi email xác thực
-    // public void sendVerificationEmail(String to, String otp, String email) {
-    //
-    // }
-    @Override
-    public void sendVerificationEmail(String toEmail, String otp) {
-        String subject = "Verification Email";
-        String text = "Chào mừng " + toEmail + ",\n\n"
-                + "Vui lòng nhập otp sau để xác thực tài khoản của bạn:\n"
-                + "đây là otp của bạn:" + otp + "\n"
-                + "thank you:\n";
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
-    }
-    public static String loadEmailTemplate(String filePath) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filePath)));
-    }
 
-    // Tạo nội dung email bằng cách thay thế các placeholder trong template
-    public static String getOtpEmailContent(String toEmail, String otp, String filePath) throws IOException {
-        // Đọc nội dung file HTML template
-        String content = loadEmailTemplate(filePath);
 
-        // Thay thế placeholder {{OTP}} và {{Email}} bằng dữ liệu thực tế
-        content = content.replace("{{OTP}}", otp);
-        content = content.replace("{{Email}}", toEmail);
-
-        return content;
-    }
 }

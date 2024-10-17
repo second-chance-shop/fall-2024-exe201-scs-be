@@ -30,4 +30,7 @@ public interface UserService {
 
     UserResponse changPassword(String email,String oldPassword, String newPassword, String newPasswordConfirm);
     void setPassword(String email, String password);
+
+    UserResponse checkUser(String email);
+    UserResponse setPasswordForget(String email, String newPassword, String newPasswordConfirm);
 }
