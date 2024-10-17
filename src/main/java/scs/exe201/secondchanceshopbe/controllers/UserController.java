@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import io.lettuce.core.RedisConnectionException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.TemplateEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ChangePassworDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
@@ -38,8 +39,7 @@ public class UserController {
     public ResponseEntity<ResponseObject> register(@RequestPart("user") UserRegisterDTO userRegisterDTO,
                                                    @RequestPart(value = "file", required = false) MultipartFile image) {
         UserResponse userResponse = userService.registerUser(userRegisterDTO, image);
-
-        otpService.generateOTPCode(userResponse.getEmail());
+        otpService.generateOTPCode(userResponse.getEmail(), TemplateEnum.ACCOUNT.toString());
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("GET_lIST_SUCCESS")
@@ -159,6 +159,20 @@ public class UserController {
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)
+                        .build()
+        );
+    }
+    @PutMapping(path = "forget-password")
+    public ResponseEntity<ResponseObject> forgetPass(@RequestParam String email) {
+        UserResponse check = userService.checkUser(email);
+        otpService.generateOTPCode(email,TemplateEnum.ACCOUNT.toString());
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("GET_SUCCESS")
+                        .message("Get user successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(check)
                         .build()
         );
     }
