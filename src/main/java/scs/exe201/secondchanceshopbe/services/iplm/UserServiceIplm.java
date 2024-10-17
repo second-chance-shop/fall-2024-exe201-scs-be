@@ -18,6 +18,7 @@ import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.UserService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
@@ -38,18 +39,18 @@ public class UserServiceIplm implements UserService {
 
         Optional<UserEntity> userEntity = userRepository.findByEmail(userRegisterDTO.getEmail());
 
-        if (userEntity.isPresent() && userEntity.get().getStatus().equals("VERIFY")) {
+        if (userEntity.isPresent() && userEntity.get().getStatus().equals(Constants.VERIFY)) {
             otpService.generateOTPCodeAgain(userRegisterDTO.getEmail());
             throw new ActionFailedException("Email này đã được đăng kí nhưng với username" + userEntity.get().getUsername() + " chưa xác thực đã gửi otp để xác thưc vui lòng check email");
-        } else if (userEntity.isPresent() && userEntity.get().getStatus().equals("ACTIVE")) {
-            throw new ConflictException("Email already exists!");
+        } else if (userEntity.isPresent() && userEntity.get().getStatus().equals(Constants.ACTIVE)) {
+            throw new ConflictException(Constants.EXIST_EMAIL);
         }
 
         if (userRepository.existsByUsername(userRegisterDTO.getUsername())) {
-            throw new ConflictException("Username already exists!");
+            throw new ConflictException(Constants.USERNAME_EXISTS);
         }
         if (userRepository.existsByPhoneNumber(userRegisterDTO.getPhoneNumber())) {
-            throw new ConflictException("Phone already exists!");
+            throw new ConflictException(Constants.PHONE_EXISTS);
         }
 
         String password = passwordEncoder.encode(userRegisterDTO.getPassword());
@@ -117,7 +118,7 @@ public class UserServiceIplm implements UserService {
     @Override
     public void ActiveUser(String email) {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException("User not found!")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         userEntity.setStatus(StatusEnum.ACTIVE);
         userRepository.save(userEntity);
@@ -127,7 +128,7 @@ public class UserServiceIplm implements UserService {
     @Override
     public UserResponse getUserById(long id) {
         UserEntity uEntity = userRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("user not found")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         UserResponse userResponse = EntityToDTO.UserEntityToDTO(uEntity);
         return userResponse;
@@ -141,7 +142,7 @@ public class UserServiceIplm implements UserService {
             if (auth == null) throw new AuthFailedException("This user is't authentication, please login again");
             String username = auth.getName();
             UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-                    () -> new NotFoundException("user not found")
+                    () -> new NotFoundException(Constants.USER_NOT_FOUND)
             );
             return EntityToDTO.UserEntityToDTO(userEntity);
         } catch (Exception e) {

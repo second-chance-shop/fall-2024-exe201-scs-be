@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import lombok.RequiredArgsConstructor;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.LoginDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.JwtResponse;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
@@ -16,6 +17,7 @@ import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.security.JwtService;
 import scs.exe201.secondchanceshopbe.services.AuthService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 
 @Service
 @RequiredArgsConstructor
@@ -32,14 +34,14 @@ public class AuthServiceIplm implements AuthService {
                     new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
             );
             UserEntity userEntity = userRepository.findByUsername(loginDto.getUsername()).orElseThrow(
-                () -> new NotFoundException("user not found")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
             );
-            if(userEntity.getStatus().equals("BAN")){
-                new ActionFailedException("CAN_LOGIN","your account has baned");
-            }else if(userEntity.getStatus().equals("DELETED")){
-                new ActionFailedException("CAN_LOGIN","your account has delete");
-            }else if(userEntity.getStatus().equals("VERIFY")){
-                new ActionFailedException("CAN_LOGIN","your account not verify please verify account");
+            if(userEntity.getStatus().equals(StatusEnum.BAN)){
+                new ActionFailedException("CANNOT_LOGIN","your account has baned");
+            }else if(userEntity.getStatus().equals(StatusEnum.DELETED)){
+                new ActionFailedException("CANNOT_LOGIN","your account has delete");
+            }else if(userEntity.getStatus().equals(StatusEnum.VERIFY)){
+                new ActionFailedException("CANNOT_LOGIN","your account not verify please verify account");
             }           
             String token = jwtService.generateToken(authentication);
            return new JwtResponse(token);

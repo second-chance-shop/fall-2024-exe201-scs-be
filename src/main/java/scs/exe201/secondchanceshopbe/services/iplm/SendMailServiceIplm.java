@@ -19,12 +19,14 @@ import ch.qos.logback.core.joran.spi.ActionException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import scs.exe201.secondchanceshopbe.services.SendMailService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
+
+import static scs.exe201.secondchanceshopbe.utils.Constants.FROM_EMAIL;
 
 @Service
 @RequiredArgsConstructor
 public class SendMailServiceIplm implements SendMailService {
 
-    private String fromEmail = "hieunmse160501@fpt.edu.vn";
     private final TemplateEngine templateEngine;
 
     @Autowired
@@ -35,7 +37,7 @@ public class SendMailServiceIplm implements SendMailService {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true); // true để bật multipart
-            helper.setFrom(fromEmail);
+            helper.setFrom(FROM_EMAIL);
             helper.setTo(to);
             if (cc != null && cc.length > 0) {
                 helper.setCc(cc);
@@ -60,9 +62,9 @@ public class SendMailServiceIplm implements SendMailService {
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            new ActionException("Error sending email: " + e.getMessage());
+            new ActionException(Constants.ERROR_SEND+ e.getMessage());
         } catch (IOException exception) {
-            new ActionException("Error sending email: " + exception.getMessage());
+            new ActionException(Constants.ERROR_SEND+ exception.getMessage());
         }
 
     }
@@ -76,7 +78,7 @@ public class SendMailServiceIplm implements SendMailService {
             String content = templateEngine.process("SendOTPTemplate", context);
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom(fromEmail);
+            helper.setFrom(FROM_EMAIL);
             helper.setTo(toEmail);
             helper.setSubject("OTP SECOND CHANCE SHOP");
             helper.setText(content, true); // Thiết lập nội dung email dưới dạng HTML

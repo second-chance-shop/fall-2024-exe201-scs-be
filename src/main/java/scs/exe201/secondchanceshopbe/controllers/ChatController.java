@@ -5,25 +5,31 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import scs.exe201.secondchanceshopbe.models.entities.ChatMessage;
-@RequestMapping("/api/v1/chat.")
-@Controller
+import scs.exe201.secondchanceshopbe.services.ChatService;
+
+import java.util.concurrent.ExecutionException;
+
+@RequestMapping("/api/v1/chat")
+@RestController
 public class ChatController {
 
-    @MessageMapping("/sendMessage")
-    @SendTo("/topic/public")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
-        return chatMessage;
+   private final ChatService chatService;
+
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
     }
 
-    @MessageMapping("/addUser")
-    @SendTo("/topic/public")
-    public ChatMessage addUser(@Payload ChatMessage chatMessage,
-                               SimpMessageHeaderAccessor headerAccessor) {
-        // Add username in web socket session
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        return chatMessage;
+    @PostMapping("/send")
+    public String sendMessage(@RequestBody ChatMessage chatMessage) throws ExecutionException, InterruptedException {
+        chatService.sendMessage(chatMessage);
+        return "Message sent successfully";
+    }
+
+    @GetMapping("/messages")
+    public Object getMessages(@RequestParam String senderId, @RequestParam String receiverId) throws ExecutionException, InterruptedException {
+        return chatService.getMessages(senderId, receiverId).get().getDocuments();
     }
 
 }

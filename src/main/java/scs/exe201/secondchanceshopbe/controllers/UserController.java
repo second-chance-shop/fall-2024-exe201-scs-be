@@ -29,6 +29,8 @@ import scs.exe201.secondchanceshopbe.models.dtos.response.UserResponse;
 import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.UserService;
 
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
+
 @RequestMapping("/api/v1/user")
 @RestController
 @AllArgsConstructor
@@ -44,8 +46,8 @@ public class UserController {
 
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_lIST_SUCCESS")
-                        .message("create user successfully")
+                        .code(CREATE_SUCCESS)
+                        .message(CREATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)
@@ -58,8 +60,8 @@ public class UserController {
         List<UserResponse> userList = userService.getListUser();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_lIST_SUCCESS")
-                        .message("Get list user successfully")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userList)
@@ -71,8 +73,8 @@ public class UserController {
         UserResponse userResponse = userService.getUserById(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_SUCCESS")
-                        .message("Get user successfully")
+                        .code(GET_BY_ID_SUCCESS)
+                        .message(GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)
@@ -85,8 +87,8 @@ public class UserController {
         UserResponse userResponse = userService.userUpdate(updateUserDTO );
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("Update user successfully")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)
@@ -98,8 +100,8 @@ public class UserController {
         UserResponse userResponse = userService.userDelete(id );
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("Update user successfully")
+                        .code(DELETE_SUCCESS)
+                        .message(DELETE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)

@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import scs.exe201.secondchanceshopbe.models.dtos.enums.FileCloudStatus;
 import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.repositories.FileCloudRepository;
 import scs.exe201.secondchanceshopbe.services.FileDatabaseService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 
 
 import java.io.ByteArrayInputStream;
@@ -55,7 +57,7 @@ public class FileDatabaseServiceImpl implements FileDatabaseService {
             fileObject.setFileName(nameUpdate);
             return uploadFilev(fileObject);
         } catch (Exception ex) {
-            throw new ActionFailedException("Failed to upload file");
+            throw new ActionFailedException(Constants.FAIL_TO_UPLOAD_FILE);
         }
     }
 
@@ -63,12 +65,12 @@ public class FileDatabaseServiceImpl implements FileDatabaseService {
     public List<FileObjectResponse> upNhieufile(List<MultipartFile> files) {
         try {
             if (files == null || files.isEmpty()) {
-                throw new ActionFailedException("Failed to upload file: No files selected");
+                throw new ActionFailedException(Constants.FAIL_TO_UPLOAD_FILE + Constants.NO_FILE_SELECTED);
             }
             List<FileObject> fileObjects = new ArrayList<>();
             for (MultipartFile file : files) {
                 if (file.isEmpty()) {
-                    throw new ActionFailedException("File is empty");
+                    throw new ActionFailedException(Constants.FILE_EMPTY);
                 }
 
                 String uuid = UUID.randomUUID().toString();

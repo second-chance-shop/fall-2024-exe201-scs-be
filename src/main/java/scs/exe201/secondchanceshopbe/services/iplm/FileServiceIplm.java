@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.FileObject;
 import scs.exe201.secondchanceshopbe.models.dtos.response.FileObjectResponse;
 import scs.exe201.secondchanceshopbe.services.FileService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -59,9 +60,9 @@ public class FileServiceIplm implements FileService {
             return response;
         } catch (AmazonS3Exception e) {
             if (e.getStatusCode() == 404) {
-                System.out.println("[ERROR] Can't Found File");
+                System.out.println(Constants.FILE_NOT_FOUND);
             } else if (e.getStatusCode() == 403) {
-                System.out.println("[ERROR] Don't Have Permission");
+                System.out.println(Constants.NOT_PERMISSION);
             }
             return null;
         } catch (Exception ex) {

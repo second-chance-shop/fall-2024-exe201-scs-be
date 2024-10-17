@@ -16,6 +16,7 @@ import scs.exe201.secondchanceshopbe.repositories.OrderRepository;
 import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.OrderService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 import java.time.LocalDate;
@@ -47,7 +48,7 @@ public class OrderServiceIplm implements OrderService {
     public OrderResponse updateOrder(long id, OrderUpdateDTO updateDTO) {
 
             OrderEntity orderEntity = orderRepository.findById(id).orElseThrow(
-                    () -> new NotFoundException("Order not found")
+                    () -> new NotFoundException(Constants.ORDER_NOT_FOUND)
             );
 
             orderEntity.setQuantity(updateDTO.getQuantity());
@@ -55,7 +56,7 @@ public class OrderServiceIplm implements OrderService {
                 .filter(m -> m.name().equals(updateDTO.getNameMethod().toString()))
                 .findFirst()
                 .orElseThrow(
-                        ()-> new NotFoundException("Method payment not found")
+                        ()-> new NotFoundException(Constants.METHOD_PAYMENT_NOT_FOUND)
                 );
 
         orderEntity.setPaymentMethod(paymentMethod);
@@ -69,16 +70,16 @@ public class OrderServiceIplm implements OrderService {
     public OrderResponse createOrder(OrderCreateDTO createDTO) {
         OrderEntity orderEntity = new OrderEntity();
         UserEntity userEntity = userRepository.findById(createDTO.getUserId()).orElseThrow(
-                () -> new NotFoundException("User not found")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         ProductEntity productEntity = productRepository.findById(createDTO.getProductId()).orElseThrow(
-                () -> new NotFoundException("Product not found")
+                () -> new NotFoundException(Constants.PRODUCT_NOT_FOUND)
         );
         MethodPayment paymentMethod = Arrays.stream(MethodPayment.values())
                 .filter(m -> m.name().equals(createDTO.getNameMethod().toString()))
                 .findFirst()
                 .orElseThrow(
-                        ()-> new NotFoundException("Method payment not found")
+                        ()-> new NotFoundException(Constants.METHOD_PAYMENT_NOT_FOUND)
                 );
         orderEntity.setUserOrder(userEntity);
         orderEntity.setProductOrder(productEntity);

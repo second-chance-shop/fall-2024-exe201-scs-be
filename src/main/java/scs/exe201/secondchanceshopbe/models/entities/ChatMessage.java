@@ -1,41 +1,25 @@
 package scs.exe201.secondchanceshopbe.models.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+
 public class ChatMessage {
-    private MessageType type;
-    private String content;
-    private String sender;
+    private String message;
+    private String senderId;
+    private String receiverId;
+    private Long timestamp;
 
-    public enum MessageType {
-        CHAT,
-        JOIN,
-        LEAVE
+    public ChatMessage() {
     }
 
-    public MessageType getType() {
-        return type;
+    public ChatMessage(String message, String senderId, String receiverId, Long timestamp) {
+        this.message = message;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.timestamp = timestamp;
     }
 
-    public void setType(MessageType type) {
-        this.type = type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
+    // Getters and Setters
 }
-

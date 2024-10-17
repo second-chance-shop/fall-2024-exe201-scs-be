@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.NotificationCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.NotificationUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.NotificationResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.NotificationService;
+
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,8 +33,8 @@ public class NotificationController {
         List<NotificationResponse> notificationResponses = notificationService.getAllNotification();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_SUCCESS")
-                        .message("Get list successfully")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(notificationResponses)
@@ -45,8 +46,8 @@ public class NotificationController {
         NotificationResponse notificationResponses = notificationService.createNotification( notificationCreateDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("CREATE successfully")
+                        .code(CREATE_SUCCESS)
+                        .message(CREATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(notificationResponses)
@@ -58,8 +59,8 @@ public class NotificationController {
         NotificationResponse notificationResponses = notificationService.updateNotification( notificationUpdateDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("UPDATE successfully")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(notificationResponses)
@@ -71,8 +72,8 @@ public class NotificationController {
         NotificationResponse notificationResponses = notificationService.deleteNotification( id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("DELETE_SUCCESS")
-                        .message("delete successfully")
+                        .code(DELETE_SUCCESS)
+                        .message(DELETE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(notificationResponses)

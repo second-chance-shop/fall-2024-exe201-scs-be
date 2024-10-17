@@ -31,6 +31,7 @@ import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.FileDatabaseService;
 import scs.exe201.secondchanceshopbe.services.FileService;
 import scs.exe201.secondchanceshopbe.services.ProductService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
@@ -91,7 +92,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
 
     // Xử lý nếu không tìm thấy sản phẩm nào
     if (productEntities.isEmpty()) {
-        throw new NotFoundException("Products not found");
+        throw new NotFoundException(Constants.PRODUCT_NOT_FOUND);
     }
 
     // Chuyển đổi từ ProductEntity sang ProductResponse
@@ -109,7 +110,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
         var auth = SecurityContextHolder.getContext().getAuthentication();
 
         UserEntity createBy = userRepository.findByUsername(auth.getName())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND));
 
         ProductEntity productEntity = dtoToEntity.mapProductCreateDTOToProductEntity(request, categories, createBy);
         ProductEntity savedProduct = productRepository.save(productEntity);
@@ -131,7 +132,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
     @Override
     public ProductResponse deleteProduct(long idProduct) {
         ProductEntity productEntity = productRepository.findById(idProduct)
-                .orElseThrow(() -> new NotFoundException( "Product not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.PRODUCT_NOT_FOUND));
         productEntity.setStatus(StatusEnum.DELETED);
         productRepository.save(productEntity);
         return mapProductEntityToProductResponse(productEntity);
@@ -140,7 +141,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
     @Override
     public ProductResponse getProductById(long idProduct) {
         ProductEntity productEntity = productRepository.findById(idProduct)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.PRODUCT_NOT_FOUND));
         return mapProductEntityToProductResponse(productEntity);
     }
 
@@ -148,7 +149,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
     @Override
     public ProductResponse addProduct(ProductCreateDTO product, List<MultipartFile> files) {
         if(product.getCategoryIds().isEmpty()||product == null){
-            throw new ActionFailedException("Product empty");
+            throw new ActionFailedException(Constants.PRODUCT_EMPTY);
         }
         List<String> imageUrls = new ArrayList<>();
         if (files!= null && !files.isEmpty()) {
@@ -161,7 +162,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
         }
         var auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
-                () -> new NotFoundException("User not found"));
+                () -> new NotFoundException(Constants.USER_NOT_FOUND));
         Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(product.getCategoryIds()));
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductName(product.getProductName());
@@ -176,7 +177,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
             productEntity.setImages(imageUrls);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new ActionFailedException("Error processing image URLs: " + e.getMessage());
+            throw new ActionFailedException(Constants.ERROR_IMG_URL+ e.getMessage());
         }
 
         productRepository.save(productEntity);
@@ -193,7 +194,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
     @Override
     public ProductResponse updateProductv1(ProductUpdateDTO product, List<MultipartFile> files) {
         ProductEntity productEntity = productRepository.findById(product.getId()).orElseThrow(
-                () -> new NotFoundException("Product not found")
+                () -> new NotFoundException(Constants.PRODUCT_NOT_FOUND)
         );
         List<String> imageUrls = new ArrayList<>();
         if (files!= null && !files.isEmpty()) {
@@ -206,7 +207,7 @@ public Page<ProductResponse> getAllProductsv1(String search, String sortField, S
                 productEntity.setImages(imageUrls);
             }catch (JsonProcessingException e) {
                 e.printStackTrace();
-                throw new ActionFailedException("Error processing image URLs: " + e.getMessage());
+                throw new ActionFailedException(Constants.ERROR_IMG_URL + e.getMessage());
             }
         }
         Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(product.getCategoryIds()));

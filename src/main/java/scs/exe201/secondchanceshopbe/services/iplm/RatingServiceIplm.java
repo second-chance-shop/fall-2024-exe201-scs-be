@@ -15,6 +15,7 @@ import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
 import scs.exe201.secondchanceshopbe.repositories.RatingRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.RatingService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 import java.time.LocalDate;
@@ -34,18 +35,18 @@ public class RatingServiceIplm implements RatingService {
                 ratingRepository.findByProductIdAndUserId(createDTO.getProductId(), createDTO.getUserId());
 
         if (existingRating.isPresent()) {
-            throw  new ConflictException("User đã đánh giá sản phẩm này rồi"); // Hoặc custom exception phù hợp
+            throw  new ConflictException(Constants.RATED_ALREADY); // Hoặc custom exception phù hợp
         }
         ratingEntity.setDateCreate(LocalDate.now());
         ratingEntity.setStatus(StatusEnum.ACTIVE);
         ratingEntity.setStar(createDTO.getStart());
         UserEntity userEntity = userRepository.findById(createDTO.getUserId()).orElseThrow(
-                () -> new NotFoundException("User not found")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         ratingEntity.setUserRating(userEntity);
 
         ProductEntity productEntity = productRepository.findById(createDTO.getProductId()).orElseThrow(
-                () -> new NotFoundException("Product not found")
+                () -> new NotFoundException(Constants.PRODUCT_NOT_FOUND)
         );
 
         ratingEntity.setProduct(productEntity);
@@ -57,7 +58,7 @@ public class RatingServiceIplm implements RatingService {
     @Override
     public RatingResponse updateRating(RatingUpdateDTO updateDTO) {
         RatingEntity ratingEntity = ratingRepository.findById(updateDTO.getId()).orElseThrow(
-                () -> new NotFoundException("Rating not found")
+                () -> new NotFoundException(Constants.RATING_NOT_FOUND)
         );
         ratingEntity.setStar(updateDTO.getStart());
         ratingRepository.save(ratingEntity);

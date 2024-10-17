@@ -16,6 +16,8 @@ import scs.exe201.secondchanceshopbe.services.ProductService;
 
 import java.util.List;
 
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
+
 @RequestMapping("/api/v1/product")
 @RestController
 @AllArgsConstructor
@@ -28,8 +30,8 @@ public class ProductController {
         Page<ProductResponse> products = productService.getAllProducts(page, size);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Products retrieved successfully")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(products)
@@ -41,8 +43,8 @@ public class ProductController {
         List<ProductResponse> products = productService.getAll();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Products retrieved successfully")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(products)
@@ -59,8 +61,8 @@ public class ProductController {
         Page<ProductResponse> products = productService.getAllProductsv1(search, sortField, sortDirection, page, size);
         return ResponseEntity.ok().body(
             ResponseObject.builder()
-            .code("GET_SUCCESS")
-            .message("get success")
+            .code(GET_SUCCESS)
+            .message(GET_SUCCESS)
             .status(HttpStatus.OK)
             .isSuccess(true)
             .data(products)
@@ -74,8 +76,8 @@ public class ProductController {
         ProductResponse product = productService.getProductById(idProduct);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Product retrieved successfully")
+                        .code(GET_BY_ID_SUCCESS)
+                        .message(GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(product)
@@ -89,8 +91,8 @@ public class ProductController {
         ProductResponse response = productService.createProduct(product);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("ADD_SUCCESS")
-                        .message("Product added successfully")
+                        .code(CREATE_SUCCESS)
+                        .message(CREATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)
@@ -109,8 +111,8 @@ public ResponseEntity<ResponseObject> addProductV1(
     // Trả về ResponseEntity
     return ResponseEntity.ok().body(
             ResponseObject.builder()
-                    .code("ADD_SUCCESS")
-                    .message("Product added successfully")
+                    .code(CREATE_SUCCESS)
+                    .message(CREATE_SUCCESS)
                     .status(HttpStatus.OK)
                     .isSuccess(true)
                     .data(response)
@@ -127,8 +129,8 @@ public ResponseEntity<ResponseObject> addProductV1(
         ProductResponse response = productService.deleteProduct(idProduct);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("DELETE_SUCCESS")
-                        .message("Product deleted successfully")
+                        .code(DELETE_SUCCESS)
+                        .message(DELETE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)
@@ -141,8 +143,8 @@ public ResponseEntity<ResponseObject> addProductV1(
         ProductResponse response = productService.updateProduct(id, product);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("Product updated successfully")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)
@@ -157,8 +159,8 @@ public ResponseEntity<ResponseObject> addProductV1(
         ProductResponse response = productService.updateProductv1(product,files);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("Product updated successfully")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)

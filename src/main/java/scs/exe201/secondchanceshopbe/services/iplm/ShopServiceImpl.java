@@ -25,6 +25,7 @@ import scs.exe201.secondchanceshopbe.repositories.ShopRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.FileDatabaseService;
 import scs.exe201.secondchanceshopbe.services.ShopService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 import java.time.LocalDate;
@@ -48,9 +49,9 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ShopResponse createShop(ShopRequestDTO shopRequest) {
         UserEntity shopOwner = userRepository.findById(Long.valueOf(shopRequest.getUserId()))
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND));
         CategoryEntity typeShop = categoryRepository.findById(Long.valueOf(shopRequest.getCategoryId()))
-                .orElseThrow(() -> new NotFoundException("Category not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.CATEGORY_NOT_FOUND));
         ShopEntity shopEntity = new ShopEntity();
         shopEntity.setShopName(shopRequest.getShopName());
         shopEntity.setDescription(shopRequest.getDescription());
@@ -96,10 +97,10 @@ public class ShopServiceImpl implements ShopService {
                 .orElseThrow(() -> new NotFoundException("Shop not found"));
 
         UserEntity shopOwner = userRepository.findById(shopRequest.getUserId())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND));
 
         CategoryEntity typeShop = categoryRepository.findById(shopRequest.getCategoryId())
-                .orElseThrow(() -> new NotFoundException("Category not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.CATEGORY_NOT_FOUND));
 
         shopEntity.setShopName(shopRequest.getShopName());
         shopEntity.setDescription(shopRequest.getDescription());
@@ -124,7 +125,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ShopResponse deleteShop(Long shopId) {
         ShopEntity shopEntity = shopRepository.findById(shopId).orElseThrow(
-                () -> new NotFoundException("Shop not found"));
+                () -> new NotFoundException(Constants.SHOP_NOT_FOUND));
         shopEntity.setStatus(StatusEnum.DELETED);
         shopRepository.save(shopEntity);
         return EntityToDTO.shopEntityTODTO(shopEntity);
@@ -134,7 +135,7 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ShopResponse updatev1(ShopUpdateDTO shopUpdateDTO, MultipartFile files) {
         ShopEntity shopEntity = shopRepository.findById(shopUpdateDTO.getId()).orElseThrow(
-                () -> new NotFoundException("Shop not found")
+                () -> new NotFoundException(Constants.SHOP_NOT_FOUND)
         );
         shopEntity.setShopName(shopUpdateDTO.getShopName());
         shopEntity.setDescription(shopUpdateDTO.getDescription());
@@ -150,7 +151,7 @@ public class ShopServiceImpl implements ShopService {
         shopEntity.setShippingAddress(shopUpdateDTO.getShippingAddress()); // Bổ sung địa chỉ giao hàng
         shopEntity.setIndustry(shopUpdateDTO.getIndustry()); // Bổ sung ngành nghề
         CategoryEntity categoryEntity = categoryRepository.findById(shopUpdateDTO.getCategoryId())
-                .orElseThrow(() -> new NotFoundException("Category not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.CATEGORY_NOT_FOUND));
         shopEntity.setTypeShop(categoryEntity);
         return EntityToDTO.shopEntityTODTO(shopEntity);
     }
@@ -159,17 +160,17 @@ public class ShopServiceImpl implements ShopService {
     public ShopResponse addV1(ShopCreateDTO shopCreateDTO, MultipartFile imageShop, MultipartFile cccdFont, MultipartFile cccdBack) {
         ShopEntity shopEntity = new ShopEntity();
         if(shopRepository.existsByshopEmail(shopCreateDTO.getShopEmail())) {
-            throw new NotFoundException("Shop email already exists");
+            throw new NotFoundException(Constants.SHOP_EMAIL_ALREADY_EXISTS);
         }
         if (shopRepository.existsByshopPhonumber(shopCreateDTO.getShopPhonumber())) {
-            throw new NotFoundException("Shop phone already exists");
+            throw new NotFoundException(Constants.SHOP_PHONE_ALREADY_EXISTS);
         }
         var auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity= userRepository.findByUsername(auth.getName()).orElseThrow(
-                () -> new NotFoundException("User not found")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         CategoryEntity categoryEntity = categoryRepository.findById(shopCreateDTO.getCategoryId()).orElseThrow(
-                () -> new NotFoundException("Category not found")
+                () -> new NotFoundException(Constants.CATEGORY_NOT_FOUND)
         );
         shopEntity.setShopName(shopCreateDTO.getShopName());
         shopEntity.setDescription(shopCreateDTO.getDescription());

@@ -14,6 +14,7 @@ import scs.exe201.secondchanceshopbe.repositories.CommentRepository;
 import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.CommentService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 import java.time.LocalDate;
@@ -37,10 +38,10 @@ public class CommentServiceIplm implements CommentService {
 
         CommentEntity comment = new CommentEntity();
         ProductEntity product = productRepository.findById(commentCreateDTO.getProductId()).orElseThrow(
-                () -> new NotFoundException("Product not found")
+                () -> new NotFoundException(Constants.COMMENT_NOT_FOUND)
         );
         UserEntity user = userRepository.findById(commentCreateDTO.getUserId()).orElseThrow(
-                () -> new NotFoundException("User not found")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         comment.setProduct(product);
         comment.setUserComment(user);
@@ -59,7 +60,7 @@ public class CommentServiceIplm implements CommentService {
     @Override
     public CommentResponse deleteComment(long id) {
         CommentEntity comment = commentRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Comment not found")
+                () -> new NotFoundException(Constants.COMMENT_NOT_FOUND)
         );
         comment.setStatus(StatusEnum.DELETED);
         commentRepository.save(comment);
@@ -70,7 +71,7 @@ public class CommentServiceIplm implements CommentService {
     @Override
     public CommentResponse updateComment(CommentUpdateDTO comment) {
         CommentEntity currentComment = commentRepository.findById(comment.getId()).orElseThrow(
-                () -> new NotFoundException("Comment not found")
+                () -> new NotFoundException(Constants.COMMENT_NOT_FOUND)
         );
         currentComment.setContent(comment.getContent());
         commentRepository.save(currentComment);

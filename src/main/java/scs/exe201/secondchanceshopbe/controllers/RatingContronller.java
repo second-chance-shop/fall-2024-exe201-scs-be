@@ -19,6 +19,8 @@ import scs.exe201.secondchanceshopbe.models.dtos.response.RatingResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.RatingService;
 
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
+
 @RestController
 @RequestMapping("/api/v1/rating")
 public class RatingContronller {
@@ -34,8 +36,8 @@ public class RatingContronller {
         List<RatingResponse> responses = ratingService.getAll();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(responses)
@@ -47,8 +49,8 @@ public class RatingContronller {
         List<RatingResponse> responses = ratingService.getAllByProductId(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .code(GET_BY_ID_SUCCESS)
+                        .message(GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(responses)
@@ -60,8 +62,8 @@ public class RatingContronller {
         RatingResponse ratingResponse = ratingService.craterating(createDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .code(CREATE_SUCCESS)
+                        .message(CREATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(ratingResponse)
@@ -73,8 +75,8 @@ public class RatingContronller {
         RatingResponse ratingResponse = ratingService.updateRating(updateDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("get all success")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(ratingResponse)
@@ -86,8 +88,8 @@ public class RatingContronller {
         RatingResponse ratingResponse = ratingService.deleterating(id);
         return ResponseEntity.ok().body(
             ResponseObject.builder()
-            .code("DELETE_SUCCESS")
-            .message("delete rating success")
+            .code(DELETE_SUCCESS)
+            .message(DELETE_SUCCESS)
             .status(HttpStatus.OK)
             .isSuccess(true)
             .data(ratingResponse)
