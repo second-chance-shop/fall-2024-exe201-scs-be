@@ -27,7 +27,7 @@ public class ShopController {
 
     private final ShopService shopService;
 
-    @GetMapping("/getAllShops")
+    @GetMapping
     public ResponseEntity<ResponseObject> getAllShops(@RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "10") int size) {
         Page<ShopResponse> shops = shopService.getAllShops(page, size);
@@ -56,35 +56,8 @@ public class ShopController {
         );
     }
 
-    @PostMapping("/addShop")
-    public ResponseEntity<ResponseObject> addShop(@RequestBody ShopRequestDTO shopRequest) {
-        ShopResponse response = shopService.createShop(shopRequest);
-        return ResponseEntity.ok().body(
-                ResponseObject.builder()
-                        .code("ADD_SUCCESS")
-                        .message("Shop added successfully")
-                        .status(HttpStatus.CREATED)
-                        .isSuccess(true)
-                        .data(response)
-                        .build()
-        );
-    }
 
-    @PutMapping("/updateShop/{id}")
-    public ResponseEntity<ResponseObject> updateShop(@PathVariable Long id, @RequestBody ShopRequestDTO shopRequest) {
-        ShopResponse response = shopService.updateShop(id, shopRequest);
-        return ResponseEntity.ok().body(
-                ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("Shop updated successfully")
-                        .status(HttpStatus.OK)
-                        .isSuccess(true)
-                        .data(response)
-                        .build()
-        );
-    }
-
-    @DeleteMapping("/deleteShop/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseObject> deleteShop(@PathVariable Long id) {
         ShopResponse response = shopService.deleteShop(id);
         return ResponseEntity.ok().body(
@@ -128,6 +101,19 @@ public class ShopController {
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)
+                        .build()
+        );
+    }
+    @GetMapping("user/{id}")
+    public ResponseEntity<ResponseObject> getShopsByUser(@PathVariable Long id) {
+        ShopResponse shopResponse = shopService.getByUserId(id);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("FETCH_SUCCESS")
+                        .message("Shops retrieved successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(shopResponse)
                         .build()
         );
     }

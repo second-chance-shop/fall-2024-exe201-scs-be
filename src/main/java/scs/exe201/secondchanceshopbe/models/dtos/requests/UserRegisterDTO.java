@@ -46,6 +46,6 @@ public class UserRegisterDTO {
     @NotEmpty(message = "Email must not be empty")
     private String email;
 
-    private String avatar;
+//    private String avatar;
 
 }

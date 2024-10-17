@@ -75,58 +75,7 @@ public class ProductServiceIplm implements ProductService {
         List<ProductResponse> productResponses = productEntities.stream().map(EntityToDTO::productEntityToDTO).toList();
         return new PageImpl<>(productResponses, pageable, productEntities.getTotalElements());
     }
-    @Override
-public Page<ProductResponse> getAllProductsv1(String search, String sortField, String sortDirection, int page, int size) {
-    // Phân trang và sắp xếp
-    Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
-    PageRequest pageable = PageRequest.of(page - 1, size, sort);
-    
-    // Tìm kiếm (nếu có chuỗi tìm kiếm)
-    Page<ProductEntity> productEntities;
-    if (search != null && !search.isEmpty()) {
-        productEntities = productRepository.searchByNameOrDescription(search, pageable);
-    } else {
-        productEntities = productRepository.getAll(pageable);
-    }
 
-    // Xử lý nếu không tìm thấy sản phẩm nào
-    if (productEntities.isEmpty()) {
-        throw new NotFoundException("Products not found");
-    }
-
-    // Chuyển đổi từ ProductEntity sang ProductResponse
-    List<ProductResponse> productResponses = productEntities.getContent().stream()
-            .map(EntityToDTO::productEntityToDTO)
-            .collect(Collectors.toList());
-
-    // Trả về trang kết quả
-    return new PageImpl<>(productResponses, pageable, productEntities.getTotalElements());
-}
-
-    @Override
-    public ProductResponse createProduct(ProductCreateDTO request) {
-        Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(request.getCategoryIds()));
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-
-        UserEntity createBy = userRepository.findByUsername(auth.getName())
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-        ProductEntity productEntity = dtoToEntity.mapProductCreateDTOToProductEntity(request, categories, createBy);
-        ProductEntity savedProduct = productRepository.save(productEntity);
-
-        return EntityToDTO.productEntityToDTO(savedProduct);
-    }
-
-    @Override
-    public ProductResponse updateProduct(Long productId, ProductUpdateDTO request) {
-        ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
-
-        Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(request.getCategoryIds()));
-        productEntity = DTOToEntity.mapProductUpdateDTOToProductEntity(request,categories);
-        ProductEntity updatedProduct = productRepository.save(productEntity);
-        return mapProductEntityToProductResponse(updatedProduct);
-    }
 
     @Override
     public ProductResponse deleteProduct(long idProduct) {
