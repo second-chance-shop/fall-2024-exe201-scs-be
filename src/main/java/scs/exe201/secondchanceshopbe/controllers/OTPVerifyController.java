@@ -19,7 +19,6 @@ public class OTPVerifyController {
     private final OTPService otpService;
     private final UserService userService;
 
-    // dung chung cho forgetpassword va add user
     @PatchMapping(path = "verify")
     public ResponseEntity<ResponseObject> verifyOTP (@RequestBody OTPVerifyRequest request) {
         otpService.verifyOTP(request);
@@ -52,7 +51,6 @@ public class OTPVerifyController {
                                                                       @RequestParam String confirmPassword) {
         otpService.verifyOTP(request);
         userService.setPasswordForget(request.getEmail(),newPassword,confirmPassword);
-
         return ResponseEntity.ok(ResponseObject.builder()
                 .code("VERIFY_SUCCESS")
                 //.content(request)
@@ -73,10 +71,9 @@ public class OTPVerifyController {
                 .isSuccess(true)
                 .build());
     }
-
-    @PostMapping(path="reload-otp-set-password")
-    public ResponseEntity<ResponseObject> reloadOtpPassword(@RequestParam String email) {
-        otpService.generateOTPCodeAgain(email,TemplateEnum.PASSWORD.toString());
+    @PostMapping(path="resend-otp-forget-password")
+    public ResponseEntity<ResponseObject> reloadOtpForgetPassword(@RequestParam String email) {
+        otpService.generateOTPCodeAgain(email, TemplateEnum.PASSWORD.toString());
         return ResponseEntity.ok(ResponseObject.builder()
                 .code("VERIFY_SUCCESS")
                 //.content(request)
@@ -85,5 +82,17 @@ public class OTPVerifyController {
                 .isSuccess(true)
                 .build());
     }
-    
+
+    @PostMapping(path="reload-otp-set-password")
+    public ResponseEntity<ResponseObject> reloadOtpPassword(@RequestParam String email) {
+        otpService.resendOTPSetPassword(email);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .code("VERIFY_SUCCESS")
+                //.content(request)
+                .status(HttpStatus.OK)
+                .message("Verify OTP Success")
+                .isSuccess(true)
+                .build());
+    }
+
 }

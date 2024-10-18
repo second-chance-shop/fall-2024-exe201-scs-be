@@ -165,7 +165,7 @@ public class UserController {
     @PutMapping(path = "forget-password")
     public ResponseEntity<ResponseObject> forgetPass(@RequestParam String email) {
         UserResponse check = userService.checkUser(email);
-        otpService.generateOTPCode(email,TemplateEnum.ACCOUNT.toString());
+        otpService.generateOTPCode(email,TemplateEnum.PASSWORD.toString());
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("GET_SUCCESS")
