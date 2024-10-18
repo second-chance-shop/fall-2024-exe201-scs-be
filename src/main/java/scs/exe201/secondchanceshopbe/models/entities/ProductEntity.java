@@ -63,7 +63,6 @@ public class ProductEntity {
         if (this.image == null || this.image.isEmpty()) {
             return new ArrayList<>(); // Trả về danh sách rỗng
         }
-
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(this.image, List.class);
     }
