@@ -23,74 +23,95 @@ import scs.exe201.secondchanceshopbe.services.SendMailService;
 @RequiredArgsConstructor
 public class OtpServiceIplm implements OTPService {
 
- private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private final SendMailService mailSenderService;
     private final UserRepository userRepository;
-    private Long timeOut = (long) 11.0;
+    private Long timeOut = (long) 3.0;
+  //  private Long timeOutPassword = (long) 3.0;
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public void generateOTPCode(String email, String template) {
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(email))) {
+            String otpInRedis = (String) redisTemplate.opsForHash().get(email, "otp");
+            if (otpInRedis != null) {
+                throw new ActionFailedException("OTP has been sent. Please check your email !");
+            }
+        }
         var value = generateRandomOTP();
+        redisTemplate.delete(email);
         redisTemplate.opsForValue().set(email, value, timeOut, TimeUnit.MINUTES); // Sử dụng email làm key
         mailSenderService.sendOtpEmail(email, value, template);
     }
 
+
     @Override
-    public void changePasswordOtp(String email, String newPassword) {
+    public void changePasswordOtp(String email,  String newPassword) {
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(email))) {
+            String otpInRedis = (String) redisTemplate.opsForHash().get(email, "otp");
+            if (otpInRedis != null) {
+                throw new ActionFailedException("OTP has been sent. Please check your email !");
+            }
+        }
         String template = TemplateEnum.PASSWORD.toString();
         var otp = generateRandomOTP();
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        redisTemplate.opsForHash().put(email, "otp", otp);
-        redisTemplate.opsForHash().put(email, "password", encodedPassword);
+        redisTemplate.opsForHash().put(email, "otp", otp);        // Lưu OTP vào field "otp"
+        String password = passwordEncoder.encode(newPassword);
+        redisTemplate.opsForHash().put(email, "password", password); // Lưu password vào field "password"
         redisTemplate.expire(email, timeOut, TimeUnit.MINUTES);
-        mailSenderService.sendOtpEmail(email, otp, template);
+        mailSenderService.sendOtpEmail(email, otp,template);
     }
 
 
     @Override
     public void generateOTPCodeAgain(String email, String template) {
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(email))) {
+            String otpInRedis = (String) redisTemplate.opsForHash().get(email, "otp");
+            if (otpInRedis != null) {
+                throw new ActionFailedException("OTP has been sent. Please check your email !");
+            }
+        }
         if (template == null) {
-            throw new ActionFailedException("Template is null");
+            throw new ActionFailedException("template is null");
         }
         UserEntity check = userRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException(email + " chưa được đăng kí")
+                () -> new NotFoundException(email + " này chưa được đăng kí")
         );
         if (check.getStatus().equals(StatusEnum.DELETED)) {
-            throw new ActionFailedException("Account has been deleted");
+            throw new ActionFailedException("account has been deleted");
         }
         if (check.getStatus().equals(StatusEnum.BAN)) {
-            throw new ActionFailedException("Account has been banned");
+            throw new ActionFailedException("account has been ban");
         }
         if (!TemplateEnum.PASSWORD.toString().equals(template)) {
             if (check.getStatus().equals(StatusEnum.ACTIVE)) {
                 throw new ActionFailedException(email + " đã đăng kí rồi");
             }
         }
-
-        var otpValue = generateRandomOTP();
-        redisTemplate.opsForHash().put(email, "otp", otpValue); // Lưu OTP vào Redis với email làm key
-        redisTemplate.expire(email, timeOut, TimeUnit.MINUTES); // Đặt thời gian hết hạn
-        mailSenderService.sendOtpEmail(email, otpValue, template);
+        var value = generateRandomOTP();
+        redisTemplate.delete(email);
+        redisTemplate.opsForValue().set(email, value, timeOut, TimeUnit.MINUTES); // Sử dụng email làm key
+        mailSenderService.sendOtpEmail(email, value, template);
     }
 
 
     @Override
     public void verifyOTP(OTPVerifyRequest request) {
-        var storedOtp = (String) redisTemplate.opsForHash().get(request.getEmail(), "otp"); // Lấy OTP từ opsForHash
+        var storedOtp = (String) redisTemplate.opsForValue().get(request.getEmail()); // Lấy OTP bằng email
         if (storedOtp == null) {
             throw new ValidationFailedException("This OTP is not valid or expired");
         }
         if (!storedOtp.equals(request.getOtp())) {
             throw new ValidationFailedException("The OTP doesn't match");
         }
+        redisTemplate.delete(request.getEmail());
     }
 
     @Override
     public String verifyOtpSetPassword(OTPVerifyRequest request) {
-        var otpInRedis = (String) redisTemplate.opsForHash().get(request.getEmail(), "otp"); // Lấy OTP từ opsForHash
-        var password = (String) redisTemplate.opsForHash().get(request.getEmail(), "password"); // Lấy mật khẩu từ opsForHash
+        String otpInRedis = (String) redisTemplate.opsForHash().get(request.getEmail(), "otp");
+        String password = (String) redisTemplate.opsForHash().get(request.getEmail(), "password");
 
         if (otpInRedis == null) {
             throw new ValidationFailedException("This OTP is not valid or has expired");
@@ -98,38 +119,45 @@ public class OtpServiceIplm implements OTPService {
         if (!otpInRedis.equals(request.getOtp())) {
             throw new ValidationFailedException("The OTP does not match");
         }
+        redisTemplate.delete(request.getEmail());
         return password;
     }
 
     @Override
     public void resendOTPSetPassword(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException("User not found")
-        );
-        if (userEntity.getStatus().equals(StatusEnum.DELETED)) {
-            throw new ActionFailedException("Account has been deleted");
-        }
-        if (userEntity.getStatus().equals(StatusEnum.BAN)) {
-            throw new ActionFailedException("Account has been banned");
-        }
-        if (userEntity.getStatus().equals(StatusEnum.VERIFY)) {
-            throw new ActionFailedException("Account has not been verified");
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(email))) {
+            String otpInRedis = (String) redisTemplate.opsForHash().get(email, "otp");
+            if (otpInRedis != null) {
+                throw new ActionFailedException("OTP has been sent. Please check your email !");
+            }
         }
 
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
+                ()-> new NotFoundException("user not found")
+        );
+        if(userEntity.getStatus().equals(StatusEnum.DELETED)){
+            throw  new ActionFailedException("account has been deleted");
+        }
+        if(userEntity.getStatus().equals(StatusEnum.BAN)){
+            throw new ActionFailedException("account has been ban");
+        }
+        if(userEntity.getStatus().equals(StatusEnum.VERIFY)){
+            throw new ActionFailedException("account has been not verify");
+        }
         var otpValue = generateRandomOTP();
         String template = TemplateEnum.PASSWORD.toString();
-        redisTemplate.opsForHash().put(email, "otp", otpValue); // Lưu OTP vào Redis với email làm key
-        redisTemplate.expire(email, timeOut, TimeUnit.MINUTES); // Đặt thời gian hết hạn
+
+        redisTemplate.opsForHash().put(email, "otp", otpValue);
+        redisTemplate.expire(email, timeOut, TimeUnit.MINUTES);
         mailSenderService.sendOtpEmail(email, otpValue, template);
     }
+
 
     private String generateRandomOTP() {
         String otp;
         do {
-            otp = RandomStringUtils.randomNumeric(6); 
+            otp = RandomStringUtils.randomNumeric(6);
         } while (redisTemplate.opsForValue().get(otp) != null);
         return otp;
     }
 }
-
-
