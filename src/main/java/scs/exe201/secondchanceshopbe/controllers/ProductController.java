@@ -85,21 +85,7 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/addProduct")
-    public ResponseEntity<ResponseObject> addProduct(@RequestBody ProductCreateDTO product) {
 
-        ProductResponse response = productService.createProduct(product);
-        return ResponseEntity.ok().body(
-                ResponseObject.builder()
-                        .code(CREATE_SUCCESS)
-                        .message(CREATE_SUCCESS)
-                        .status(HttpStatus.OK)
-                        .isSuccess(true)
-                        .data(response)
-                        .build()
-        );
-    }
-// here
 @PostMapping(value = "add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 public ResponseEntity<ResponseObject> addProductV1(
         @RequestPart("product") ProductCreateDTO product,
@@ -120,9 +106,6 @@ public ResponseEntity<ResponseObject> addProductV1(
     );
 }
 
-
-
-
     @DeleteMapping("/deleteProduct/{idProduct}")
     public ResponseEntity<ResponseObject> deleteProduct(@PathVariable long idProduct) {
 
@@ -137,21 +120,7 @@ public ResponseEntity<ResponseObject> addProductV1(
                         .build()
         );
     }
-
-    @PutMapping("/updateProduct/{id}")
-    public ResponseEntity<ResponseObject> updateProduct(@PathVariable long id, @RequestBody ProductUpdateDTO product) {
-        ProductResponse response = productService.updateProduct(id, product);
-        return ResponseEntity.ok().body(
-                ResponseObject.builder()
-                        .code(UPDATE_SUCCESS)
-                        .message(UPDATE_SUCCESS)
-                        .status(HttpStatus.OK)
-                        .isSuccess(true)
-                        .data(response)
-                        .build()
-        );
-    }
-// here
+ 
     @PutMapping(value = "update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseObject> updateProductV1(
             @RequestPart("product") ProductUpdateDTO product,

@@ -47,34 +47,6 @@ public class ShopServiceImpl implements ShopService {
     private final FileDatabaseService fileDatabaseService;
 
     @Override
-    public ShopResponse createShop(ShopRequestDTO shopRequest) {
-        UserEntity shopOwner = userRepository.findById(Long.valueOf(shopRequest.getUserId()))
-                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND));
-        CategoryEntity typeShop = categoryRepository.findById(Long.valueOf(shopRequest.getCategoryId()))
-                .orElseThrow(() -> new NotFoundException(Constants.CATEGORY_NOT_FOUND));
-        ShopEntity shopEntity = new ShopEntity();
-        shopEntity.setShopName(shopRequest.getShopName());
-        shopEntity.setDescription(shopRequest.getDescription());
-        shopEntity.setShopEmail(shopRequest.getShopEmail());
-        shopEntity.setShopPhonumber(shopRequest.getShopPhonumber());
-        shopEntity.setShopImage(shopRequest.getShopImage());
-        shopEntity.setBackSideOfCCCD(shopRequest.getBackSideOfCCCD());
-        shopEntity.setFrontSideOfCCCD(shopRequest.getFrontSideOfCCCD());
-        shopEntity.setCccdNumber(shopRequest.getCccdNumber());
-        shopEntity.setIndustry(shopRequest.getIndustry());
-        shopEntity.setDateCreate(shopRequest.getDateCreate());
-        shopEntity.setShippingAddress(shopRequest.getShippingAddress());
-        shopEntity.setShopAddress(shopRequest.getShopAddress());
-        shopEntity.setShopOwner(shopOwner);
-        shopEntity.setTypeShop(typeShop);
-
-
-        ShopEntity savedShop = shopRepository.save(shopEntity);
-
-        return EntityToDTO.shopEntityTODTO(savedShop);
-    }
-
-    @Override
     public ShopResponse getShopById(Long shopId) {
         ShopEntity shopEntity = shopRepository.findById(shopId).orElseThrow(
                 () -> new NotFoundException("Shop not found"));
@@ -91,36 +63,7 @@ public class ShopServiceImpl implements ShopService {
         return new PageImpl<>(shopResponses, pageable, shopPage.getTotalElements());
     }
 
-    @Override
-    public ShopResponse updateShop(Long shopId, ShopRequestDTO shopRequest) {
-        ShopEntity shopEntity = shopRepository.findById(shopId)
-                .orElseThrow(() -> new NotFoundException("Shop not found"));
 
-        UserEntity shopOwner = userRepository.findById(shopRequest.getUserId())
-                .orElseThrow(() -> new NotFoundException(Constants.USER_NOT_FOUND));
-
-        CategoryEntity typeShop = categoryRepository.findById(shopRequest.getCategoryId())
-                .orElseThrow(() -> new NotFoundException(Constants.CATEGORY_NOT_FOUND));
-
-        shopEntity.setShopName(shopRequest.getShopName());
-        shopEntity.setDescription(shopRequest.getDescription());
-        shopEntity.setShopEmail(shopRequest.getShopEmail());
-        shopEntity.setShopPhonumber(shopRequest.getShopPhonumber());
-        shopEntity.setShopImage(shopRequest.getShopImage());
-        shopEntity.setBackSideOfCCCD(shopRequest.getBackSideOfCCCD());
-        shopEntity.setFrontSideOfCCCD(shopRequest.getFrontSideOfCCCD());
-        shopEntity.setCccdNumber(shopRequest.getCccdNumber());
-        shopEntity.setIndustry(shopRequest.getIndustry());
-        shopEntity.setDateCreate(shopRequest.getDateCreate());
-        shopEntity.setShippingAddress(shopRequest.getShippingAddress());
-        shopEntity.setShopAddress(shopRequest.getShopAddress());
-        shopEntity.setShopOwner(shopOwner);
-        shopEntity.setTypeShop(typeShop);
-
-        ShopEntity updatedShop = shopRepository.save(shopEntity);
-
-        return EntityToDTO.shopEntityTODTO(updatedShop);
-    }
 
     @Override
     public ShopResponse deleteShop(Long shopId) {
@@ -146,7 +89,6 @@ public class ShopServiceImpl implements ShopService {
             shopEntity.setShopImage(image.getUrl());
         }
 
-
         shopEntity.setShopAddress(shopUpdateDTO.getShopAddress());
         shopEntity.setShippingAddress(shopUpdateDTO.getShippingAddress()); // Bổ sung địa chỉ giao hàng
         shopEntity.setIndustry(shopUpdateDTO.getIndustry()); // Bổ sung ngành nghề
@@ -159,12 +101,13 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public ShopResponse addV1(ShopCreateDTO shopCreateDTO, MultipartFile imageShop, MultipartFile cccdFont, MultipartFile cccdBack) {
         ShopEntity shopEntity = new ShopEntity();
+
         if(shopRepository.existsByshopEmail(shopCreateDTO.getShopEmail())) {
             throw new NotFoundException(Constants.SHOP_EMAIL_ALREADY_EXISTS);
         }
         if (shopRepository.existsByshopPhonumber(shopCreateDTO.getShopPhonumber())) {
             throw new NotFoundException(Constants.SHOP_PHONE_ALREADY_EXISTS);
-        }
+         
         var auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity= userRepository.findByUsername(auth.getName()).orElseThrow(
                 () -> new NotFoundException(Constants.USER_NOT_FOUND)
@@ -196,6 +139,14 @@ public class ShopServiceImpl implements ShopService {
             shopEntity.setBackSideOfCCCD(image.getUrl());
         }
         shopRepository.save(shopEntity);
+        return EntityToDTO.shopEntityTODTO(shopEntity);
+    }
+
+    @Override
+    public ShopResponse getByUserId(Long id) {
+        ShopEntity shopEntity = shopRepository.findByUserId(id).orElseThrow(
+                () -> new NotFoundException("Shop not found")
+        );
         return EntityToDTO.shopEntityTODTO(shopEntity);
     }
 }

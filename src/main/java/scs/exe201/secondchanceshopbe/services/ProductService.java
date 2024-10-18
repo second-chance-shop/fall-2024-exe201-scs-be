@@ -14,13 +14,9 @@ import java.util.List;
 public interface ProductService {
     Page<ProductResponse> getAllProducts(int page, int size);
 
-    ProductResponse createProduct(ProductCreateDTO request);
-
-    ProductResponse updateProduct(Long productId, ProductUpdateDTO request);
-
     ProductResponse deleteProduct(long idProduct);
+
     ProductResponse getProductById(long idProduct);
-    Page<ProductResponse> getAllProductsv1(String search, String sortField, String sortDirection, int page, int size);
 
     ProductResponse addProduct(ProductCreateDTO product, List<MultipartFile> files);
 

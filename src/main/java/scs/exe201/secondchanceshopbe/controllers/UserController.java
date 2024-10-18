@@ -8,20 +8,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.lettuce.core.RedisConnectionException;
 import lombok.AllArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+import scs.exe201.secondchanceshopbe.models.dtos.enums.TemplateEnum;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.ChangePassworDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.UserRegisterDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
@@ -38,16 +34,33 @@ public class UserController {
 
     private final UserService userService;
     private final OTPService otpService;
-    @Transactional(rollbackFor = {RedisConnectionException.class} )
-    @PostMapping("/register")
-    public ResponseEntity<ResponseObject> registerNewUser(@RequestBody UserRegisterDTO userRegisterDTO) {
-        UserResponse userResponse = userService.registerNewUser(userRegisterDTO);
-        otpService.generateOTPCode(userResponse.getEmail(),userRegisterDTO.getUsername());
 
+
+    @Transactional(rollbackFor = {RedisConnectionException.class})
+    @PostMapping(value = "create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseObject> register(@RequestPart("user") UserRegisterDTO userRegisterDTO,
+                                                   @RequestPart(value = "file", required = false) MultipartFile image) {
+        UserResponse userResponse = userService.registerUser(userRegisterDTO, image);
+        otpService.generateOTPCode(userResponse.getEmail(), TemplateEnum.ACCOUNT.toString());
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code(CREATE_SUCCESS)
                         .message(CREATE_SUCCESS)
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(userResponse)
+                        .build()
+        );
+    }
+
+    @PutMapping(path = "update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseObject> update(@RequestPart("user") UserUpdateDTO updateUserDTO,
+                                                 @RequestPart(value = "file", required = false) MultipartFile image) {
+        UserResponse userResponse = userService.updateUser(updateUserDTO, image);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("UPDATE_SUCCESS")
+                        .message("Update user successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(userResponse)
@@ -68,6 +81,7 @@ public class UserController {
                         .build()
         );
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getUserId(@RequestParam long id) {
         UserResponse userResponse = userService.getUserById(id);
@@ -82,22 +96,11 @@ public class UserController {
         );
     }
 
-    @PatchMapping ("/update-user")
-    public ResponseEntity<ResponseObject> updateUser(@RequestBody UserUpdateDTO updateUserDTO) {
-        UserResponse userResponse = userService.userUpdate(updateUserDTO );
-        return ResponseEntity.ok().body(
-                ResponseObject.builder()
-                        .code(UPDATE_SUCCESS)
-                        .message(UPDATE_SUCCESS)
-                        .status(HttpStatus.OK)
-                        .isSuccess(true)
-                        .data(userResponse)
-                        .build()
-        );
-    }
-    @DeleteMapping ("/delete-user{id}")
+
+
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseObject> deleteUser(@PathVariable long id) {
-        UserResponse userResponse = userService.userDelete(id );
+        UserResponse userResponse = userService.userDelete(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("UPDATE_SUCCESS")
@@ -108,6 +111,7 @@ public class UserController {
                         .build()
         );
     }
+
     @GetMapping
     public ResponseEntity<ResponseObject> getUsers(
             @RequestParam(value = "search", required = false) String search,
@@ -116,8 +120,7 @@ public class UserController {
                     @SortDefault(sort = "name", direction = Sort.Direction.ASC),
                     @SortDefault(sort = "userId", direction = Sort.Direction.DESC)
             })
-            Pageable pageable)
-    {
+            Pageable pageable) {
         UserResponse userResponse = userService.getUsers(search, pageable);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
@@ -129,6 +132,7 @@ public class UserController {
                         .build()
         );
     }
+
     @GetMapping("/profile")
     public ResponseEntity<ResponseObject> getUserProfile() {
         UserResponse userResponse = userService.getUserProfile();
@@ -142,5 +146,38 @@ public class UserController {
                         .build()
         );
     }
-    
+
+    @PutMapping(path = "change-password")
+    public ResponseEntity<ResponseObject> changePassword(@RequestBody ChangePassworDTO changePassworDTO) {
+        UserResponse userResponse = userService.changPassword(
+                changePassworDTO.getEmail(),
+                changePassworDTO.getOldPassword(),
+                changePassworDTO.getNewPassword(),
+                changePassworDTO.getNewPasswordConfirm());
+        otpService.changePasswordOtp(userResponse.getEmail(), changePassworDTO.getNewPassword());
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("GET_SUCCESS")
+                        .message("Get user successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(userResponse)
+                        .build()
+        );
+    }
+    @PutMapping(path = "forget-password")
+    public ResponseEntity<ResponseObject> forgetPass(@RequestParam String email) {
+        UserResponse check = userService.checkUser(email);
+        otpService.generateOTPCode(email,TemplateEnum.ACCOUNT.toString());
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("GET_SUCCESS")
+                        .message("Get user successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(check)
+                        .build()
+        );
+    }
+
 }
