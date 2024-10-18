@@ -35,7 +35,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/OTP/**").permitAll()
                         .requestMatchers("/api/v1/mail/**").permitAll()
 
+
                         //user
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/user/change-password").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/user/forget-password").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/user/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/user/create").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/api/v1/user/update-user").permitAll()

@@ -42,7 +42,7 @@ public class DTOToEntity {
                 .dob(userRegister.getDob())
                 .email(userRegister.getEmail())
                 .name(userRegister.getName())
-       //         .avatar(userRegister.getAvatar())
+                .dateCreated(LocalDate.now())
                 .build();
     }
 
