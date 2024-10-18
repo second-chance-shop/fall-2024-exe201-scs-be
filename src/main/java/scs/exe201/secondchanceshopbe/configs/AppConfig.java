@@ -1,9 +1,11 @@
 package scs.exe201.secondchanceshopbe.configs;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,5 +70,9 @@ public class AppConfig {
         var template = new RedisTemplate<String, Object>();
         template.setConnectionFactory(redisConnectionFactory);
         return template;
+    }
+    @Bean
+    Firestore getFirestore() throws IOException {
+        return FirestoreClient.getFirestore(firebaseApp());
     }
 }
