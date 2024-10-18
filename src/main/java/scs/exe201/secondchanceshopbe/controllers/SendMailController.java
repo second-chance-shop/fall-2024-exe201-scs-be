@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.SendMailService;
 
+import static scs.exe201.secondchanceshopbe.utils.Constants.GET_SUCCESS;
+
 @RestController
 @RequestMapping("/api/v1/mail")
 public class SendMailController {
@@ -35,7 +37,7 @@ public class SendMailController {
 
          return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_lIST_SUCCESS")
+                        .code(GET_SUCCESS)
                         .message("create user successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)

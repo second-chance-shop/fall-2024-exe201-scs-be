@@ -20,6 +20,7 @@ import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.CategoryRepository;
 import scs.exe201.secondchanceshopbe.services.CategoryService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 
 @Service
 @Transactional
@@ -59,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse updateCategory(Long categoryId, CategoryCreateDTO categoryRequest) {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new NotFoundException("Category not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.CATEGORY_NOT_FOUND));
 
         categoryEntity.setCategoryName(categoryRequest.getCategoryName());
         CategoryEntity updatedCategory = categoryRepository.save(categoryEntity);
@@ -70,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
-            throw new NotFoundException("Category not found");
+            throw new NotFoundException(Constants.CATEGORY_NOT_FOUND);
         }
         categoryRepository.deleteById(categoryId);
     }

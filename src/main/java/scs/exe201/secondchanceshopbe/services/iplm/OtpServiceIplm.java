@@ -3,6 +3,7 @@ package scs.exe201.secondchanceshopbe.services.iplm;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import scs.exe201.secondchanceshopbe.models.exception.ValidationFailedException;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.SendMailService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ public class OtpServiceIplm implements OTPService {
 
     private final SendMailService mailSenderService;
     private final UserRepository userRepository;
+
     private Long timeOut = (long) 11.0;
     String vetify = "VETIFY";
     private final RedisTemplate<String, Object> redisTemplate;
@@ -56,7 +59,7 @@ public class OtpServiceIplm implements OTPService {
             throw new ActionFailedException("template is null");
         }
         UserEntity check = userRepository.findByEmail(email).orElseThrow(
-            ()->  new NotFoundException(email +" này chưa được đăng kí")
+            ()->  new NotFoundException(email + Constants.NOT_REGISTERED)
         );
         if(check.getStatus().equals(StatusEnum.DELETED)){
             throw  new ActionFailedException("account has been deleted");
@@ -78,10 +81,10 @@ public class OtpServiceIplm implements OTPService {
     public void verifyOTP(OTPVerifyRequest request) {
         var result = (String) redisTemplate.opsForValue().get(request.getOtp());
         if (result == null) {
-            throw new ValidationFailedException("This OTP is not valid or expiration");
+            throw new ValidationFailedException(Constants.OTP_EX);
         }
         if (!result.equals(request.getEmail())) {
-            throw new ValidationFailedException("The identity isn't match");
+            throw new ValidationFailedException(Constants.INDETITY_NOT_MATCH);
         }
     }
     @Override

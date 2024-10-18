@@ -31,6 +31,7 @@ import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.FileDatabaseService;
 import scs.exe201.secondchanceshopbe.services.FileService;
 import scs.exe201.secondchanceshopbe.services.ProductService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
@@ -76,11 +77,10 @@ public class ProductServiceIplm implements ProductService {
         return new PageImpl<>(productResponses, pageable, productEntities.getTotalElements());
     }
 
-
     @Override
     public ProductResponse deleteProduct(long idProduct) {
         ProductEntity productEntity = productRepository.findById(idProduct)
-                .orElseThrow(() -> new NotFoundException( "Product not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.PRODUCT_NOT_FOUND));
         productEntity.setStatus(StatusEnum.DELETED);
         productRepository.save(productEntity);
         return mapProductEntityToProductResponse(productEntity);
@@ -89,7 +89,7 @@ public class ProductServiceIplm implements ProductService {
     @Override
     public ProductResponse getProductById(long idProduct) {
         ProductEntity productEntity = productRepository.findById(idProduct)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
+                .orElseThrow(() -> new NotFoundException(Constants.PRODUCT_NOT_FOUND));
         return mapProductEntityToProductResponse(productEntity);
     }
 
@@ -97,7 +97,7 @@ public class ProductServiceIplm implements ProductService {
     @Override
     public ProductResponse addProduct(ProductCreateDTO product, List<MultipartFile> files) {
         if(product.getCategoryIds().isEmpty()||product == null){
-            throw new ActionFailedException("Product empty");
+            throw new ActionFailedException(Constants.PRODUCT_EMPTY);
         }
         List<String> imageUrls = new ArrayList<>();
         if (files!= null && !files.isEmpty()) {
@@ -110,7 +110,7 @@ public class ProductServiceIplm implements ProductService {
         }
         var auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
-                () -> new NotFoundException("User not found"));
+                () -> new NotFoundException(Constants.USER_NOT_FOUND));
         Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(product.getCategoryIds()));
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductName(product.getProductName());
@@ -125,7 +125,7 @@ public class ProductServiceIplm implements ProductService {
             productEntity.setImages(imageUrls);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new ActionFailedException("Error processing image URLs: " + e.getMessage());
+            throw new ActionFailedException(Constants.ERROR_IMG_URL+ e.getMessage());
         }
 
         productRepository.save(productEntity);
@@ -142,7 +142,7 @@ public class ProductServiceIplm implements ProductService {
     @Override
     public ProductResponse updateProductv1(ProductUpdateDTO product, List<MultipartFile> files) {
         ProductEntity productEntity = productRepository.findById(product.getId()).orElseThrow(
-                () -> new NotFoundException("Product not found")
+                () -> new NotFoundException(Constants.PRODUCT_NOT_FOUND)
         );
         List<String> imageUrls = new ArrayList<>();
         if (files!= null && !files.isEmpty()) {
@@ -155,7 +155,7 @@ public class ProductServiceIplm implements ProductService {
                 productEntity.setImages(imageUrls);
             }catch (JsonProcessingException e) {
                 e.printStackTrace();
-                throw new ActionFailedException("Error processing image URLs: " + e.getMessage());
+                throw new ActionFailedException(Constants.ERROR_IMG_URL + e.getMessage());
             }
         }
         Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(product.getCategoryIds()));

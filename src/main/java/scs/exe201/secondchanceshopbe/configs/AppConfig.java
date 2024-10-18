@@ -2,10 +2,12 @@ package scs.exe201.secondchanceshopbe.configs;
 
 import com.cloudinary.Cloudinary;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.Firestore;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.cloud.FirestoreClient;
 import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.security.CustomUserDetailsService;
 
@@ -78,6 +80,10 @@ public class AppConfig {
         return mailSender;
     }
     @Bean
+    Firestore getFirestore() throws IOException {
+        return FirestoreClient.getFirestore(firebaseApp());
+    }
+    @Bean
     FirebaseApp firebaseApp() throws IOException {
         Resource resource = new ClassPathResource("second-chance-firebase.json");
 
@@ -86,7 +92,6 @@ public class AppConfig {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
-
             return FirebaseApp.initializeApp(options);
         }
     }

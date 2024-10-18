@@ -68,7 +68,7 @@ public class TestAPIContronller {
             List<FileObjectResponse>  fileObjectResponse = fileDatabaseService.upNhieufile(files);
             return ResponseEntity.ok().body(
                     ResponseObject.builder()
-                            .code("ULOAD_SUCCESS")
+                            .code("UPLOAD_SUCCESS")
                             .message("upload file success")
                             .status(HttpStatus.OK)
                             .data(fileObjectResponse)

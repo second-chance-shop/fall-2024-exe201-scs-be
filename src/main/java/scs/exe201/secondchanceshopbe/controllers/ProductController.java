@@ -16,6 +16,8 @@ import scs.exe201.secondchanceshopbe.services.ProductService;
 
 import java.util.List;
 
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
+
 @RequestMapping("/api/v1/product")
 @RestController
 @AllArgsConstructor
@@ -28,8 +30,8 @@ public class ProductController {
         Page<ProductResponse> products = productService.getAllProducts(page, size);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Products retrieved successfully")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(products)
@@ -41,8 +43,8 @@ public class ProductController {
         List<ProductResponse> products = productService.getAll();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Products retrieved successfully")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(products)
@@ -50,19 +52,39 @@ public class ProductController {
         );
     }
 
+    @GetMapping("/getv1")
+    public ResponseEntity <ResponseObject> getAllV1( @RequestParam(value = "search", required = false) String search,
+    @RequestParam(value = "sortField", defaultValue = "name") String sortField,
+    @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection,
+    @RequestParam(value = "page", defaultValue = "1") int page,
+    @RequestParam(value = "size", defaultValue = "10") int size) {
+        Page<ProductResponse> products = productService.getAllProductsv1(search, sortField, sortDirection, page, size);
+        return ResponseEntity.ok().body(
+            ResponseObject.builder()
+            .code(GET_SUCCESS)
+            .message(GET_SUCCESS)
+            .status(HttpStatus.OK)
+            .isSuccess(true)
+            .data(products)
+            .build()
+        );
+    }
+    
+
     @GetMapping("/{idProduct}")
     public ResponseEntity<ResponseObject> getProduct(@PathVariable long idProduct) {
         ProductResponse product = productService.getProductById(idProduct);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Product retrieved successfully")
+                        .code(GET_BY_ID_SUCCESS)
+                        .message(GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(product)
                         .build()
         );
     }
+
 
 @PostMapping(value = "add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 public ResponseEntity<ResponseObject> addProductV1(
@@ -75,8 +97,8 @@ public ResponseEntity<ResponseObject> addProductV1(
     // Trả về ResponseEntity
     return ResponseEntity.ok().body(
             ResponseObject.builder()
-                    .code("ADD_SUCCESS")
-                    .message("Product added successfully")
+                    .code(CREATE_SUCCESS)
+                    .message(CREATE_SUCCESS)
                     .status(HttpStatus.OK)
                     .isSuccess(true)
                     .data(response)
@@ -90,16 +112,15 @@ public ResponseEntity<ResponseObject> addProductV1(
         ProductResponse response = productService.deleteProduct(idProduct);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("DELETE_SUCCESS")
-                        .message("Product deleted successfully")
+                        .code(DELETE_SUCCESS)
+                        .message(DELETE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)
                         .build()
         );
     }
-
-// here
+ 
     @PutMapping(value = "update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseObject> updateProductV1(
             @RequestPart("product") ProductUpdateDTO product,
@@ -107,8 +128,8 @@ public ResponseEntity<ResponseObject> addProductV1(
         ProductResponse response = productService.updateProductv1(product,files);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("Product updated successfully")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)

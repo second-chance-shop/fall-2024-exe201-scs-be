@@ -13,6 +13,7 @@ import scs.exe201.secondchanceshopbe.models.entities.NotificationEntity;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.NotificationRepository;
 import scs.exe201.secondchanceshopbe.services.NotificationService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 @Service
@@ -53,7 +54,7 @@ public class NotificationServiceIplm implements NotificationService {
     @Override
     public NotificationResponse deleteNotification(long id) {
         NotificationEntity notificationEntity = notificationRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException("Notification with id " + id + " not found")
+                ()-> new NotFoundException(Constants.NOTIFICATION_WITH_ID + id +Constants.NOT_FOUND)
         );
         notificationRepository.delete(notificationEntity);
         return null;

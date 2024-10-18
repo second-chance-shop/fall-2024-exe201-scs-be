@@ -20,6 +20,7 @@ import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.FileDatabaseService;
 import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.UserService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
 import scs.exe201.secondchanceshopbe.utils.DTOToEntity;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
@@ -34,6 +35,7 @@ public class UserServiceIplm implements UserService {
     private final UserRepository userRepository;
     private final OTPService otpService;
     private PasswordEncoder passwordEncoder;
+
     private final FileDatabaseService fileDatabaseService;
 
     @Override
@@ -69,7 +71,7 @@ public class UserServiceIplm implements UserService {
     @Override
     public void ActiveUser(String email) {
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException("User not found!")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         userEntity.setStatus(StatusEnum.ACTIVE);
         userRepository.save(userEntity);
@@ -79,7 +81,7 @@ public class UserServiceIplm implements UserService {
     @Override
     public UserResponse getUserById(long id) {
         UserEntity uEntity = userRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("user not found")
+                () -> new NotFoundException(Constants.USER_NOT_FOUND)
         );
         UserResponse userResponse = EntityToDTO.UserEntityToDTO(uEntity);
         return userResponse;
@@ -93,7 +95,7 @@ public class UserServiceIplm implements UserService {
             if (auth == null) throw new AuthFailedException("This user is't authentication, please login again");
             String username = auth.getName();
             UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-                    () -> new NotFoundException("user not found")
+                    () -> new NotFoundException(Constants.USER_NOT_FOUND)
             );
             return EntityToDTO.UserEntityToDTO(userEntity);
         } catch (Exception e) {

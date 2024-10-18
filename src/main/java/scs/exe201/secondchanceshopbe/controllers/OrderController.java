@@ -20,6 +20,9 @@ import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.OrderService;
+
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
+
 @RestController
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
@@ -31,8 +34,8 @@ public class OrderController {
         List <OrderResponse> orderResponse = orderService.getAll();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_SUCCESS")
-                        .message("get all success")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
@@ -44,8 +47,8 @@ public class OrderController {
         List <OrderResponse> orderResponse = orderService.getAllByUserId(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_SUCCESS")
-                        .message("get  success")
+                        .code(GET_BY_ID_SUCCESS)
+                        .message(GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
@@ -57,8 +60,8 @@ public class OrderController {
         OrderResponse orderResponse = orderService.createOrder(createDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("create success")
+                        .code(CREATE_SUCCESS)
+                        .message(CREATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
@@ -70,8 +73,8 @@ public class OrderController {
         OrderResponse orderResponse = orderService.updateOrder(id,updateDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("update success")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)
@@ -83,8 +86,8 @@ public class OrderController {
         OrderResponse orderResponse = orderService.deleteOrder(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("DELETE_SUCCESS")
-                        .message("delete success")
+                        .code(DELETE_SUCCESS)
+                        .message(DELETE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(orderResponse)

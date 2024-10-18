@@ -1,5 +1,4 @@
 package scs.exe201.secondchanceshopbe.controllers;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +10,9 @@ import scs.exe201.secondchanceshopbe.models.dtos.requests.CategoryCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.CategoryResponse; // Import CategoryResponse
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.CategoryService;
+import scs.exe201.secondchanceshopbe.utils.Constants;
+
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
 
 @RequestMapping("/api/v1/category")
 @RestController
@@ -24,8 +26,8 @@ public class CategoryController {
         Page<CategoryResponse> categories = categoryService.getAllCategories(page, size);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Categories retrieved successfully")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(categories)
@@ -36,11 +38,11 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getCategory(@PathVariable long id) {
         CategoryResponse category = categoryService.getCategoryById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,Constants.CATEGORY_NOT_FOUND));
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("FETCH_SUCCESS")
-                        .message("Category retrieved successfully")
+                        .code(GET_BY_ID_SUCCESS)
+                        .message(GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(category)
@@ -53,8 +55,8 @@ public class CategoryController {
         CategoryResponse response = categoryService.createCategory(categoryRequest);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("ADD_SUCCESS")
-                        .message("Category added successfully")
+                        .code(CREATE_SUCCESS)
+                        .message(CREATE_SUCCESS)
                         .status(HttpStatus.CREATED)
                         .isSuccess(true)
                         .data(response)
@@ -67,8 +69,8 @@ public class CategoryController {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("DELETE_SUCCESS")
-                        .message("Category deleted successfully")
+                        .code(DELETE_SUCCESS)
+                        .message(DELETE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .build()
@@ -80,8 +82,8 @@ public class CategoryController {
         CategoryResponse response = categoryService.updateCategory(id, categoryRequest);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("Category updated successfully")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(response)

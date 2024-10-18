@@ -22,6 +22,8 @@ import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.models.entities.CommentEntity;
 import scs.exe201.secondchanceshopbe.services.CommentService;
 
+import static scs.exe201.secondchanceshopbe.utils.Constants.*;
+
 @RequestMapping("/api/v1/comment")
 @RestController
 @RequiredArgsConstructor
@@ -34,8 +36,8 @@ public class CommentController {
         List<CommentResponse> commentResponses = commentService.getAll();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_SUCCESS")
-                        .message("get all success")
+                        .code(GET_SUCCESS)
+                        .message(GET_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponses)
@@ -48,8 +50,8 @@ public class CommentController {
         List<CommentResponse> commentResponses = commentService.getByProductId(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("GET_SUCCESS")
-                        .message("get by id product success")
+                        .code(GET_BY_ID_SUCCESS)
+                        .message(GET_BY_ID_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponses)
@@ -62,8 +64,8 @@ public class CommentController {
         CommentEntity commentResponses = commentService.addComment(commentCreateDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("CREATE_SUCCESS")
-                        .message("create success")
+                        .code(CREATE_SUCCESS)
+                        .message(CREATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponses)
@@ -76,8 +78,8 @@ public class CommentController {
         CommentResponse commentResponse = commentService.deleteComment(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("DELETE_SUCCESS")
-                        .message("delete success")
+                        .code(DELETE_SUCCESS)
+                        .message(DELETE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponse)
@@ -90,8 +92,8 @@ public class CommentController {
         CommentResponse commentResponse = commentService.updateComment(comment);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("update success")
+                        .code(UPDATE_SUCCESS)
+                        .message(UPDATE_SUCCESS)
                         .status(HttpStatus.OK)
                         .isSuccess(true)
                         .data(commentResponse)
