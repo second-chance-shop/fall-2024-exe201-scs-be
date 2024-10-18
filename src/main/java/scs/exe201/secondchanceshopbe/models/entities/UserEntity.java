@@ -63,6 +63,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "role")
     private RoleEnum role;
 
+    @Column(name="date_create")
+    private LocalDate dateCreated;
+
     @OneToMany(mappedBy = "createBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductEntity> productEntities;
 

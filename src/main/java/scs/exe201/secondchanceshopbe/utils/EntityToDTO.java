@@ -33,6 +33,7 @@ public class EntityToDTO {
                 .name(userEntity.getName())
                 .avatar(userEntity.getAvatar())
                 .status(userEntity.getStatus().toString())
+                .dateCreated(userEntity.getDateCreated())
                 .build();
     }
 
