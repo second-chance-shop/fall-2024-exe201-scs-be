@@ -121,10 +121,11 @@ public class ProductServiceIplm implements ProductService {
         productEntity.setStatus(StatusEnum.ACTIVE);
         productEntity.setCreateBy(userEntity);
         productEntity.setDateCreate(LocalDate.now());
+
         try {
             productEntity.setImages(imageUrls);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+
             throw new ActionFailedException("Error processing image URLs: " + e.getMessage());
         }
 
@@ -154,7 +155,7 @@ public class ProductServiceIplm implements ProductService {
             try {
                 productEntity.setImages(imageUrls);
             }catch (JsonProcessingException e) {
-                e.printStackTrace();
+
                 throw new ActionFailedException("Error processing image URLs: " + e.getMessage());
             }
         }
