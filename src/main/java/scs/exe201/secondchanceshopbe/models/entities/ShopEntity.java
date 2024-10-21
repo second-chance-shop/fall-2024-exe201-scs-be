@@ -36,7 +36,14 @@ public class ShopEntity {
 
     @Column(name = "shop_phone_number", nullable = false, columnDefinition = "VARCHAR(10) DEFAULT ''")
     private String shopPhoneNumber;
-
+//    {
+//        "data": null,
+//            "code": "SOMETHING_WRONG",
+//            "isSuccess": false,
+//            "status": "INTERNAL_SERVER_ERROR",
+//            "message": "Null value was assigned to a property [class scs.exe201.secondchanceshopbe.models.entities.ShopEntity.valueFollow]
+//            of primitive type: 'scs.exe201.secondchanceshopbe.models.entities.ShopEntity.valueFollow' (setter)"
+//    }
 
     @Column(name = "shop_image",nullable = false)
     private String shopImage;
