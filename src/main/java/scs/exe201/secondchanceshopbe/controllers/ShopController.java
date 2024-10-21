@@ -96,7 +96,7 @@ public class ShopController {
         ShopResponse response = shopService.addV1(shopCreateDTO,imageShop,cccdFont,cccdBack);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
+                        .code("CREATE_SUCCESS")
                         .message("Shop updated successfully")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
