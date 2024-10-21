@@ -21,6 +21,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
     @Transactional
     @Modifying
     @Query("UPDATE ProductEntity p SET p.start = " +
-            "(SELECT COALESCE(AVG(r.star), 0) FROM RatingEntity r WHERE r.product.productId = p.productId)")
+            "(SELECT COALESCE(AVG(r.star), 0.0) FROM RatingEntity r WHERE r.product.productId = p.productId)")
     void updateAllRating();
 }
