@@ -3,20 +3,15 @@ package scs.exe201.secondchanceshopbe.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import scs.exe201.secondchanceshopbe.models.dtos.enums.MethodPayment;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.response.*;
 import scs.exe201.secondchanceshopbe.models.entities.*;
 import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
-import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 
 @RequiredArgsConstructor
 public class EntityToDTO {
@@ -124,7 +119,7 @@ public class EntityToDTO {
                 .shopName(shopEntity.getShopName())
                 .description(shopEntity.getDescription())
                 .shopEmail(shopEntity.getShopEmail())
-                .shopPhonumber(shopEntity.getShopPhonumber())
+                .shopPhoneNumber(shopEntity.getShopPhoneNumber())
                 .shopImage(shopEntity.getShopImage())
                 .backSideOfCCCD(shopEntity.getBackSideOfCCCD())
                 .frontSideOfCCCD(shopEntity.getFrontSideOfCCCD())

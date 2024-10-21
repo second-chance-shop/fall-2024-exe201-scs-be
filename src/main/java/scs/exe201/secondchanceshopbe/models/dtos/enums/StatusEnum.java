@@ -4,5 +4,7 @@ public enum StatusEnum {
     ACTIVE,
     VERIFY,
     BAN,
-    DELETED
+    DELETED,
+    FOLLOW,
+    UNFOLLOW,
 }

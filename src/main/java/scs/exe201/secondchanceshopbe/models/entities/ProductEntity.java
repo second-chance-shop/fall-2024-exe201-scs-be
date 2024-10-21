@@ -46,6 +46,9 @@ public class ProductEntity {
     @Column(name = "prices")
     private Long prices;
 
+    @Column(name ="rating")
+    private Double start;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusEnum status ;
@@ -66,8 +69,6 @@ public class ProductEntity {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(this.image, List.class);
     }
-
-
 
 
     @Column(name = "date_create")
