@@ -131,7 +131,6 @@ public class OtpServiceIplm implements OTPService {
                 throw new ActionFailedException("OTP has been sent. Please check your email !");
             }
         }
-
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(
                 ()-> new NotFoundException("user not found")
         );

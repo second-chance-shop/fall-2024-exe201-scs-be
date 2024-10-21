@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ShopCreateDTO;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.ShopRequestDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ShopUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ShopResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
@@ -28,7 +27,6 @@ import scs.exe201.secondchanceshopbe.services.ShopService;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @Transactional
@@ -84,7 +82,7 @@ public class ShopServiceImpl implements ShopService {
         shopEntity.setShopName(shopUpdateDTO.getShopName());
         shopEntity.setDescription(shopUpdateDTO.getDescription());
         shopEntity.setShopEmail(shopUpdateDTO.getShopEmail());
-        shopEntity.setShopPhonumber(shopUpdateDTO.getShopPhonumber());
+        shopEntity.setShopPhoneNumber(shopUpdateDTO.getShopPhonumber());
         if(files!=null && !files.isEmpty()) {
             var image =fileDatabaseService.uploadFile(files);
             shopEntity.setShopImage(image.getUrl());
@@ -105,7 +103,7 @@ public class ShopServiceImpl implements ShopService {
         if(shopRepository.existsByShopEmail(shopCreateDTO.getShopEmail())) {
             throw new NotFoundException("Shop email already exists");
         }
-        if (shopRepository.existsByShopPhonumber(shopCreateDTO.getShopPhonumber())) {
+        if (shopRepository.existsByShopPhoneNumber(shopCreateDTO.getShopPhonumber())) {
             throw new NotFoundException("Shop phone already exists");
         }
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -118,7 +116,7 @@ public class ShopServiceImpl implements ShopService {
         shopEntity.setShopName(shopCreateDTO.getShopName());
         shopEntity.setDescription(shopCreateDTO.getDescription());
         shopEntity.setShopEmail(shopCreateDTO.getShopEmail());
-        shopEntity.setShopPhonumber(shopCreateDTO.getShopPhonumber());
+        shopEntity.setShopPhoneNumber(shopCreateDTO.getShopPhonumber());
         shopEntity.setShopAddress(shopCreateDTO.getShopAddress());
         shopEntity.setShippingAddress(shopCreateDTO.getShippingAddress());
         shopEntity.setCccdNumber(shopCreateDTO.getCccdNumber());
@@ -148,5 +146,11 @@ public class ShopServiceImpl implements ShopService {
                 () -> new NotFoundException("Shop not found")
         );
         return EntityToDTO.shopEntityTODTO(shopEntity);
+    }
+
+    @Transactional
+    @Scheduled(fixedDelay = 60000)
+    public void updateFollow() {
+        shopRepository.updateValueFollow();
     }
 }

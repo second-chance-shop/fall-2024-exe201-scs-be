@@ -84,6 +84,9 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "userOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderEntity> orderEntities;
 
+    @OneToMany(mappedBy = "userFollow")
+    private Set<FollowShopEntity> followedShops = new HashSet<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
