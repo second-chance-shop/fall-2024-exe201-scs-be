@@ -124,6 +124,7 @@ public class ShopServiceImpl implements ShopService {
         shopEntity.setShopOwner(userEntity);
         shopEntity.setTypeShop(categoryEntity);
         shopEntity.setDateCreate(LocalDate.now());
+
         if(imageShop !=null && !imageShop.isEmpty()) {
           var image=  fileDatabaseService.uploadFile(imageShop);
           shopEntity.setShopImage(image.getUrl());
