@@ -39,7 +39,7 @@ public class OrderController {
                         .build()
         );
     }
-    @GetMapping("/user{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<ResponseObject> getOrderByUserId(@RequestParam long id) {
         List <OrderResponse> orderResponse = orderService.getAllByUserId(id);
         return ResponseEntity.ok().body(

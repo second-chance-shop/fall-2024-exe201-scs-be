@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ratings")
+@Table(name = "ratings", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "product_id"})})
 public class RatingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
