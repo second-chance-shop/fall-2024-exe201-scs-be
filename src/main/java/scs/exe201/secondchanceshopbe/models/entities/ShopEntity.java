@@ -9,6 +9,8 @@ import lombok.Setter;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,8 +34,8 @@ public class ShopEntity {
     @Column(name = "shop_email",nullable = false)
     private String shopEmail;
 
-    @Column(name = "shop_phonumber",nullable = false)
-    private String shopPhonumber;
+    @Column(name = "shop_phone_number",nullable = false)
+    private String shopPhoneNumber;
 
     @Column(name = "shop_image",nullable = false)
     private String shopImage;
@@ -63,6 +65,9 @@ public class ShopEntity {
     @Column(name = "status")
     private StatusEnum status ;
 
+    @Column(name = "value_follow")
+    private double valueFollow ;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)
@@ -72,5 +77,8 @@ public class ShopEntity {
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false)
     private CategoryEntity typeShop;
+
+    @OneToMany(mappedBy = "shopFollow")
+    private Set<FollowShopEntity> followers = new HashSet<>();
 
 }

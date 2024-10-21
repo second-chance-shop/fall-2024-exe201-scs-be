@@ -14,7 +14,7 @@ public class ShopResponse {
     private String shopName;
     private String description;
     private String shopEmail;
-    private String shopPhonumber;
+    private String shopPhoneNumber;
     private String shopImage;
     private String backSideOfCCCD;
     private String frontSideOfCCCD;
