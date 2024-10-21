@@ -99,7 +99,7 @@ public class EntityToDTO {
                 .status(statusEnum.toString())
                 .description(productEntity.getDescription())
                 .image(listImage)
-
+                .start(productEntity.getStart())
                 .productId(productEntity.getProductId())
                 .productName(productEntity.getProductName())
                 .build();
@@ -131,6 +131,7 @@ public class EntityToDTO {
                 .ownerName(shopEntity.getShopOwner().getUsername())
                 .userId(shopEntity.getShopOwner().getUserId())
                 .categoryName(shopEntity.getTypeShop().getCategoryName())
+                .follow(shopEntity.getValueFollow())
                 .build();
     }
 }
