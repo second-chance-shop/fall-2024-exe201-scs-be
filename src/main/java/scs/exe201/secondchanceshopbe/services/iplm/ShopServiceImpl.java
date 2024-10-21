@@ -153,5 +153,6 @@ public class ShopServiceImpl implements ShopService {
     @Scheduled(fixedDelay = 60000)
     public void updateFollow() {
         shopRepository.updateValueFollow();
+        System.out.println("check here");
     }
 }
