@@ -21,7 +21,7 @@ public class ProductResponse {
     private Long prices;
     private String status;
     private List<String> image;
-
+    private  double start;
     private LocalDate dateCreate;
     private String createByUsername; // Assuming you'd return the username instead of user entity
 
