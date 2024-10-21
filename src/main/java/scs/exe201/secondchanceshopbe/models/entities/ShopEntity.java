@@ -34,8 +34,9 @@ public class ShopEntity {
     @Column(name = "shop_email",nullable = false)
     private String shopEmail;
 
-    @Column(name = "shop_phone_number",nullable = false)
+    @Column(name = "shop_phone_number", nullable = false, columnDefinition = "VARCHAR(10) DEFAULT ''")
     private String shopPhoneNumber;
+
 
     @Column(name = "shop_image",nullable = false)
     private String shopImage;
