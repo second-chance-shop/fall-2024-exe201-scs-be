@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import scs.exe201.secondchanceshopbe.models.entities.ShopEntity;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,7 +16,8 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     boolean existsByShopPhoneNumber(String phone);
 
     @Query("SELECT c FROM ShopEntity c WHERE c.shopOwner.userId = :userId")
-    Optional<ShopEntity> findByUserId(long userId);
+    List<ShopEntity> findByUserId(long userId);
+
 
     @Modifying
     @Query("UPDATE ShopEntity s SET s.valueFollow = (SELECT COALESCE(COUNT(f),0.0)  FROM FollowShopEntity f WHERE f.shopFollow = s AND f.status = 'FOLLOW')")
