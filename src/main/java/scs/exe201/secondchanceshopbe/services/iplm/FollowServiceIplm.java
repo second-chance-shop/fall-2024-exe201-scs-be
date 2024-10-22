@@ -1,6 +1,7 @@
 package scs.exe201.secondchanceshopbe.services.iplm;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Literal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
@@ -28,7 +29,9 @@ public class FollowServiceIplm  implements FollowService {
     private final ShopRepository shopRepository;
     @Override
     public List<FollowResponse> getAllByShopId(long id) {
-        return List.of();
+        List<FollowShopEntity> followShopEntities =followShopRepository.findAllByShopIdAndStatus(id,StatusEnum.FOLLOW);
+
+        return followShopEntities.stream().map(EntityToDTO::followShopEntityToDTO).toList();
     }
 
     @Override
