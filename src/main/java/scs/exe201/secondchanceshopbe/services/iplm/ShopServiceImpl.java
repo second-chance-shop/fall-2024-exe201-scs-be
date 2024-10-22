@@ -27,11 +27,14 @@ import scs.exe201.secondchanceshopbe.services.ShopService;
 import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ShopServiceImpl implements ShopService {
+
 
     private final ShopRepository shopRepository;
 
@@ -142,11 +145,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public ShopResponse getByUserId(Long id) {
-        ShopEntity shopEntity = shopRepository.findByUserId(id).orElseThrow(
-                () -> new NotFoundException("Shop not found")
-        );
-        return EntityToDTO.shopEntityTODTO(shopEntity);
+    public List<ShopResponse> getByUserId(Long id) {
+        List<ShopEntity> shopResponses = shopRepository.findByUserId(id).stream().toList();
+        return shopResponses.stream().map(EntityToDTO::shopEntityTODTO).toList();
     }
 
     @Transactional

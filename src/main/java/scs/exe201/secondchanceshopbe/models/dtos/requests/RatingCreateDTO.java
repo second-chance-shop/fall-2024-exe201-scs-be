@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RatingCreateDTO {
     private int start;
-    private long userId;
+  //  private long userId;
     private long productId;
 }

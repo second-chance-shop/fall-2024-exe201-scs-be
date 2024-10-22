@@ -134,4 +134,14 @@ public class EntityToDTO {
                 .follow(shopEntity.getValueFollow())
                 .build();
     }
+
+    public static FollowResponse followShopEntityToDTO(FollowShopEntity followShopEntity){
+        return FollowResponse.builder()
+                .dateFollowed(followShopEntity.getDateFollow())
+                .userId(followShopEntity.getUserFollow().getUserId())
+                .status(followShopEntity.getStatus().toString())
+                .id(followShopEntity.getId())
+                .shopId(followShopEntity.getShopFollow().getShopId())
+                .build();
+    }
 }
