@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -23,6 +25,8 @@ public class FollowShopEntity {
     @Column(name = "status")
     private StatusEnum status;
 
+    @Column(name = "date-follow")
+    private LocalDate dateFollow;
     // Many-to-One relationship with User
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -32,4 +36,5 @@ public class FollowShopEntity {
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
     private ShopEntity shopFollow;
+
 }

@@ -47,12 +47,21 @@ public class SecurityConfig {
 
                         //product
                         .requestMatchers(HttpMethod.GET, "/api/v1/product/getAllProduct").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/product/getAll").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/product/{idProduct}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/category/addCategory").permitAll()
                         .requestMatchers("/api/v1/user/list-user").hasAnyAuthority("ADMIN")
                         .requestMatchers("/api/v1/auth/user/info").authenticated() // Endpoint này yêu cầu xác thực
 
-                        //product
+                        //category
+                        .requestMatchers(HttpMethod.GET,"/api/v1/category/getAllCategory").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/category/{id}").permitAll()
 
+                        //comment
+                        .requestMatchers(HttpMethod.GET,"/api/v1/comment").permitAll()
+
+                        //rating
+                        .requestMatchers(HttpMethod.POST,"/api/v1/rating").permitAll()
 
                         .anyRequest().authenticated() // Các yêu cầu khác đều cần xác thực
                 ).cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))

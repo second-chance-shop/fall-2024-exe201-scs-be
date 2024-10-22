@@ -106,7 +106,7 @@ public class ShopController {
     }
     @GetMapping("user/{id}")
     public ResponseEntity<ResponseObject> getShopsByUser(@PathVariable Long id) {
-        ShopResponse shopResponse = shopService.getByUserId(id);
+        List<ShopResponse>  shopResponse = shopService.getByUserId(id);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")
