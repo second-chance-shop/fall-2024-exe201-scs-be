@@ -105,8 +105,21 @@ public class ShopController {
         );
     }
     @GetMapping("user/{id}")
-    public ResponseEntity<ResponseObject> getShopsByUser(@PathVariable Long id) {
+    public ResponseEntity<ResponseObject> getShopsByUserId(@PathVariable Long id) {
         List<ShopResponse>  shopResponse = shopService.getByUserId(id);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("FETCH_SUCCESS")
+                        .message("Shops retrieved successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(shopResponse)
+                        .build()
+        );
+    }
+    @GetMapping("user/{id}")
+    public ResponseEntity<ResponseObject> getShopsByUser() {
+        List<ShopResponse>  shopResponse = shopService.getByUser();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")

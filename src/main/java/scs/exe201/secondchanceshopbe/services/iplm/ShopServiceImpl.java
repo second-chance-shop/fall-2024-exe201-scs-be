@@ -156,4 +156,14 @@ public class ShopServiceImpl implements ShopService {
         shopRepository.updateValueFollow();
         System.out.println("check here");
     }
+
+    @Override
+    public List<ShopResponse> getByUser() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity= userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+        List<ShopEntity> shopResponses = shopRepository.findByUserId(userEntity.getUserId()).stream().toList();
+        return shopResponses.stream().map(EntityToDTO::shopEntityTODTO).toList();
+    }
 }

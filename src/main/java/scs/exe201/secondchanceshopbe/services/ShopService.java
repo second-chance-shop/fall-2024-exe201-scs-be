@@ -24,5 +24,7 @@ public interface ShopService {
     ShopResponse addV1(ShopCreateDTO shopCreateDTO, MultipartFile imageShop, MultipartFile cccdFont, MultipartFile cccdBack);
 
     List<ShopResponse>  getByUserId(Long id);
+
+    List<ShopResponse> getByUser();
 }
 
