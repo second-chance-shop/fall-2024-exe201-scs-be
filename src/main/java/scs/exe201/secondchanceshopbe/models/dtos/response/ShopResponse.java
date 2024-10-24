@@ -27,5 +27,6 @@ public class ShopResponse {
     private String categoryName; // Optionally added if needed to represent the Category type
     private double follow;
     private long userId;
+    private String status;
 }
 

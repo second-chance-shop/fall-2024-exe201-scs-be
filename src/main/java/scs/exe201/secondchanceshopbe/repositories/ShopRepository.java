@@ -3,6 +3,7 @@ package scs.exe201.secondchanceshopbe.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import scs.exe201.secondchanceshopbe.models.entities.ShopEntity;
 
@@ -22,5 +23,10 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     @Modifying
     @Query("UPDATE ShopEntity s SET s.valueFollow = (SELECT COALESCE(COUNT(f),0.0)  FROM FollowShopEntity f WHERE f.shopFollow = s AND f.status = 'FOLLOW')")
     void updateValueFollow();
+
+    @Query("SELECT s FROM ShopEntity s WHERE s.shopOwner = :userId AND s.status = 'ACTIVE'")
+    List<ShopEntity> findActiveShopsByUserId(@Param("userId") Long userId);
+
+
 
 }

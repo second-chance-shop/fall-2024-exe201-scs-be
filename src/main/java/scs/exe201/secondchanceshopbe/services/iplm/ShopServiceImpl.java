@@ -163,7 +163,8 @@ public class ShopServiceImpl implements ShopService {
         UserEntity userEntity= userRepository.findByUsername(auth.getName()).orElseThrow(
                 () -> new NotFoundException("User not found")
         );
-        List<ShopEntity> shopResponses = shopRepository.findByUserId(userEntity.getUserId()).stream().toList();
+        List<ShopEntity> shopResponses = shopRepository.findActiveShopsByUserId(userEntity.getUserId());
+
         return shopResponses.stream().map(EntityToDTO::shopEntityTODTO).toList();
     }
 }
