@@ -20,4 +20,8 @@ public interface OrderService {
     List<OrderResponse> getAllByUserId(long id);
 
     List<OrderResponse> getAll();
+
+    List<OrderResponse> getAllByUserCheckout();
+
+    List<OrderResponse> getAllByUserCart();
 }
