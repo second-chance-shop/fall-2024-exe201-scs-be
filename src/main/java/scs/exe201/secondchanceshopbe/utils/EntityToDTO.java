@@ -132,6 +132,7 @@ public class EntityToDTO {
                 .userId(shopEntity.getShopOwner().getUserId())
                 .categoryName(shopEntity.getTypeShop().getCategoryName())
                 .follow(shopEntity.getValueFollow())
+                .status(shopEntity.getStatus().toString())
                 .build();
     }
 
