@@ -126,6 +126,7 @@ public class ShopServiceImpl implements ShopService {
         shopEntity.setIndustry(shopCreateDTO.getIndustry());
         shopEntity.setShopOwner(userEntity);
         shopEntity.setTypeShop(categoryEntity);
+        shopEntity.setStatus(StatusEnum.ACTIVE);
         shopEntity.setDateCreate(LocalDate.now());
 
         if(imageShop !=null && !imageShop.isEmpty()) {
