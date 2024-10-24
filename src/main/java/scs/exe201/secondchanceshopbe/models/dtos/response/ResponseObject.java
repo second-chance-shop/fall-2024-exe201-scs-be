@@ -9,6 +9,9 @@ public record ResponseObject(
         String code,
         Boolean isSuccess,
         HttpStatus status,
-        String message
+        String message,
+        Long totalPages,       // Add this field
+        Long totalElements,     // Add this field
+        Integer currentPage     // Add this field
 ) {
 }

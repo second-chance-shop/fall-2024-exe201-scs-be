@@ -4,6 +4,7 @@ package scs.exe201.secondchanceshopbe.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,4 +31,11 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
     @Query("SELECT p FROM ProductEntity p WHERE p.shop.shopOwner.userId = :userId AND p.shop.shopId = :shopId AND p.status = 'ACTIVE'")
     List<ProductEntity> findAllProductActiveByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 
+    @Query("SELECT p FROM ProductEntity p JOIN p.categories c " +
+            "WHERE (:productName IS NULL OR p.productName LIKE %:productName%) " +
+            "AND (:categoryName IS NULL OR c.categoryName LIKE %:categoryName%) " +
+            "AND p.status = 'ACTIVE' ")
+    Page<ProductEntity> searchProducts(@Param("productName") String productName,
+                                       @Param("categoryName") String categoryName,
+                                       Pageable pageable);
 }

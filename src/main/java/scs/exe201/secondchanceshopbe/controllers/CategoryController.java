@@ -19,7 +19,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/getAllCategory")
-    public ResponseEntity<ResponseObject> getCategories(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<ResponseObject> getCategories(@RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "10") int size) {
         Page<CategoryResponse> categories = categoryService.getAllCategories(page, size);
         return ResponseEntity.ok().body(

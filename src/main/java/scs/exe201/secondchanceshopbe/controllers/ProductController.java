@@ -1,6 +1,8 @@
 package scs.exe201.secondchanceshopbe.controllers;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.ProductUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ProductResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.ProductService;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping("/api/v1/product")
@@ -21,6 +25,40 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    @GetMapping("/products")
+    public ResponseEntity<ResponseObject> getProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String productName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue
+                    = "prices") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+
+
+
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.DESC.name()) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
+        // Create Pageable object
+        PageRequest pageable = PageRequest.of(page, size, sort);
+
+        // Call the service method with sorting and pagination
+        Page<ProductResponse> products = productService.searchProducts(category, productName, pageable);
+
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("FETCH_SUCCESS")
+                        .message("Products retrieved successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(products.getContent())
+                        .totalPages((long) products.getTotalPages())
+                        .totalElements(products.getTotalElements())
+                        .currentPage(products.getNumber())
+                        .build()
+        );
+    }
 
     @GetMapping("/getAllProduct")
     public ResponseEntity<ResponseObject> getProducts(@RequestParam(defaultValue = "1") int page,
@@ -50,9 +88,10 @@ public class ProductController {
         );
     }
 
-    @GetMapping("/{idProduct}")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseObject> getProduct(@PathVariable long idProduct) {
-        ProductResponse product = productService.getProductById(idProduct);
+        ProductResponse product = productService.getProductById(idProduct).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")

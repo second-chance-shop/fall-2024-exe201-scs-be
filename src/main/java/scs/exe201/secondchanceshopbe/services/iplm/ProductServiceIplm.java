@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -60,6 +57,30 @@ public class ProductServiceIplm implements ProductService {
         return productEntities.stream().map(EntityToDTO::productEntityToDTO).toList();
     }
 
+    @Override
+    public Page<ProductResponse> searchProducts(String category, String productName, PageRequest pageable) {
+        Page<ProductEntity> productEntities = productRepository.searchProducts(category, productName, pageable);
+
+        // Convert ProductEntity to ProductResponse
+        return productEntities.map(productEntity ->
+                ProductResponse.builder()
+                        .productId(productEntity.getProductId())
+                        .productName(productEntity.getProductName())
+                        .quantity(productEntity.getQuantity())
+                        .description(productEntity.getDescription())
+                        .categoryNames(productEntity.getCategories().stream()
+                                .map(CategoryEntity::getCategoryName)
+                                .collect(Collectors.toSet()))
+                        .prices(productEntity.getPrices())
+                        .status(productEntity.getStatus().toString())
+                        .dateCreate(productEntity.getDateCreate())
+                        .createByUsername(productEntity.getCreateBy().getUsername())
+                        .build()
+        );
+    }
+
+
+
     // Map ProductEntity to ProductResponse
     private ProductResponse mapProductEntityToProductResponse(ProductEntity productEntity) {
         Set<String> categoryNames = productEntity.getCategories().stream()
@@ -99,10 +120,8 @@ public class ProductServiceIplm implements ProductService {
     }
 
     @Override
-    public ProductResponse getProductById(long idProduct) {
-        ProductEntity productEntity = productRepository.findById(idProduct)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
-        return mapProductEntityToProductResponse(productEntity);
+    public Optional<ProductResponse> getProductById(long idProduct) {
+     return productRepository.findById(idProduct).map(this::mapProductEntityToProductResponse);
     }
 
 
