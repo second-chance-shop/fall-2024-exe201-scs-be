@@ -27,5 +27,9 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     @Query("SELECT s FROM ShopEntity s WHERE s.shopOwner.userId = :userId AND s.status = 'ACTIVE'")
     List<ShopEntity> findActiveShopsByUserId(@Param("userId") Long userId);
 
+    @Query("SELECT s FROM ShopEntity s WHERE s.shopId = :shopId AND s.shopOwner.userId = :userId AND s.status = 'ACTIVE'")
+    Optional<ShopEntity> findByShopIdAndUserID(@Param("shopId") long shopId, @Param("userId") long userId);
+
+
 
 }

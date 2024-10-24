@@ -7,4 +7,6 @@ public enum StatusEnum {
     DELETED,
     FOLLOW,
     UNFOLLOW,
+    CART,
+    HAS_BUY
 }

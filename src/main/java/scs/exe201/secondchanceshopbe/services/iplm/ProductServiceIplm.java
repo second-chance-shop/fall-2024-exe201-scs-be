@@ -23,11 +23,13 @@ import scs.exe201.secondchanceshopbe.models.dtos.response.FileObjectResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ProductResponse;
 import scs.exe201.secondchanceshopbe.models.entities.CategoryEntity;
 import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
+import scs.exe201.secondchanceshopbe.models.entities.ShopEntity;
 import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
 import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.CategoryRepository;
 import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
+import scs.exe201.secondchanceshopbe.repositories.ShopRepository;
 import scs.exe201.secondchanceshopbe.repositories.UserRepository;
 import scs.exe201.secondchanceshopbe.services.FileDatabaseService;
 import scs.exe201.secondchanceshopbe.services.FileService;
@@ -45,9 +47,18 @@ public class ProductServiceIplm implements ProductService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final DTOToEntity dtoToEntity;
+    private final ShopRepository shopRepository;
     private final FileDatabaseService fileDatabaseService;
 
-
+    @Override
+    public List<ProductResponse> getAllByShopId(long id) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+        List<ProductEntity> productEntities = productRepository.findAllProductActiveByUserIdAndShopId(userEntity.getUserId(), id);
+        return productEntities.stream().map(EntityToDTO::productEntityToDTO).toList();
+    }
 
     // Map ProductEntity to ProductResponse
     private ProductResponse mapProductEntityToProductResponse(ProductEntity productEntity) {
@@ -112,6 +123,10 @@ public class ProductServiceIplm implements ProductService {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
                 () -> new NotFoundException("User not found"));
+
+
+        Optional<ShopEntity> shopEntity = shopRepository.findByShopIdAndUserID(product.getShopId(),userEntity.getUserId());
+
         Set<CategoryEntity> categories = new HashSet<>(categoryRepository.findAllById(product.getCategoryIds()));
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductName(product.getProductName());
@@ -122,6 +137,7 @@ public class ProductServiceIplm implements ProductService {
         productEntity.setStatus(StatusEnum.ACTIVE);
         productEntity.setCreateBy(userEntity);
         productEntity.setDateCreate(LocalDate.now());
+
 
         try {
             productEntity.setImages(imageUrls);
