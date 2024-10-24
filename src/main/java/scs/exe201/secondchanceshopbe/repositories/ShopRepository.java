@@ -24,9 +24,8 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     @Query("UPDATE ShopEntity s SET s.valueFollow = (SELECT COALESCE(COUNT(f),0.0)  FROM FollowShopEntity f WHERE f.shopFollow = s AND f.status = 'FOLLOW')")
     void updateValueFollow();
 
-    @Query("SELECT s FROM ShopEntity s WHERE s.shopOwner = :userId AND s.status = 'ACTIVE'")
+    @Query("SELECT s FROM ShopEntity s WHERE s.shopOwner.userId = :userId AND s.status = 'ACTIVE'")
     List<ShopEntity> findActiveShopsByUserId(@Param("userId") Long userId);
-
 
 
 }
