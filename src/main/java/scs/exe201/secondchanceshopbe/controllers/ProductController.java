@@ -115,4 +115,17 @@ public ResponseEntity<ResponseObject> addProductV1(
                         .build()
         );
     }
+    @GetMapping("/shop/{id}")
+    public ResponseEntity<ResponseObject> getAllByShopId(@PathVariable long id) {
+        List<ProductResponse> products = productService.getAllByShopId(id);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("FETCH_SUCCESS")
+                        .message("Products retrieved successfully")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(products)
+                        .build()
+        );
+    }
 }

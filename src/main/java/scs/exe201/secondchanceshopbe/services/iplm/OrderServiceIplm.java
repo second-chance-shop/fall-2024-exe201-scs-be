@@ -1,6 +1,7 @@
 package scs.exe201.secondchanceshopbe.services.iplm;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.MethodPayment;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
@@ -9,8 +10,7 @@ import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
 import scs.exe201.secondchanceshopbe.models.entities.OrderEntity;
 import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
-import scs.exe201.secondchanceshopbe.models.entities.UserEntity;
-import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
+import scs.exe201.secondchanceshopbe.models.entities.UserEntity;import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.OrderRepository;
 import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
@@ -20,16 +20,49 @@ import scs.exe201.secondchanceshopbe.utils.EntityToDTO;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceIplm implements OrderService {
+
+
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
+    @Override
+    public List<OrderResponse> getAllByUserCart() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+        List<OrderEntity> orderEntities = orderRepository.findByUserOrderAndStatusCart(userEntity.getUserId());
 
+        if (orderEntities.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return orderEntities.stream()
+                .map(EntityToDTO::orderEntityDTO) // Assuming EntityToDTO has a method to convert OrderEntity to OrderResponse
+                .toList();
+    }
+    @Override
+    public List<OrderResponse> getAllByUserCheckout() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+        List<OrderEntity> orderEntities = orderRepository.findByUserOrderAndStatusHasBuy(userEntity.getUserId());
+
+        if (orderEntities.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return orderEntities.stream()
+                .map(EntityToDTO::orderEntityDTO) // Assuming EntityToDTO has a method to convert OrderEntity to OrderResponse
+                .toList();
+    }
 
 
     @Override

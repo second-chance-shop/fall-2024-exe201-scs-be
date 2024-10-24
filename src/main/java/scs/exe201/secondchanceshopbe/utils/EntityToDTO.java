@@ -102,6 +102,7 @@ public class EntityToDTO {
                 .start(productEntity.getStart())
                 .productId(productEntity.getProductId())
                 .productName(productEntity.getProductName())
+                .shopId(productEntity.getShop().getShopId())
                 .build();
     }
 

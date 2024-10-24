@@ -89,4 +89,7 @@ public class ShopEntity {
     @OneToMany(mappedBy = "shopFollow")
     private Set<FollowShopEntity> followers = new HashSet<>();
 
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductEntity> products = new HashSet<>();
+
 }
