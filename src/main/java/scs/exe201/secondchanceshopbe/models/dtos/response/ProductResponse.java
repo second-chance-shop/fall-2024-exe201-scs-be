@@ -24,5 +24,6 @@ public class ProductResponse {
     private  double start;
     private LocalDate dateCreate;
     private String createByUsername; // Assuming you'd return the username instead of user entity
+    private long shopId;
 
 }

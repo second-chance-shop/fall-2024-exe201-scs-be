@@ -52,6 +52,32 @@ public class OrderController {
                         .build()
         );
     }
+    @GetMapping("/user-checkout")
+    public ResponseEntity<ResponseObject> getOrderHasBuyByUser() {
+        List <OrderResponse> orderResponse = orderService.getAllByUserCheckout();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("GET_SUCCESS")
+                        .message("get  success")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(orderResponse)
+                        .build()
+        );
+    }
+    @GetMapping("/user-cart")
+    public ResponseEntity<ResponseObject> getOrderCartByUser() {
+        List <OrderResponse> orderResponse = orderService.getAllByUserCart();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("GET_SUCCESS")
+                        .message("get  success")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(orderResponse)
+                        .build()
+        );
+    }
     @PostMapping("/create")
     public ResponseEntity<ResponseObject> createOrder(@RequestBody OrderCreateDTO createDTO){
         OrderResponse orderResponse = orderService.createOrder(createDTO);

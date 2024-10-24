@@ -23,4 +23,6 @@ public interface ProductService {
     List<ProductResponse> getAll();
 
     ProductResponse updateProductv1(ProductUpdateDTO product, List<MultipartFile> files);
+
+    List<ProductResponse> getAllByShopId(long id);
 }
