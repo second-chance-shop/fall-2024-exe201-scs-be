@@ -22,7 +22,7 @@ public class ShopCreateDTO {
 
     @NotBlank(message = "Phone number is mandatory")
     @Pattern(regexp = "^\\+?[0-9]{10}$", message = "Phone number should be valid")
-    private String shopPhonumber;
+    private String shopPhoneNumber;
 
     @NotBlank(message = "CCCD number is mandatory")
     private String cccdNumber;

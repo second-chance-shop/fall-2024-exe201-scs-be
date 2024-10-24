@@ -106,7 +106,7 @@ public class ShopServiceImpl implements ShopService {
         if(shopRepository.existsByShopEmail(shopCreateDTO.getShopEmail())) {
             throw new NotFoundException("Shop email already exists");
         }
-        if (shopRepository.existsByShopPhoneNumber(shopCreateDTO.getShopPhonumber())) {
+        if (shopRepository.existsByShopPhoneNumber(shopCreateDTO.getShopPhoneNumber())) {
             throw new NotFoundException("Shop phone already exists");
         }
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -119,7 +119,7 @@ public class ShopServiceImpl implements ShopService {
         shopEntity.setShopName(shopCreateDTO.getShopName());
         shopEntity.setDescription(shopCreateDTO.getDescription());
         shopEntity.setShopEmail(shopCreateDTO.getShopEmail());
-        shopEntity.setShopPhoneNumber(shopCreateDTO.getShopPhonumber());
+        shopEntity.setShopPhoneNumber(shopCreateDTO.getShopPhoneNumber());
         shopEntity.setShopAddress(shopCreateDTO.getShopAddress());
         shopEntity.setShippingAddress(shopCreateDTO.getShippingAddress());
         shopEntity.setCccdNumber(shopCreateDTO.getCccdNumber());
