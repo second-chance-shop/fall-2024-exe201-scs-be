@@ -31,8 +31,4 @@ public class ProductCreateDTO {
     @NotNull(message = "Price is mandatory")
     private Long shopId;
 
-
-
-
-
 }

@@ -84,6 +84,7 @@ public class ProductEntity {
 
     @OneToOne(mappedBy = "productOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private OrderEntity orderEntity;
+
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
     @JsonIgnore
