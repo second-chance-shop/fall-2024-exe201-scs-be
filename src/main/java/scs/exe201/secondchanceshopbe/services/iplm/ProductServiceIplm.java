@@ -108,7 +108,7 @@ public class ProductServiceIplm implements ProductService {
 
     @Override
     public ProductResponse addProduct(ProductCreateDTO product, List<MultipartFile> files) {
-        if(product.getCategoryIds().isEmpty()||product == null){
+        if(product.getCategoryIds().isEmpty()){
             throw new ActionFailedException("Product empty");
         }
         List<String> imageUrls = new ArrayList<>();
@@ -137,7 +137,7 @@ public class ProductServiceIplm implements ProductService {
         productEntity.setStatus(StatusEnum.ACTIVE);
         productEntity.setCreateBy(userEntity);
         productEntity.setDateCreate(LocalDate.now());
-
+        productEntity.setShop(shopEntity.get());
 
         try {
             productEntity.setImages(imageUrls);
