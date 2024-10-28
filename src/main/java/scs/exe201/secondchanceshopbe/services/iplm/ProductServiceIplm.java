@@ -102,7 +102,7 @@ public class ProductServiceIplm implements ProductService {
     public ProductResponse getProductById(long idProduct) {
         ProductEntity productEntity = productRepository.findById(idProduct)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
-        return mapProductEntityToProductResponse(productEntity);
+        return EntityToDTO.productEntityToDTO(productEntity);
     }
 
 
