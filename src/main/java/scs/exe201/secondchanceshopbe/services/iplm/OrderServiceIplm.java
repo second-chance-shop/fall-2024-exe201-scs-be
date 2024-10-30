@@ -114,6 +114,14 @@ public class OrderServiceIplm implements OrderService {
                 .orElseThrow(
                         ()-> new NotFoundException("Method payment not found")
                 );
+
+        if(createDTO.getQuantity()<=0){
+            throw new ActionFailedException("Quantity is negative or zero");
+        }else if (createDTO.getQuantity()>productEntity.getQuantity()){
+            throw new ActionFailedException("Quantity is greater than quantity shop have");
+        }
+        productEntity.setQuantity(productEntity.getQuantity()-createDTO.getQuantity());
+
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setUserOrder(userEntity);
         orderEntity.setProductOrder(productEntity);
@@ -122,6 +130,7 @@ public class OrderServiceIplm implements OrderService {
         orderEntity.setQuantity(createDTO.getQuantity());
         orderEntity.setPaymentMethod(paymentMethod);
         orderRepository.save(orderEntity);
+        productRepository.save(productEntity);
         OrderResponse orderResponse = EntityToDTO.orderEntityDTO(orderEntity);
         return orderResponse;
     }
@@ -181,9 +190,19 @@ public class OrderServiceIplm implements OrderService {
             throw new ActionFailedException("Method payment is null");
         }
         MethodPayment payment = MethodPayment.valueOf(methodPayment);
+        ProductEntity productEntity = productRepository.findById(orderEntity.getProductOrder().getProductId()).orElseThrow(
+                () -> new NotFoundException("Product not found")
+        );
+        if(orderEntity.getQuantity()<=0){
+            throw new ActionFailedException("Quantity is negative or zero");
+        }else if (orderEntity.getQuantity()>productEntity.getQuantity()){
+            throw new ActionFailedException("Quantity is greater than quantity shop have");
+        }
+        productEntity.setQuantity(productEntity.getQuantity()-orderEntity.getQuantity());
         orderEntity.setPaymentMethod(payment);
         orderEntity.setOrderDate(LocalDate.now());
         orderRepository.save(orderEntity);
+        productRepository.save(productEntity);
         return null;
     }
 }
