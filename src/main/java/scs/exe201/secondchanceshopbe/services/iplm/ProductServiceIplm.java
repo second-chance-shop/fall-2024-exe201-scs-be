@@ -138,6 +138,7 @@ public class ProductServiceIplm implements ProductService {
         productEntity.setCreateBy(userEntity);
         productEntity.setDateCreate(LocalDate.now());
         productEntity.setShop(shopEntity.get());
+        productEntity.setStart(0.0);
 
         try {
             productEntity.setImages(imageUrls);
