@@ -4,17 +4,10 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.CartCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
@@ -91,6 +84,19 @@ public class OrderController {
                         .build()
         );
     }
+    @PostMapping("/add-cart")
+    public ResponseEntity<ResponseObject> createCart(@RequestBody CartCreateDTO createDTO){
+        OrderResponse orderResponse = orderService.createCart(createDTO);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("CREATE_SUCCESS")
+                        .message("create success")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(orderResponse)
+                        .build()
+        );
+    }
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseObject> updateOrder(@PathVariable long id, @RequestBody OrderUpdateDTO updateDTO){
         OrderResponse orderResponse = orderService.updateOrder(id,updateDTO);
@@ -117,4 +123,18 @@ public class OrderController {
                         .build()
         );
     }
+    @PutMapping("/checkout/{cartId}")
+    public ResponseEntity<ResponseObject> checkoutOrder(@PathVariable long cartId, @RequestParam String methodPayment){
+        OrderResponse orderResponse = orderService.checkoutOrder(cartId, methodPayment);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .code("UPDATE_SUCCESS")
+                        .message("update success")
+                        .status(HttpStatus.OK)
+                        .isSuccess(true)
+                        .data(orderResponse)
+                        .build()
+        );
+    }
+
 }
