@@ -60,6 +60,9 @@ public class SecurityConfig {
                         //comment
                         .requestMatchers(HttpMethod.GET,"/api/v1/comment").permitAll()
 
+                        .requestMatchers(HttpMethod.GET,"api/v1/shop/").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/shop/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/shop/user/{id}").permitAll()
                         //rating
                         .requestMatchers(HttpMethod.POST,"/api/v1/rating").permitAll()
 

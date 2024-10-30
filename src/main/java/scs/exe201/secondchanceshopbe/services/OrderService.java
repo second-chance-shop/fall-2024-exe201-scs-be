@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import scs.exe201.secondchanceshopbe.models.dtos.requests.CartCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
@@ -24,4 +25,8 @@ public interface OrderService {
     List<OrderResponse> getAllByUserCheckout();
 
     List<OrderResponse> getAllByUserCart();
+
+    OrderResponse createCart(CartCreateDTO createDTO);
+
+    OrderResponse checkoutOrder(long cartId, String methodPayment);
 }
