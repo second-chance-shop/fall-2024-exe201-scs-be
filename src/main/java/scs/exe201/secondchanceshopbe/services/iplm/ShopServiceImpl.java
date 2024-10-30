@@ -128,7 +128,7 @@ public class ShopServiceImpl implements ShopService {
         shopEntity.setTypeShop(categoryEntity);
         shopEntity.setStatus(StatusEnum.ACTIVE);
         shopEntity.setDateCreate(LocalDate.now());
-        shopEntity.setValueFollow(0.0);
+        shopEntity.setValueFollow(0);
 
         if(imageShop !=null && !imageShop.isEmpty()) {
           var image=  fileDatabaseService.uploadFile(imageShop);
