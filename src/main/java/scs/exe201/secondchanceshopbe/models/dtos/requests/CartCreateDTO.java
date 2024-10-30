@@ -1,15 +1,15 @@
 package scs.exe201.secondchanceshopbe.models.dtos.requests;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderCreateDTO {
+public class CartCreateDTO {
     private long productId;
     private int quantity;
-    private String nameMethod;
 }
-

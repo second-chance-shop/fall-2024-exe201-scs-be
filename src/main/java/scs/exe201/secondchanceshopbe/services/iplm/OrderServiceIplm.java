@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.MethodPayment;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
+import scs.exe201.secondchanceshopbe.models.dtos.requests.CartCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
@@ -100,8 +101,8 @@ public class OrderServiceIplm implements OrderService {
 
     @Override
     public OrderResponse createOrder(OrderCreateDTO createDTO) {
-        OrderEntity orderEntity = new OrderEntity();
-        UserEntity userEntity = userRepository.findById(createDTO.getUserId()).orElseThrow(
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
                 () -> new NotFoundException("User not found")
         );
         ProductEntity productEntity = productRepository.findById(createDTO.getProductId()).orElseThrow(
@@ -113,10 +114,11 @@ public class OrderServiceIplm implements OrderService {
                 .orElseThrow(
                         ()-> new NotFoundException("Method payment not found")
                 );
+        OrderEntity orderEntity = new OrderEntity();
         orderEntity.setUserOrder(userEntity);
         orderEntity.setProductOrder(productEntity);
         orderEntity.setOrderDate(LocalDate.now());
-        orderEntity.setStatus(StatusEnum.ACTIVE);
+        orderEntity.setStatus(StatusEnum.HAS_BUY);
         orderEntity.setQuantity(createDTO.getQuantity());
         orderEntity.setPaymentMethod(paymentMethod);
         orderRepository.save(orderEntity);
@@ -136,5 +138,52 @@ public class OrderServiceIplm implements OrderService {
         List<OrderEntity> orderEntities = orderRepository.findAll();
         var orderResponse = orderEntities.stream().map(EntityToDTO::orderEntityDTO).toList();
         return orderResponse;
+    }
+
+    @Override
+    public OrderResponse createCart(CartCreateDTO createDTO) {
+
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+        ProductEntity productEntity = productRepository.findById(createDTO.getProductId()).orElseThrow(
+                () -> new NotFoundException("Product not found")
+        );
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setUserOrder(userEntity);
+        orderEntity.setProductOrder(productEntity);
+        orderEntity.setOrderDate(LocalDate.now());
+        orderEntity.setStatus(StatusEnum.CART);
+        orderEntity.setQuantity(createDTO.getQuantity());
+        orderRepository.save(orderEntity);
+        OrderResponse orderResponse = EntityToDTO.orderEntityDTO(orderEntity);
+        return orderResponse;
+    }
+
+    @Override
+    public OrderResponse checkoutOrder(long cartId, String methodPayment) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new NotFoundException("User not found")
+        );
+        OrderEntity orderEntity = orderRepository.findByCartIdAndUserId(cartId,userEntity.getUserId());
+        if(orderEntity == null) {
+            throw new NotFoundException("Order not found");
+        }
+        if(orderEntity.getStatus().equals(StatusEnum.HAS_BUY)) {
+            throw new ActionFailedException("Order is already buy");
+        }else if(orderEntity.getStatus().equals(StatusEnum.DELETED)) {
+            throw new ActionFailedException("Order is already deleted");
+        }
+        orderEntity.setStatus(StatusEnum.HAS_BUY);
+        if(methodPayment== null){
+            throw new ActionFailedException("Method payment is null");
+        }
+        MethodPayment payment = MethodPayment.valueOf(methodPayment);
+        orderEntity.setPaymentMethod(payment);
+        orderEntity.setOrderDate(LocalDate.now());
+        orderRepository.save(orderEntity);
+        return null;
     }
 }
