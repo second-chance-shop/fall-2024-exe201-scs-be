@@ -35,6 +35,7 @@ public class EntityToDTO {
     public static CommentResponse commentToEntityDTO(CommentEntity commentEntity) {
         return CommentResponse.builder()
                 .commentId(commentEntity.getCommentId())
+                .name(commentEntity.getUserComment().getName())
                 .content(commentEntity.getContent())
                 .userId(commentEntity.getUserComment().getUserId())
                 .createdAt(commentEntity.getDateCreate())
@@ -44,9 +45,10 @@ public class EntityToDTO {
 
     public static RatingResponse ratingoEntityDTOT(RatingEntity ratingEntity) {
         return RatingResponse.builder()
-                .commentId(ratingEntity.getRatingId())
+                .ratingId(ratingEntity.getRatingId())
                 .start(ratingEntity.getStar())
                 .userId(ratingEntity.getUserRating().getUserId())
+                .name(ratingEntity.getUserRating().getName())
                 .createdAt(ratingEntity.getDateCreate())
                 .productId(ratingEntity.getProduct().getProductId())
                 .build();
