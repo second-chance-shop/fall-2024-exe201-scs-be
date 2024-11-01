@@ -68,13 +68,14 @@ public class EntityToDTO {
         return OrderResponse.builder()
                 .orderId(orderEntity.getOrderId())
                 .orderDate(orderEntity.getOrderDate())
-                .status(orderEntity.getStatus().toString())
-                .namePayment(orderEntity.getPaymentMethod().toString())
+                .status(orderEntity.getStatus() != null ? orderEntity.getStatus().toString() : "DEFAULT_STATUS") // Replace "DEFAULT_STATUS" with an appropriate default
+                .namePayment(orderEntity.getPaymentMethod() != null ? orderEntity.getPaymentMethod().toString() : "No Payment Method") // Replace "No Payment Method" with an appropriate default
                 .quantity(orderEntity.getQuantity())
                 .productId(orderEntity.getProductOrder().getProductId())
                 .userId(orderEntity.getUserOrder().getUserId())
                 .build();
     }
+
 
     public static ProductResponse productEntityToDTO(ProductEntity productEntity) {
         StatusEnum statusEnum = Arrays.stream(StatusEnum.values())

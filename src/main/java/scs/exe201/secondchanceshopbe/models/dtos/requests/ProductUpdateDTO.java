@@ -32,7 +32,6 @@ public class ProductUpdateDTO {
     private Long prices;
 
 
-    private String image;
 
     private LocalDate dateCreate;
 }
