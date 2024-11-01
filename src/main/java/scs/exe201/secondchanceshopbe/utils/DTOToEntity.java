@@ -73,7 +73,7 @@ public class DTOToEntity {
                .description(productUpdateDTO.getDescription())
                .categories(categories)
                .prices(productUpdateDTO.getPrices())
-               .image(productUpdateDTO.getImage())
+
                .dateCreate(productUpdateDTO.getDateCreate() != null ? productUpdateDTO.getDateCreate() : null)
                .build();
     }
