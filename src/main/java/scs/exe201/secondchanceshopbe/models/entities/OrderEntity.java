@@ -29,8 +29,8 @@ public class OrderEntity {
     @JsonIgnore
     private UserEntity userOrder;
 
-    @OneToOne
-    @JoinColumn(name= "product_id",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     private ProductEntity productOrder;
 
@@ -45,7 +45,8 @@ public class OrderEntity {
     private StatusEnum status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "method_payment")
+    @Column(name = "method_payment", nullable = true)
     private MethodPayment paymentMethod;
+
 
 }
