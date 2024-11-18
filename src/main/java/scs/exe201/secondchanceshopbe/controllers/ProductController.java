@@ -23,9 +23,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/getAllProduct")
-    public ResponseEntity<ResponseObject> getProducts(@RequestParam(defaultValue = "1") int page,
-                                                      @RequestParam(defaultValue = "10") int size) {
-        Page<ProductResponse> products = productService.getAllProducts(page, size);
+    public ResponseEntity<ResponseObject> getProducts(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search) {
+
+        Page<ProductResponse> products = productService.getAllProducts(page, size, search);
+
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .code("FETCH_SUCCESS")
@@ -36,6 +40,7 @@ public class ProductController {
                         .build()
         );
     }
+
     @GetMapping("/getAll")
     public ResponseEntity<ResponseObject> getAll() {
         List<ProductResponse> products = productService.getAll();

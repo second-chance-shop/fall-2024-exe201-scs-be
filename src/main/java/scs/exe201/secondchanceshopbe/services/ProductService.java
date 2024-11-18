@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface ProductService {
-    Page<ProductResponse> getAllProducts(int page, int size);
+    Page<ProductResponse> getAllProducts(int page, int size, String search );
 
     ProductResponse deleteProduct(long idProduct);
 

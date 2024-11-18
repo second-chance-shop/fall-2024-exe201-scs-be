@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -81,12 +78,25 @@ public class ProductServiceIplm implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> getAllProducts(int page, int size) {
-        PageRequest pageable = PageRequest.of(page-1, size);
-        Page<ProductEntity> productEntities = productRepository.findAll(pageable);
-        List<ProductResponse> productResponses = productEntities.stream().map(EntityToDTO::productEntityToDTO).toList();
+    public Page<ProductResponse> getAllProducts(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        // If search is null or empty, fetch all products
+        Page<ProductEntity> productEntities;
+        if (search == null || search.isBlank()) {
+            productEntities = productRepository.findAll(pageable);
+        } else {
+            productEntities = productRepository.findBySearch(search, pageable);
+        }
+
+        // Map entities to responses
+        List<ProductResponse> productResponses = productEntities.stream()
+                .map(EntityToDTO::productEntityToDTO)
+                .toList();
+
         return new PageImpl<>(productResponses, pageable, productEntities.getTotalElements());
     }
+
 
 
     @Override
