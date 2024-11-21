@@ -65,6 +65,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/v1/shop/user/{id}").permitAll()
                         //rating
                         .requestMatchers(HttpMethod.POST,"/api/v1/rating").permitAll()
+                        //payos
+                        .requestMatchers(HttpMethod.GET,"/api/v1/payos/success").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/payos/cancel").permitAll()
 
                         .anyRequest().authenticated() // Các yêu cầu khác đều cần xác thực
                 ).cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))

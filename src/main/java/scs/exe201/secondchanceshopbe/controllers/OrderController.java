@@ -12,12 +12,14 @@ import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderCreateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OrderUpdateDTO;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
+import scs.exe201.secondchanceshopbe.services.IPayOsService;
 import scs.exe201.secondchanceshopbe.services.OrderService;
 @RestController
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final IPayOsService payOsService;
 
     @GetMapping
     public ResponseEntity<ResponseObject> getOrder() {
@@ -125,14 +127,14 @@ public class OrderController {
     }
     @PutMapping("/checkout/{cartId}")
     public ResponseEntity<ResponseObject> checkoutOrder(@PathVariable long cartId, @RequestParam String methodPayment){
-        OrderResponse orderResponse = orderService.checkoutOrder(cartId, methodPayment);
+        OrderResponse response = orderService.checkoutOrder(cartId, methodPayment);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .code("UPDATE_SUCCESS")
-                        .message("update success")
+                        .code("ORDER_SUCCESS")
+                        .message("order success")
                         .status(HttpStatus.OK)
                         .isSuccess(true)
-                        .data(orderResponse)
+                        .data(response)
                         .build()
         );
     }
