@@ -9,6 +9,7 @@ public record ResponseObject(
         String code,
         Boolean isSuccess,
         HttpStatus status,
-        String message
+        String message,
+        String location
 ) {
 }

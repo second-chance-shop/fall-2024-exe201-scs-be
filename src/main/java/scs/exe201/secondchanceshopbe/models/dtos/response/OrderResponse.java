@@ -21,4 +21,5 @@ public class OrderResponse {
     private LocalDate orderDate;
     private String status;
     private String namePayment;
+    private String urlPayment;
 }

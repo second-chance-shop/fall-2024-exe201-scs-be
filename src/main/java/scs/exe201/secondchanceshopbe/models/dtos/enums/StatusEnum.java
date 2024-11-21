@@ -8,5 +8,6 @@ public enum StatusEnum {
     FOLLOW,
     UNFOLLOW,
     CART,
-    HAS_BUY
+    HAS_BUY,
+    CANCELED
 }
