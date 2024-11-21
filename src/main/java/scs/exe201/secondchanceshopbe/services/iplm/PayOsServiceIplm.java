@@ -41,7 +41,7 @@ public class PayOsServiceIplm implements IPayOsService {
         PaymentData paymentData = PaymentData.builder()
                 .orderCode(orderId)
                 .amount(total)
-                .description("Thanh toán đơn hàng")
+                .description("Thanh toán đơn hàng: " +order.getProductOrder().getProductName())
                 .returnUrl(webhookUrl + "/success")
                 .cancelUrl(webhookUrl + "/cancel")
                 .item(itemData)
