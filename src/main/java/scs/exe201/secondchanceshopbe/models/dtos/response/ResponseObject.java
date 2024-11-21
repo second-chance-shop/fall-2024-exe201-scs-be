@@ -1,7 +1,8 @@
 package scs.exe201.secondchanceshopbe.models.dtos.response;
 
-import lombok.Builder;
 import org.springframework.http.HttpStatus;
+
+import lombok.Builder;
 
 @Builder
 public record ResponseObject(
@@ -9,7 +10,6 @@ public record ResponseObject(
         String code,
         Boolean isSuccess,
         HttpStatus status,
-        String message,
-        String location
+        String message
 ) {
 }
