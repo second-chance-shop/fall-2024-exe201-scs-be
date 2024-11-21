@@ -82,9 +82,21 @@ public class ProductServiceIplm implements ProductService {
 
     @Override
     public Page<ProductResponse> getAllProducts(int page, int size) {
-        PageRequest pageable = PageRequest.of(page-1, size);
-        Page<ProductEntity> productEntities = productRepository.findAll(pageable);
-        List<ProductResponse> productResponses = productEntities.stream().map(EntityToDTO::productEntityToDTO).toList();
+//        PageRequest pageable = PageRequest.of(page-1, size);
+//        Page<ProductEntity> productEntities = productRepository.findAll(pageable);
+//        List<ProductResponse> productResponses = productEntities.stream().map(EntityToDTO::productEntityToDTO).toList();
+//        return new PageImpl<>(productResponses, pageable, productEntities.getTotalElements());
+        PageRequest pageable = PageRequest.of(page - 1, size);
+
+        // Lấy các sản phẩm có trạng thái ACTIVE
+        Page<ProductEntity> productEntities = productRepository.findAllByStatus(StatusEnum.ACTIVE, pageable);
+
+        // Chuyển đổi từ ProductEntity sang ProductResponse
+        List<ProductResponse> productResponses = productEntities.stream()
+                .map(EntityToDTO::productEntityToDTO)
+                .toList();
+
+        // Trả về kết quả
         return new PageImpl<>(productResponses, pageable, productEntities.getTotalElements());
     }
 
