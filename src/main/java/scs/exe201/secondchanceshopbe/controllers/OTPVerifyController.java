@@ -2,12 +2,16 @@ package scs.exe201.secondchanceshopbe.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import scs.exe201.secondchanceshopbe.models.dtos.enums.TemplateEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.requests.OTPVerifyRequest;
-import scs.exe201.secondchanceshopbe.models.dtos.requests.RequestPassword;
 import scs.exe201.secondchanceshopbe.models.dtos.response.ResponseObject;
 import scs.exe201.secondchanceshopbe.services.OTPService;
 import scs.exe201.secondchanceshopbe.services.UserService;

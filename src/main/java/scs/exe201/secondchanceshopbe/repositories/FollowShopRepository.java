@@ -10,7 +10,7 @@ import scs.exe201.secondchanceshopbe.models.entities.FollowShopEntity;
 import java.util.List;
 
 @Repository
-public interface FollowShopRepository extends JpaRepository<FollowShopEntity , Long> {
+public interface FollowShopRepository extends JpaRepository<FollowShopEntity , Integer> {
     @Query("SELECT f FROM FollowShopEntity f WHERE f.userFollow.userId = :userId AND f.shopFollow.shopId = :shopId")
     FollowShopEntity findByUserIdAndShopId(@Param("userId") Long userId, @Param("shopId") Long shopId);
 
