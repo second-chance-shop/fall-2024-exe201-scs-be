@@ -32,6 +32,7 @@ public class OrderServiceIplm implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final PayOsServiceIplm payOsServiceIplm;
 
     @Override
     public List<OrderResponse> getAllByUserCart() {
@@ -114,24 +115,26 @@ public class OrderServiceIplm implements OrderService {
                 .orElseThrow(
                         ()-> new NotFoundException("Method payment not found")
                 );
-
         if(createDTO.getQuantity()<=0){
             throw new ActionFailedException("Quantity is negative or zero");
         }else if (createDTO.getQuantity()>productEntity.getQuantity()){
             throw new ActionFailedException("Quantity is greater than quantity shop have");
         }
         productEntity.setQuantity(productEntity.getQuantity()-createDTO.getQuantity());
-
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setUserOrder(userEntity);
         orderEntity.setProductOrder(productEntity);
         orderEntity.setOrderDate(LocalDate.now());
-        orderEntity.setStatus(StatusEnum.HAS_BUY);
         orderEntity.setQuantity(createDTO.getQuantity());
         orderEntity.setPaymentMethod(paymentMethod);
         orderRepository.save(orderEntity);
+        OrderResponse orderResponse = new OrderResponse();
+        orderResponse = EntityToDTO.orderEntityDTO(orderEntity);
+        if(MethodPayment.CREDIT_CARD.equals(orderEntity.getPaymentMethod())){
+            var url =  payOsServiceIplm.paymentLink(orderEntity.getOrderId());
+            orderResponse.setUrlPayment(url.getCheckoutUrl());
+        }
         productRepository.save(productEntity);
-        OrderResponse orderResponse = EntityToDTO.orderEntityDTO(orderEntity);
         return orderResponse;
     }
 
@@ -185,7 +188,7 @@ public class OrderServiceIplm implements OrderService {
         }else if(orderEntity.getStatus().equals(StatusEnum.DELETED)) {
             throw new ActionFailedException("Order is already deleted");
         }
-        orderEntity.setStatus(StatusEnum.HAS_BUY);
+
         if(methodPayment== null){
             throw new ActionFailedException("Method payment is null");
         }
@@ -202,7 +205,12 @@ public class OrderServiceIplm implements OrderService {
         orderEntity.setPaymentMethod(payment);
         orderEntity.setOrderDate(LocalDate.now());
         orderRepository.save(orderEntity);
+        OrderResponse orderResponse = EntityToDTO.orderEntityDTO(orderEntity);
+        if(MethodPayment.CREDIT_CARD.equals(orderEntity.getPaymentMethod())){
+            var url =  payOsServiceIplm.paymentLink(orderEntity.getOrderId());
+            orderResponse.setUrlPayment(url.getCheckoutUrl());
+        }
         productRepository.save(productEntity);
-        return null;
+        return orderResponse;
     }
 }
