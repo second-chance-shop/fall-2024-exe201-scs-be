@@ -26,6 +26,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
 //    @Query("SELECT p FROM ProductEntity p WHERE p.status = :status")
     Page<ProductEntity> findAllByStatus(@Param("status") StatusEnum status, Pageable pageable);
 
+    List<ProductEntity> findByStatus(StatusEnum status);
     @Transactional
     @Modifying
     @Query("UPDATE ProductEntity p SET p.start = " +

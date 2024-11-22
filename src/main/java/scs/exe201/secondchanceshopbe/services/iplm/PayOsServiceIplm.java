@@ -6,6 +6,7 @@ import scs.exe201.secondchanceshopbe.models.dtos.enums.StatusEnum;
 import scs.exe201.secondchanceshopbe.models.dtos.response.OrderResponse;
 import scs.exe201.secondchanceshopbe.models.entities.OrderEntity;
 import scs.exe201.secondchanceshopbe.models.entities.ProductEntity;
+import scs.exe201.secondchanceshopbe.models.exception.ActionFailedException;
 import scs.exe201.secondchanceshopbe.models.exception.NotFoundException;
 import scs.exe201.secondchanceshopbe.repositories.OrderRepository;
 import scs.exe201.secondchanceshopbe.repositories.ProductRepository;
@@ -41,6 +42,8 @@ public class PayOsServiceIplm implements IPayOsService {
         PaymentData paymentData = PaymentData.builder()
                 .orderCode(orderId)
                 .amount(total)
+                .buyerEmail(order.getUserOrder().getEmail())
+                .buyerName(order.getUserOrder().getName())
                 .description("Thanh toán đơn hàng")
                 .returnUrl(webhookUrl + "/success")
                 .cancelUrl(webhookUrl + "/cancel")
@@ -50,12 +53,19 @@ public class PayOsServiceIplm implements IPayOsService {
             CheckoutResponseData result = payOS.createPaymentLink(paymentData);
             return result;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ActionFailedException(e.getMessage());
         }
     }
     @Override
     public PaymentLinkData getPaymentLinkData(long orderId) {
-        return null;
+        PaymentLinkData paymentLinkData;
+        try {
+            paymentLinkData = payOS.getPaymentLinkInformation(orderId);
+        } catch (Exception e) {
+            throw new ActionFailedException(e.getMessage());
+        }
+
+        return paymentLinkData;
     }
     @Override
     public OrderResponse actionCancel(long orderCode) {
