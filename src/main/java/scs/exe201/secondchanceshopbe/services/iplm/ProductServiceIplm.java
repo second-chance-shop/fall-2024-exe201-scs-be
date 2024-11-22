@@ -165,9 +165,11 @@ public class ProductServiceIplm implements ProductService {
     }
     @Override
     public List<ProductResponse> getAll() {
-        List<ProductEntity> productEntities = productRepository.findAll();
+        List<ProductEntity> productEntities = productRepository.findByStatus(StatusEnum.ACTIVE);
 
-        return productEntities.stream().map(EntityToDTO::productEntityToDTO).toList();
+        return productEntities.stream()
+                .map(EntityToDTO::productEntityToDTO)
+                .toList();
     }
 
     @Override

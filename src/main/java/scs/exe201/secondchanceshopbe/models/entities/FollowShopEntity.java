@@ -19,7 +19,7 @@ public class FollowShopEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "follow_id", unique = true, nullable = false)
-    private int id;
+    private long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
