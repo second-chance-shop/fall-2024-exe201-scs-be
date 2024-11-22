@@ -120,13 +120,18 @@ public class OrderServiceIplm implements OrderService {
         }else if (createDTO.getQuantity()>productEntity.getQuantity()){
             throw new ActionFailedException("Quantity is greater than quantity shop have");
         }
+
         productEntity.setQuantity(productEntity.getQuantity()-createDTO.getQuantity());
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setUserOrder(userEntity);
         orderEntity.setProductOrder(productEntity);
         orderEntity.setOrderDate(LocalDate.now());
         orderEntity.setQuantity(createDTO.getQuantity());
+        if(MethodPayment.CASH.equals(paymentMethod)){
+            orderEntity.setStatus(StatusEnum.HAS_BUY);
+        }
         orderEntity.setPaymentMethod(paymentMethod);
+
         orderRepository.save(orderEntity);
         OrderResponse orderResponse = new OrderResponse();
         orderResponse = EntityToDTO.orderEntityDTO(orderEntity);
