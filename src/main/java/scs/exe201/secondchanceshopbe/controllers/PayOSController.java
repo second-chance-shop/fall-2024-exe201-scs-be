@@ -23,7 +23,7 @@ public class PayOSController {
     @GetMapping("/success")
     public ResponseEntity<ResponseObject> handleSuccess(@RequestParam long orderCode) {
         OrderResponse response = payosService.actionSuccess(orderCode);
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("https://2ndchanceshop.vercel.app")).body(
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("https://scs.arisavinh.dev")).body(
                 ResponseObject.builder()
                         .code("ORDER_SUCCESS")
                         .message("Order successfully, thank you for order")
@@ -38,7 +38,7 @@ public class PayOSController {
     @GetMapping("/cancel")
     public ResponseEntity<ResponseObject> handleCancel(@RequestParam long orderCode) {
         OrderResponse response = payosService.actionCancel(orderCode);
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("https://2ndchanceshop.vercel.app")).body(
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("https://scs.arisavinh.dev/shopping-cart")).body(
                 ResponseObject.builder()
                         .code("SUCCESS")
                         .message("Order canceled")
